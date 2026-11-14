@@ -1,0 +1,24 @@
+[WARN] [1794509569.678298171] [husky_mission]: [MISSION] IDLE -> TRANSIT (set1)
+[WARN] [1794509700.937115605] [husky_mission]: [MISSION] TRANSIT -> EXPLORE (set1)
+[WARN] [1794509821.525781959] [husky_mission]: [HUSKY] 사람 발견 보고: a1_2 월드 (10.4, 6.2), 지금까지 1 명
+[WARN] [1794509953.686403605] [husky_mission]: [HUSKY] 사람 발견 보고: a1_1 월드 (11.0, -6.2), 지금까지 2 명
+[WARN] [1794510312.552060989] [husky_mission]: [MISSION] set1 완료: 사람 2/2 명, 복귀한 A1 ['a1_1', 'a1_2'], 184 s
+[WARN] [1794510312.555792468] [husky_mission]: [MISSION] EXPLORE -> TRANSIT (set2)
+[WARN] [1794510480.514276843] [husky_mission]: [MISSION] TRANSIT -> EXPLORE (set2)
+[WARN] [1794510659.685192137] [husky_mission]: [HUSKY] 사람 발견 보고: a1_2 월드 (16.2, 3.0), 지금까지 3 명
+[WARN] [1794510800.208139710] [husky_mission]: [HUSKY] 사람 발견 보고: a1_1 월드 (17.2, -6.1), 지금까지 4 명
+[WARN] [1794511269.678979827] [husky_mission]: [MISSION] set2 완료: 사람 2/2 명, 복귀한 A1 ['a1_1', 'a1_2'], 240 s
+[WARN] [1794511269.679557385] [husky_mission]: [MISSION] EXPLORE -> TRANSIT (set3)
+[WARN] [1794511433.337902800] [husky_mission]: [MISSION] TRANSIT -> EXPLORE (set3)
+[WARN] [1794511512.846118906] [husky_mission]: [HUSKY] 사람 발견 보고: a1_2 월드 (29.1, 6.2), 지금까지 5 명
+[WARN] [1794511798.817711041] [husky_mission]: [HUSKY] 사람 발견 보고: a1_1 월드 (29.6, -6.2), 지금까지 6 명
+[WARN] [1794512235.962434133] [husky_mission]: [MISSION] set3 완료: 사람 2/2 명, 복귀한 A1 ['a1_1', 'a1_2'], 207 s
+[WARN] [1794512235.964726328] [husky_mission]: [MISSION] EXPLORE -> TRANSIT (common)
+[WARN] [1794512316.030940516] [husky_mission]: [MISSION] TRANSIT -> EXPLORE (common)
+[WARN] [1794512818.499703011] [husky_mission]: [HUSKY] 사람 발견 보고: a1_2 월드 (51.5, 4.7), 지금까지 7 명
+[WARN] [1794512842.652815107] [husky_mission]: [HUSKY] 사람 발견 보고: a1_1 월드 (50.2, -3.8), 지금까지 8 명
+[WARN] [1794512863.084118433] [husky_mission]: [HUSKY] 사람 발견 보고: a1_1 월드 (52.6, -4.6), 지금까지 9 명
+[WARN] [1794512935.345196100] [husky_mission]: [HUSKY] 사람 발견 보고: a1_2 월드 (45.1, -1.8), 지금까지 10 명
+[WARN] [1794512939.463972751] [husky_mission]: [HUSKY] 사람 발견 보고: a1_2 월드 (47.7, 0.0), 지금까지 11 명
+[WARN] [1794524243.104931826] [husky_mission]: [MISSION] common 완료: 사람 5/3 명, 복귀한 A1 ['a1_1', 'a1_2'], 566 s
+[WARN] [1794524243.105291638] [husky_mission]: [MISSION] EXPLORE -> DONE

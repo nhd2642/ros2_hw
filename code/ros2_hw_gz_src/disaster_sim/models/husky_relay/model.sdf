@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="husky_relay">
+    <static>true</static>
+    <link name="base_link">
+      <collision name="body_c">
+        <pose>0 0 0.195 0 0 0</pose>
+        <geometry><box><size>0.99 0.67 0.39</size></box></geometry>
+      </collision>
+      <visual name="body_v">
+        <pose>0 0 0.195 0 0 0</pose>
+        <geometry><box><size>0.99 0.67 0.39</size></box></geometry>
+        <material><ambient>0.9 0.75 0.1 1</ambient><diffuse>0.9 0.75 0.1 1</diffuse></material>
+      </visual>
+      <visual name="antenna_v">
+        <pose>-0.35 0 0.74 0 0 0</pose>
+        <geometry><cylinder><radius>0.015</radius><length>0.7</length></cylinder></geometry>
+        <material><ambient>0.1 0.1 0.1 1</ambient><diffuse>0.1 0.1 0.1 1</diffuse></material>
+      </visual>
+    </link>
+  </model>
+</sdf>

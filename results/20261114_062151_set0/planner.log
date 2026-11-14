@@ -1,0 +1,352 @@
+[INFO] [launch]: All log files can be found below /home/nhd2642/.ros/log/2026-11-14-06-25-09-977101-BOOK-DL9F6KHCRB-1872
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [planner_server-1]: process started with pid [1881]
+[INFO] [lifecycle_manager-2]: process started with pid [1883]
+[INFO] [planner_server-3]: process started with pid [1885]
+[INFO] [lifecycle_manager-4]: process started with pid [1887]
+[lifecycle_manager-2] [INFO] [1794605110.136906717] [a1_1.lifecycle_manager_planner]: Creating
+[lifecycle_manager-4] [INFO] [1794605110.144859947] [a1_2.lifecycle_manager_planner]: Creating
+[lifecycle_manager-2] [INFO] [1794605110.157028133] [a1_1.lifecycle_manager_planner]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[lifecycle_manager-4] [INFO] [1794605110.163092323] [a1_2.lifecycle_manager_planner]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[planner_server-1] [INFO] [1794605110.262274964] [a1_1.planner_server]: 
+[planner_server-1] 	planner_server lifecycle node launched. 
+[planner_server-1] 	Waiting on external lifecycle transitions to activate
+[planner_server-1] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-1] [INFO] [1794605110.263793041] [a1_1.planner_server]: Creating
+[planner_server-1] [INFO] [1794605110.385014773] [a1_1.global_costmap.global_costmap]: 
+[planner_server-1] 	global_costmap lifecycle node launched. 
+[planner_server-1] 	Waiting on external lifecycle transitions to activate
+[planner_server-1] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-1] [INFO] [1794605110.385712850] [a1_1.global_costmap.global_costmap]: Creating Costmap
+[planner_server-3] [INFO] [1794605110.473716376] [a1_2.planner_server]: 
+[planner_server-3] 	planner_server lifecycle node launched. 
+[planner_server-3] 	Waiting on external lifecycle transitions to activate
+[planner_server-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-3] [INFO] [1794605110.477974913] [a1_2.planner_server]: Creating
+[lifecycle_manager-2] [INFO] [1794605110.486630883] [a1_1.lifecycle_manager_planner]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-2] [INFO] [1794605110.486680961] [a1_1.lifecycle_manager_planner]: [34m[1mConfiguring planner_server[0m[0m
+[planner_server-1] [INFO] [1794605110.502510486] [a1_1.planner_server]: Configuring
+[planner_server-1] [INFO] [1794605110.502592691] [a1_1.global_costmap.global_costmap]: Configuring
+[planner_server-1] [INFO] [1794605110.542179766] [a1_1.global_costmap.global_costmap]: Using plugin "static_layer"
+[planner_server-1] [INFO] [1794605110.562151090] [a1_1.global_costmap.global_costmap]: Subscribing to the map topic (/a1_1/map) with transient local durability
+[planner_server-1] [INFO] [1794605110.571670711] [a1_1.global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-1] [INFO] [1794605110.571718594] [a1_1.global_costmap.global_costmap]: Using plugin "terrain_layer"
+[planner_server-1] [INFO] [1794605110.581959546] [a1_1.global_costmap.global_costmap]: Subscribed to Topics: terrain terrain_free
+[planner_server-3] [INFO] [1794605110.582112097] [a1_2.global_costmap.global_costmap]: 
+[planner_server-3] 	global_costmap lifecycle node launched. 
+[planner_server-3] 	Waiting on external lifecycle transitions to activate
+[planner_server-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-3] [INFO] [1794605110.582662573] [a1_2.global_costmap.global_costmap]: Creating Costmap
+[planner_server-1] [INFO] [1794605110.603469151] [a1_1.global_costmap.global_costmap]: Initialized plugin "terrain_layer"
+[planner_server-1] [INFO] [1794605110.603511916] [a1_1.global_costmap.global_costmap]: Using plugin "inflation_layer"
+[planner_server-1] [INFO] [1794605110.608568149] [a1_1.global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[planner_server-1] [INFO] [1794605110.650019892] [a1_1.planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner/NavfnPlanner
+[planner_server-1] [INFO] [1794605110.650096592] [a1_1.planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[planner_server-1] [INFO] [1794605110.667499404] [a1_1.planner_server]: Planner Server has GridBased  planners available.
+[lifecycle_manager-4] [INFO] [1794605110.671705164] [a1_2.lifecycle_manager_planner]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-4] [INFO] [1794605110.671970534] [a1_2.lifecycle_manager_planner]: [34m[1mConfiguring planner_server[0m[0m
+[planner_server-3] [INFO] [1794605110.684001398] [a1_2.planner_server]: Configuring
+[planner_server-3] [INFO] [1794605110.684321679] [a1_2.global_costmap.global_costmap]: Configuring
+[planner_server-3] [INFO] [1794605110.714330458] [a1_2.global_costmap.global_costmap]: Using plugin "static_layer"
+[planner_server-3] [INFO] [1794605110.729340545] [a1_2.global_costmap.global_costmap]: Subscribing to the map topic (/a1_2/map) with transient local durability
+[planner_server-3] [INFO] [1794605110.738670114] [a1_2.global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-3] [INFO] [1794605110.738724743] [a1_2.global_costmap.global_costmap]: Using plugin "terrain_layer"
+[planner_server-3] [INFO] [1794605110.744700465] [a1_2.global_costmap.global_costmap]: Subscribed to Topics: terrain terrain_free
+[lifecycle_manager-2] [INFO] [1794605110.754256429] [a1_1.lifecycle_manager_planner]: [34m[1mActivating planner_server[0m[0m
+[planner_server-1] [INFO] [1794605110.754756414] [a1_1.planner_server]: Activating
+[planner_server-1] [INFO] [1794605110.754788547] [a1_1.global_costmap.global_costmap]: Activating
+[planner_server-1] [INFO] [1794605110.754796915] [a1_1.global_costmap.global_costmap]: Checking transform
+[planner_server-1] [INFO] [1794605110.754820423] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605110.794494183] [a1_2.global_costmap.global_costmap]: Initialized plugin "terrain_layer"
+[planner_server-3] [INFO] [1794605110.794534943] [a1_2.global_costmap.global_costmap]: Using plugin "inflation_layer"
+[planner_server-3] [INFO] [1794605110.802625308] [a1_2.global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[planner_server-3] [INFO] [1794605110.865025578] [a1_2.planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner/NavfnPlanner
+[planner_server-3] [INFO] [1794605110.865117815] [a1_2.planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[planner_server-3] [INFO] [1794605110.868625504] [a1_2.planner_server]: Planner Server has GridBased  planners available.
+[lifecycle_manager-4] [INFO] [1794605110.910486771] [a1_2.lifecycle_manager_planner]: [34m[1mActivating planner_server[0m[0m
+[planner_server-3] [INFO] [1794605110.911459686] [a1_2.planner_server]: Activating
+[planner_server-3] [INFO] [1794605110.911522036] [a1_2.global_costmap.global_costmap]: Activating
+[planner_server-3] [INFO] [1794605110.911534172] [a1_2.global_costmap.global_costmap]: Checking transform
+[planner_server-3] [INFO] [1794605110.911558665] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605111.254911457] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605111.411786982] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605111.754935007] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605111.911668893] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605112.254977579] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605112.411712618] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605112.755029730] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605112.911657405] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605113.254939759] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605113.411682671] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605113.754924690] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605113.911647685] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605114.254946995] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605114.411666932] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605114.754939031] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605114.911657248] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605115.254935016] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605115.411656177] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605115.754909509] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605115.911669412] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605116.254939558] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605116.411662047] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605116.754942339] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605116.911628586] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605117.254939927] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605117.411717684] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605117.754978407] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605117.911634849] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605118.254926998] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605118.411652224] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605118.754900100] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605118.911674677] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605119.254898800] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605119.411697634] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605119.754955811] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605119.911700105] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605120.254969684] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605120.411635554] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605120.754942888] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605120.911635183] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605121.254957097] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605121.411659923] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605121.754899229] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605121.911666932] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605122.254885196] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605122.411625487] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605122.754925840] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605122.911620682] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605123.254945901] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605123.411640551] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605123.754925401] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605123.911613857] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605124.254931762] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605124.411714023] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605124.754947080] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605124.911673797] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605125.254956251] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605125.411703147] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605125.754952547] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605125.911643833] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605126.254958345] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605126.411640950] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605126.754927680] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605126.911672045] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605127.254945684] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605127.411660535] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605127.754939107] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605127.911677224] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605128.254965889] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605128.411626478] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605128.754954565] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605128.911676053] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605129.254932269] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605129.411683253] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605129.754925675] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605129.911680835] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605130.254922191] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605130.411650457] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605130.754959549] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605130.911653620] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605131.254902828] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605131.411669847] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605131.754925483] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605131.911621050] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605132.254919363] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605132.411680507] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605132.754927365] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605132.911715240] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605133.254936268] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605133.411633083] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605133.755015433] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605133.911648514] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605134.254901689] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605134.411644779] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605134.754898602] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605134.911634301] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605135.254907702] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605135.411666540] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605135.754913763] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605135.911682532] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605136.254915672] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605136.411666670] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605136.754910518] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605136.911711730] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605137.254916233] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605137.411670809] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605137.754940362] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605137.911627972] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605138.254947399] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605138.411625309] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605138.754937948] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605138.911731695] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605139.254952953] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605139.411690672] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605139.754860895] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605139.911646772] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605140.254922427] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605140.411631250] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605140.754915895] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605140.912819471] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605141.254897310] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605141.411657288] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605141.754965010] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-3] [INFO] [1794605141.911643340] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[planner_server-1] [INFO] [1794605142.255351409] [a1_1.global_costmap.global_costmap]: start
+[planner_server-3] [INFO] [1794605142.411916017] [a1_2.global_costmap.global_costmap]: start
+[planner_server-1] [INFO] [1794605143.265015183] [a1_1.planner_server]: Activating plugin GridBased of type NavfnPlanner
+[planner_server-1] [INFO] [1794605143.269371959] [a1_1.planner_server]: Creating bond (planner_server) to lifecycle manager.
+[lifecycle_manager-2] [INFO] [1794605143.377763666] [a1_1.lifecycle_manager_planner]: Server planner_server connected with bond.
+[lifecycle_manager-2] [INFO] [1794605143.377901415] [a1_1.lifecycle_manager_planner]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-2] [INFO] [1794605143.377911534] [a1_1.lifecycle_manager_planner]: [34m[1mCreating bond timer...[0m[0m
+[planner_server-3] [INFO] [1794605143.418951747] [a1_2.planner_server]: Activating plugin GridBased of type NavfnPlanner
+[planner_server-3] [INFO] [1794605143.425839475] [a1_2.planner_server]: Creating bond (planner_server) to lifecycle manager.
+[lifecycle_manager-4] [INFO] [1794605143.533666810] [a1_2.lifecycle_manager_planner]: Server planner_server connected with bond.
+[lifecycle_manager-4] [INFO] [1794605143.533723292] [a1_2.lifecycle_manager_planner]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-4] [INFO] [1794605143.533729812] [a1_2.lifecycle_manager_planner]: [34m[1mCreating bond timer...[0m[0m
+[planner_server-1] [INFO] [1794605145.175688158] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 126 X 255 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605145.195236872] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 353 X 159 at 0.050000 m/pix
+[planner_server-1] [WARN] [1794605157.255687174] [nav2_costmap_2d]: Robot is out of bounds of the costmap!
+[planner_server-3] [INFO] [1794605160.412139894] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 366 X 202 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605165.255525777] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 130 X 258 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605165.413311879] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 366 X 249 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605170.257088787] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 190 X 258 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605170.412128743] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 378 X 260 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605175.412168073] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 413 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605180.256192848] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 229 X 260 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605180.412055287] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 414 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605185.255803639] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 233 X 260 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605185.412084979] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 433 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605190.255806999] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 238 X 260 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605190.412106891] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 446 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605195.256550143] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 260 X 261 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605205.257224541] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 277 X 261 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605205.414851335] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 465 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605210.255617756] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 277 X 262 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605215.256317993] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 285 X 262 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605215.412350747] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 471 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605220.256099061] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 286 X 262 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605220.412085637] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 475 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605250.255753191] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 287 X 262 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605250.412110561] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 476 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605260.256650416] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 366 X 262 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605260.412196187] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 555 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605265.255573872] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 367 X 262 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605270.412464617] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 564 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605285.255599502] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 368 X 262 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605305.255581829] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 389 X 262 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605305.415321412] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 576 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605310.255903127] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 399 X 262 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794605310.413963435] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 580 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794605460.255688486] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 399 X 272 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606190.412232554] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 597 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606195.255948365] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 403 X 272 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606195.414085863] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 600 X 263 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606200.419538496] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 608 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606205.257196159] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 416 X 272 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606205.413710043] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 611 X 263 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606210.413618605] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 613 X 263 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606215.412165476] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 620 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606220.255562478] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 431 X 284 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606220.412463166] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 620 X 263 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606225.412787913] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 651 X 264 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606230.256349980] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 464 X 284 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606230.412164035] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 651 X 265 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606240.256389844] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 470 X 284 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606240.413720743] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 676 X 265 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606245.412142172] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 684 X 265 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606250.261102061] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 481 X 284 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606260.412164920] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 684 X 266 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606265.255574266] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 506 X 284 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606265.412360832] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 705 X 266 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606270.413191133] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 709 X 266 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606275.256674596] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 508 X 284 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606275.412478344] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 716 X 266 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606280.258950260] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 526 X 284 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606285.413869862] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 716 X 266 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606295.413921154] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 717 X 266 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606310.255591289] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 527 X 284 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606320.255583682] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 527 X 287 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606325.255573377] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 605 X 290 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606325.412105542] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 796 X 266 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794606340.255855280] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 625 X 290 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606345.413970031] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 802 X 266 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606350.414158319] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 830 X 266 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794606375.413792836] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 836 X 266 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609115.255632882] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 633 X 290 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609120.255577166] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 634 X 290 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609150.257679666] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 655 X 290 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609150.412172393] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 843 X 266 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609155.255762562] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 664 X 290 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609155.412455145] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 849 X 266 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609165.256628446] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 667 X 290 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609170.255676486] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 667 X 298 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609170.412279738] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 852 X 266 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609175.257321774] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 700 X 298 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609175.412264909] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 857 X 266 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609180.414547874] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 862 X 266 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609185.412235684] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 895 X 267 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609195.255610701] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 727 X 299 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609195.413576269] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 912 X 267 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609200.415480341] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 929 X 267 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609205.255560188] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 734 X 299 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609210.255561549] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 739 X 299 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609215.255580368] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 749 X 299 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609220.258021617] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 765 X 299 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609220.412968268] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 954 X 267 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609225.265182394] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 766 X 299 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609230.412173128] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 956 X 267 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609255.414806136] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 956 X 268 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609260.412159221] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 957 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609270.256666518] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 766 X 305 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609275.257595459] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 844 X 305 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794609275.413105893] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1036 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794609300.255660493] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 845 X 305 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610310.412140486] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1108 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610315.255828717] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 925 X 305 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610315.412106725] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1109 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610320.256757999] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 929 X 305 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610320.413216206] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1119 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610326.255602917] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 931 X 305 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610330.412107715] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1132 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610350.255636000] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 933 X 305 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610355.413389017] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1136 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610360.256239884] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 960 X 305 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610365.257483313] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 963 X 306 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610370.413294361] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1137 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610375.255941527] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 972 X 306 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610380.255558099] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 978 X 306 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610380.412106004] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1177 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610390.256159840] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 989 X 306 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610395.257491823] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 990 X 306 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610405.255653922] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1010 X 306 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610405.412159510] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1199 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610410.257217933] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1013 X 306 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610410.412150946] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1207 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610415.255537736] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1020 X 306 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610425.412157219] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1215 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610431.256563862] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1031 X 306 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610445.262238617] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1059 X 306 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610450.257033258] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1061 X 306 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610455.415835940] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1218 X 268 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610490.416251889] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1219 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610516.256573720] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1075 X 306 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610525.256672373] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1078 X 306 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610530.255594117] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1094 X 306 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610530.412181210] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1261 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610540.255882889] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1101 X 306 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610565.256102832] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1118 X 306 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610585.412188502] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1316 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610590.255967863] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1126 X 306 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610600.255568585] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1127 X 306 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794610630.412561851] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1317 X 268 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610650.255567660] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1128 X 306 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610695.255765395] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1128 X 313 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610720.255688652] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1129 X 315 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794610785.257258364] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1129 X 316 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794611040.412206532] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1318 X 268 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794611820.412662685] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1318 X 268 at 0.050000 m/pix
+[ERROR] [lifecycle_manager-4]: process has died [pid 1887, exit code -9, cmd '/opt/ros/humble/lib/nav2_lifecycle_manager/lifecycle_manager --ros-args -r __node:=lifecycle_manager_planner -r __ns:=/a1_2 --params-file /tmp/launch_params_8q4p64ob'].
+[ERROR] [lifecycle_manager-2]: process has died [pid 1883, exit code -9, cmd '/opt/ros/humble/lib/nav2_lifecycle_manager/lifecycle_manager --ros-args -r __node:=lifecycle_manager_planner -r __ns:=/a1_1 --params-file /tmp/launch_params_jw6ri8vd'].
+[ERROR] [planner_server-1]: process has died [pid 1881, exit code -9, cmd '/opt/ros/humble/lib/nav2_planner/planner_server --ros-args -r __node:=planner_server -r __ns:=/a1_1 --params-file /tmp/nav2_a1_1_aqe9_krl.yaml -r /tf:=/a1_1/tf -r /tf_static:=/a1_1/tf_static'].
+[ERROR] [planner_server-3]: process has died [pid 1885, exit code -9, cmd '/opt/ros/humble/lib/nav2_planner/planner_server --ros-args -r __node:=planner_server -r __ns:=/a1_2 --params-file /tmp/nav2_a1_2_sn8k7gkq.yaml -r /tf:=/a1_2/tf -r /tf_static:=/a1_2/tf_static'].

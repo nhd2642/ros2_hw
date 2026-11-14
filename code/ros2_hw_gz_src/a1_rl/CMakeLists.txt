@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.8)
+project(a1_rl)
+find_package(ament_cmake REQUIRED)
+install(DIRECTORY launch config worlds DESTINATION share/${PROJECT_NAME})
+install(PROGRAMS scripts/rl_start.py scripts/rl_eval.py DESTINATION lib/${PROJECT_NAME})
+ament_package()

@@ -1,0 +1,48 @@
+controller_manager:
+  ros__parameters:
+    use_sim_time: True
+    update_rate: 1000  # Hz
+
+    joint_states_controller:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    joint_group_effort_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+joint_group_effort_controller:
+  ros__parameters:
+    use_sim_time: True
+    # 새 궤적을 실제 자세가 아니라 직전 목표에서 이어간다. false(기본)면 CHAMP 가 5 ms 마다 보내는
+    # 궤적마다 실제 자세로 재기준되어 유효 강성이 Kp 의 약 1/10 로 떨어진다 (walk_parameters P1c)
+    open_loop_control: true
+    joints:
+      - FL_hip_joint
+      - FL_thigh_joint
+      - FL_calf_joint
+      - FR_hip_joint
+      - FR_thigh_joint
+      - FR_calf_joint
+      - RL_hip_joint
+      - RL_thigh_joint
+      - RL_calf_joint
+      - RR_hip_joint
+      - RR_thigh_joint
+      - RR_calf_joint
+    command_interfaces:
+      - effort
+    state_interfaces:
+      - position
+      - velocity
+    gains:
+      FL_hip_joint: {p: 360.0, i: 0.2, d: 3.6, i_clamp: 2.5}
+      FL_thigh_joint: {p: 360.0, i: 0.2, d: 3.6, i_clamp: 2.5}
+      FL_calf_joint: {p: 360.0, i: 0.2, d: 3.6, i_clamp: 2.5}
+      FR_hip_joint: {p: 360.0, i: 0.2, d: 3.6, i_clamp: 2.5}
+      FR_thigh_joint: {p: 360.0, i: 0.2, d: 3.6, i_clamp: 2.5}
+      FR_calf_joint: {p: 360.0, i: 0.2, d: 3.6, i_clamp: 2.5}
+      RL_hip_joint: {p: 360.0, i: 0.2, d: 3.6, i_clamp: 2.5}
+      RL_thigh_joint: {p: 360.0, i: 0.2, d: 3.6, i_clamp: 2.5}
+      RL_calf_joint: {p: 360.0, i: 0.2, d: 3.6, i_clamp: 2.5}
+      RR_hip_joint: {p: 360.0, i: 0.2, d: 3.6, i_clamp: 2.5}
+      RR_thigh_joint: {p: 360.0, i: 0.2, d: 3.6, i_clamp: 2.5}
+      RR_calf_joint: {p: 360.0, i: 0.2, d: 3.6, i_clamp: 2.5}

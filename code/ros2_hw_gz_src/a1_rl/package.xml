@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>a1_rl</name>
+  <version>0.1.0</version>
+  <description>Unitree A1 RL locomotion (rl_sar policy) launch/config for the disaster simulation</description>
+  <maintainer email="nhd2642@knu.ac.kr">a1_rl maintainer</maintainer>
+  <license>Apache-2.0</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>a1_champ</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>gazebo_ros2_control</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>nav2_common</exec_depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

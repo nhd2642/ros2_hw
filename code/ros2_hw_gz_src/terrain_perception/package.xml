@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>terrain_perception</name>
+  <version>0.1.0</version>
+  <description>깊이 카메라로 라이다가 못 보는 낮은 위험(턱, 경사로 옆 가장자리, 낮은 잔해)을 찾아 Nav2 비용지도에 넣는다.</description>
+  <maintainer email="nhd2642@knu.ac.kr">nhd2642</maintainer>
+  <license>Apache-2.0</license>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>tf2_msgs</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
+  <test_depend>python3-pytest</test_depend>
+  <export><build_type>ament_python</build_type></export>
+</package>

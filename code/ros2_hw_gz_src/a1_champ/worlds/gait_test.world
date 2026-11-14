@@ -1,0 +1,163 @@
+<?xml version="1.0" ?>
+<!--
+  A1 보행 시험용 월드 (disaster.world 와 같은 물리/바닥 마찰, 장애물 없음)
+  - 평지 차선: 원점(0,0)에서 +X 방향. 빨간 눈금 = x 0,1,2,3,4,5 m
+  - 경사로 차선: (0,3)에서 +X 방향. 파란 눈금 = x 0,1 m.
+    경사로: 시작 x=2.0, 정상 x=2.985 (높이 약 0.19 m), 끝 x=3.97, 폭 1.9 m, 10도
+-->
+<sdf version='1.7'>
+  <world name='default'>
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <model name='ground_plane'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <surface>
+            <friction><ode><mu>100</mu><mu2>50</mu2></ode></friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <material><script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script></material>
+        </visual>
+      </link>
+    </model>
+    <gravity>0 0 -9.8</gravity>
+    <physics type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <model name='tick_flat_0'>
+      <static>true</static>
+      <pose>0.0 0.0 0.001 0 0 0</pose>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>0.04 1.0 0.002</size></box></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.9 0.2 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name='tick_flat_1'>
+      <static>true</static>
+      <pose>1.0 0.0 0.001 0 0 0</pose>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>0.04 1.0 0.002</size></box></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.9 0.2 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name='tick_flat_2'>
+      <static>true</static>
+      <pose>2.0 0.0 0.001 0 0 0</pose>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>0.04 1.0 0.002</size></box></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.9 0.2 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name='tick_flat_3'>
+      <static>true</static>
+      <pose>3.0 0.0 0.001 0 0 0</pose>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>0.04 1.0 0.002</size></box></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.9 0.2 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name='tick_flat_4'>
+      <static>true</static>
+      <pose>4.0 0.0 0.001 0 0 0</pose>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>0.04 1.0 0.002</size></box></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.9 0.2 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name='tick_flat_5'>
+      <static>true</static>
+      <pose>5.0 0.0 0.001 0 0 0</pose>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>0.04 1.0 0.002</size></box></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.9 0.2 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name='tick_ramp_0'>
+      <static>true</static>
+      <pose>0.0 3.0 0.001 0 0 0</pose>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>0.04 1.0 0.002</size></box></geometry>
+          <material><ambient>0.2 0.4 0.9 1</ambient><diffuse>0.2 0.4 0.9 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name='tick_ramp_1'>
+      <static>true</static>
+      <pose>1.0 3.0 0.001 0 0 0</pose>
+      <link name='link'>
+        <visual name='v'>
+          <geometry><box><size>0.04 1.0 0.002</size></box></geometry>
+          <material><ambient>0.2 0.4 0.9 1</ambient><diffuse>0.2 0.4 0.9 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name='ramp_a'>
+      <static>true</static>
+      <pose>2.4926 3.0 0.0671 0 -0.1745 0</pose>
+      <link name='link'>
+        <collision name='c'>
+          <geometry><box><size>1.0 1.9 0.04</size></box></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name='v'>
+          <geometry><box><size>1.0 1.9 0.04</size></box></geometry>
+          <material><ambient>0.45 0.45 0.45 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+    <model name='ramp_b'>
+      <static>true</static>
+      <pose>3.4774 3.0 0.0671 0 0.1745 0</pose>
+      <link name='link'>
+        <collision name='c'>
+          <geometry><box><size>1.0 1.9 0.04</size></box></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name='v'>
+          <geometry><box><size>1.0 1.9 0.04</size></box></geometry>
+          <material><ambient>0.45 0.45 0.45 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>2.5 -4.5 3.0 0 0.55 1.2</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+  </world>
+</sdf>

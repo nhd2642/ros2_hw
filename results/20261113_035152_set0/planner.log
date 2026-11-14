@@ -1,0 +1,219 @@
+[INFO] [launch]: All log files can be found below /home/nhd2642/.ros/log/2026-11-13-03-52-34-407188-BOOK-DL9F6KHCRB-15266
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [planner_server-1]: process started with pid [15281]
+[INFO] [lifecycle_manager-2]: process started with pid [15283]
+[INFO] [planner_server-3]: process started with pid [15285]
+[INFO] [lifecycle_manager-4]: process started with pid [15287]
+[planner_server-1] [INFO] [1794509554.887619644] [a1_1.planner_server]: 
+[planner_server-1] 	planner_server lifecycle node launched. 
+[planner_server-1] 	Waiting on external lifecycle transitions to activate
+[planner_server-1] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[lifecycle_manager-4] [INFO] [1794509554.926305326] [a1_2.lifecycle_manager_planner]: Creating
+[planner_server-1] [INFO] [1794509554.946632612] [a1_1.planner_server]: Creating
+[planner_server-3] [INFO] [1794509554.960207837] [a1_2.planner_server]: 
+[planner_server-3] 	planner_server lifecycle node launched. 
+[planner_server-3] 	Waiting on external lifecycle transitions to activate
+[planner_server-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-3] [INFO] [1794509554.972275051] [a1_2.planner_server]: Creating
+[lifecycle_manager-4] [INFO] [1794509554.974735915] [a1_2.lifecycle_manager_planner]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[lifecycle_manager-2] [INFO] [1794509554.986577596] [a1_1.lifecycle_manager_planner]: Creating
+[lifecycle_manager-2] [INFO] [1794509555.015014168] [a1_1.lifecycle_manager_planner]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[lifecycle_manager-2] [INFO] [1794509555.163470682] [a1_1.lifecycle_manager_planner]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-2] [INFO] [1794509555.164557423] [a1_1.lifecycle_manager_planner]: [34m[1mConfiguring planner_server[0m[0m
+[lifecycle_manager-4] [INFO] [1794509555.186597504] [a1_2.lifecycle_manager_planner]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-4] [INFO] [1794509555.186657012] [a1_2.lifecycle_manager_planner]: [34m[1mConfiguring planner_server[0m[0m
+[planner_server-3] [INFO] [1794509555.208847840] [a1_2.global_costmap.global_costmap]: 
+[planner_server-3] 	global_costmap lifecycle node launched. 
+[planner_server-3] 	Waiting on external lifecycle transitions to activate
+[planner_server-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-3] [INFO] [1794509555.216481407] [a1_2.global_costmap.global_costmap]: Creating Costmap
+[planner_server-3] [INFO] [1794509555.223910612] [a1_2.planner_server]: Configuring
+[planner_server-3] [INFO] [1794509555.223955064] [a1_2.global_costmap.global_costmap]: Configuring
+[planner_server-1] [INFO] [1794509555.248721066] [a1_1.global_costmap.global_costmap]: 
+[planner_server-1] 	global_costmap lifecycle node launched. 
+[planner_server-1] 	Waiting on external lifecycle transitions to activate
+[planner_server-1] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-1] [INFO] [1794509555.249208919] [a1_1.global_costmap.global_costmap]: Creating Costmap
+[planner_server-3] [INFO] [1794509555.260300969] [a1_2.global_costmap.global_costmap]: Using plugin "static_layer"
+[planner_server-3] [INFO] [1794509555.303353165] [a1_2.global_costmap.global_costmap]: Subscribing to the map topic (/a1_2/map) with transient local durability
+[planner_server-3] [INFO] [1794509555.304661454] [a1_2.global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-3] [INFO] [1794509555.304692307] [a1_2.global_costmap.global_costmap]: Using plugin "terrain_layer"
+[planner_server-3] [INFO] [1794509555.313773617] [a1_2.global_costmap.global_costmap]: Subscribed to Topics: terrain terrain_free
+[planner_server-3] [INFO] [1794509555.382857801] [a1_2.global_costmap.global_costmap]: Initialized plugin "terrain_layer"
+[planner_server-3] [INFO] [1794509555.382923920] [a1_2.global_costmap.global_costmap]: Using plugin "inflation_layer"
+[planner_server-3] [INFO] [1794509555.387030282] [a1_2.global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[planner_server-1] [INFO] [1794509555.408100618] [a1_1.planner_server]: Configuring
+[planner_server-1] [INFO] [1794509555.408162889] [a1_1.global_costmap.global_costmap]: Configuring
+[planner_server-1] [INFO] [1794509555.458289143] [a1_1.global_costmap.global_costmap]: Using plugin "static_layer"
+[planner_server-1] [INFO] [1794509555.467664097] [a1_1.global_costmap.global_costmap]: Subscribing to the map topic (/a1_1/map) with transient local durability
+[planner_server-1] [INFO] [1794509555.477567145] [a1_1.global_costmap.global_costmap]: Initialized plugin "static_layer"
+[planner_server-1] [INFO] [1794509555.477608889] [a1_1.global_costmap.global_costmap]: Using plugin "terrain_layer"
+[planner_server-1] [INFO] [1794509555.480975455] [a1_1.global_costmap.global_costmap]: Subscribed to Topics: terrain terrain_free
+[planner_server-3] [INFO] [1794509555.488359689] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 158 X 186 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509555.490021105] [a1_2.planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner/NavfnPlanner
+[planner_server-3] [INFO] [1794509555.490245377] [a1_2.planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[planner_server-3] [INFO] [1794509555.490879630] [a1_2.planner_server]: Planner Server has GridBased  planners available.
+[planner_server-1] [INFO] [1794509555.527731654] [a1_1.global_costmap.global_costmap]: Initialized plugin "terrain_layer"
+[planner_server-1] [INFO] [1794509555.528085723] [a1_1.global_costmap.global_costmap]: Using plugin "inflation_layer"
+[planner_server-1] [INFO] [1794509555.529279323] [a1_1.global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[lifecycle_manager-4] [INFO] [1794509555.550671114] [a1_2.lifecycle_manager_planner]: [34m[1mActivating planner_server[0m[0m
+[planner_server-3] [INFO] [1794509555.552174791] [a1_2.planner_server]: Activating
+[planner_server-3] [INFO] [1794509555.552222791] [a1_2.global_costmap.global_costmap]: Activating
+[planner_server-3] [INFO] [1794509555.552231487] [a1_2.global_costmap.global_costmap]: Checking transform
+[planner_server-3] [INFO] [1794509555.552273807] [a1_2.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Lookup would require extrapolation into the past.  Requested time 17.100000 but the earliest data is at time 17.111000, when looking up transform from frame [base_footprint] to frame [map]
+[planner_server-1] [INFO] [1794509555.602148179] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 126 X 256 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509555.602641446] [a1_1.planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner/NavfnPlanner
+[planner_server-1] [INFO] [1794509555.602708601] [a1_1.planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[planner_server-1] [INFO] [1794509555.603603197] [a1_1.planner_server]: Planner Server has GridBased  planners available.
+[lifecycle_manager-2] [INFO] [1794509555.680622624] [a1_1.lifecycle_manager_planner]: [34m[1mActivating planner_server[0m[0m
+[planner_server-1] [INFO] [1794509555.681124858] [a1_1.planner_server]: Activating
+[planner_server-1] [INFO] [1794509555.681170489] [a1_1.global_costmap.global_costmap]: Activating
+[planner_server-1] [INFO] [1794509555.681179185] [a1_1.global_costmap.global_costmap]: Checking transform
+[planner_server-1] [INFO] [1794509555.681222544] [a1_1.global_costmap.global_costmap]: Timed out waiting for transform from base_footprint to map to become available, tf error: Lookup would require extrapolation into the past.  Requested time 17.100000 but the earliest data is at time 17.127000, when looking up transform from frame [base_footprint] to frame [map]
+[planner_server-3] [INFO] [1794509556.053681648] [a1_2.global_costmap.global_costmap]: start
+[planner_server-1] [INFO] [1794509556.181942736] [a1_1.global_costmap.global_costmap]: start
+[planner_server-3] [INFO] [1794509557.065879016] [a1_2.planner_server]: Activating plugin GridBased of type NavfnPlanner
+[planner_server-3] [INFO] [1794509557.069791162] [a1_2.planner_server]: Creating bond (planner_server) to lifecycle manager.
+[lifecycle_manager-4] [INFO] [1794509557.181812737] [a1_2.lifecycle_manager_planner]: Server planner_server connected with bond.
+[lifecycle_manager-4] [INFO] [1794509557.181869667] [a1_2.lifecycle_manager_planner]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-4] [INFO] [1794509557.181877383] [a1_2.lifecycle_manager_planner]: [34m[1mCreating bond timer...[0m[0m
+[planner_server-1] [INFO] [1794509557.191373656] [a1_1.planner_server]: Activating plugin GridBased of type NavfnPlanner
+[planner_server-1] [INFO] [1794509557.197100858] [a1_1.planner_server]: Creating bond (planner_server) to lifecycle manager.
+[lifecycle_manager-2] [INFO] [1794509557.308089039] [a1_1.lifecycle_manager_planner]: Server planner_server connected with bond.
+[lifecycle_manager-2] [INFO] [1794509557.308147602] [a1_1.lifecycle_manager_planner]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-2] [INFO] [1794509557.308154707] [a1_1.lifecycle_manager_planner]: [34m[1mCreating bond timer...[0m[0m
+[planner_server-3] [INFO] [1794509575.055275770] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 158 X 199 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509580.055272369] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 174 X 258 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509580.181998433] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 161 X 258 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509585.058953953] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 223 X 259 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509585.181924973] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 189 X 258 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509590.057126795] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 223 X 259 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509590.182283525] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 189 X 259 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509595.055298793] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 223 X 260 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509595.185365123] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 227 X 260 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509600.058937416] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 247 X 261 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509600.182007639] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 243 X 261 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509605.055749489] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 247 X 262 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509605.181977853] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 249 X 261 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509610.182451163] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 254 X 261 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509615.055259936] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 247 X 263 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509620.055256646] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 275 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509625.181979716] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 259 X 261 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509630.057423098] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 286 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509630.182179530] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 274 X 261 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509635.055287693] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 287 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509640.182033171] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 286 X 261 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509655.181938629] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 287 X 261 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509680.055500136] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 366 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509680.181998045] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 289 X 261 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509685.055359515] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 367 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509685.182014230] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 367 X 261 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509700.055243983] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 381 X 263 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509705.055591174] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 388 X 263 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794509720.058065662] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 402 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509720.181972245] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 397 X 261 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509725.182587193] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 400 X 261 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794509870.181978728] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 400 X 267 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510330.057801038] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 404 X 263 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510335.055431931] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 405 X 263 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510340.055278402] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 410 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510340.181954106] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 412 X 267 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510350.055525314] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 416 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510350.183552233] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 428 X 267 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510355.055236878] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 433 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510360.182223833] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 433 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510365.056264517] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 463 X 263 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510365.183012699] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 462 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510375.182106813] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 473 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510380.056813218] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 480 X 264 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510380.181944985] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 482 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510390.055316794] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 486 X 264 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510395.055341084] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 495 X 264 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510400.055451597] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 508 X 264 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510400.182010334] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 503 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510405.056248514] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 510 X 264 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510410.055243029] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 529 X 264 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510410.182627079] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 526 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510420.182920925] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 529 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510460.055463026] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 607 X 264 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510460.182618488] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 606 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510470.055643575] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 622 X 264 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510470.184223271] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 617 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510475.055266652] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 625 X 264 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510475.182665369] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 629 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794510505.058827278] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 639 X 264 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794510505.183603153] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 638 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794511295.056169095] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 663 X 264 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794511295.182016578] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 645 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794511300.182382924] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 659 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794511305.055422617] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 669 X 264 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794511320.055380873] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 703 X 264 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794511320.182737627] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 702 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794511325.055658964] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 703 X 264 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794511325.187162504] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 703 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794511330.066863300] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 724 X 264 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794511335.183518706] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 713 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794511340.182011956] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 721 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794511345.056126481] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 737 X 264 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794511350.061446358] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 749 X 264 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794511355.055292886] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 749 X 265 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794511355.183311015] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 728 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794511360.056177234] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 749 X 265 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794511360.182502544] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 756 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794511365.055320775] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 767 X 265 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794511365.182265866] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 757 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794511375.055252447] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 767 X 266 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794511375.181950084] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 766 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794511395.183740949] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 767 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794511410.055237508] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 847 X 266 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794511410.182147198] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 847 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512175.058356482] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 847 X 280 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512250.055747348] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 847 X 280 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512265.183041092] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 849 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512290.056291720] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 925 X 280 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512295.055294319] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 930 X 280 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512295.182010507] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 896 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512300.187143304] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 912 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512310.055242525] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 932 X 280 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512310.182581212] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 929 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512315.059397650] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 936 X 280 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512320.182807739] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 930 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512340.056564841] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 937 X 280 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512350.055291532] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 944 X 280 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512360.185483542] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 959 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512365.187267093] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 967 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512370.055775210] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 944 X 282 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512380.055338114] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 988 X 282 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512390.182042121] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 976 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512415.057020729] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1013 X 282 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512435.056296525] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1018 X 282 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512445.055272171] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1030 X 282 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512490.182948212] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 990 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512500.181957883] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 997 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512505.181980194] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1008 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512565.182080262] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1030 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512570.182064503] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1033 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512580.182081264] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1038 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512590.067017750] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1084 X 282 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512590.184296303] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1059 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512595.182003347] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1060 X 269 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512635.057807770] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1127 X 282 at 0.050000 m/pix
+[planner_server-3] [INFO] [1794512645.055595537] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1128 X 282 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512660.181947902] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1074 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512670.182239459] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1079 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512680.183386313] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1083 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512685.182234696] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1095 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512715.182903862] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1103 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512735.182022783] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1117 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512745.183289407] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1126 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512800.182031925] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1127 X 269 at 0.050000 m/pix
+[planner_server-1] [INFO] [1794512810.182228010] [a1_1.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1128 X 269 at 0.050000 m/pix
+[planner_server-1] [ERROR] [1794513310.918984175] [a1_1.planner_server]: Failed to create a plan from potential when a legal potential was found. This shouldn't happen.
+[planner_server-1] [WARN] [1794513310.919394097] [a1_1.planner_server]: GridBased: failed to create plan with tolerance 0.25.
+[planner_server-1] [WARN] [1794513310.919418586] [a1_1.planner_server]: Planning algorithm GridBased failed to generate a valid path to (54.64, 2.21)
+[planner_server-1] [WARN] [1794513310.919430516] [a1_1.planner_server]: [compute_path_to_pose] [ActionServer] Aborting handle.
+[planner_server-3] [INFO] [1794524020.871681091] [a1_2.global_costmap.global_costmap]: StaticLayer: Resizing costmap to 1128 X 282 at 0.050000 m/pix
+[ERROR] [lifecycle_manager-2]: process has died [pid 15283, exit code -9, cmd '/opt/ros/humble/lib/nav2_lifecycle_manager/lifecycle_manager --ros-args -r __node:=lifecycle_manager_planner -r __ns:=/a1_1 --params-file /tmp/launch_params_p7kl_hxo'].
+[ERROR] [lifecycle_manager-4]: process has died [pid 15287, exit code -9, cmd '/opt/ros/humble/lib/nav2_lifecycle_manager/lifecycle_manager --ros-args -r __node:=lifecycle_manager_planner -r __ns:=/a1_2 --params-file /tmp/launch_params_krdihfym'].
+[ERROR] [planner_server-3]: process has died [pid 15285, exit code -9, cmd '/opt/ros/humble/lib/nav2_planner/planner_server --ros-args -r __node:=planner_server -r __ns:=/a1_2 --params-file /tmp/nav2_a1_2_4cknf7qf.yaml -r /tf:=/a1_2/tf -r /tf_static:=/a1_2/tf_static'].
+[ERROR] [planner_server-1]: process has died [pid 15281, exit code -9, cmd '/opt/ros/humble/lib/nav2_planner/planner_server --ros-args -r __node:=planner_server -r __ns:=/a1_1 --params-file /tmp/nav2_a1_1_rtys38t4.yaml -r /tf:=/a1_1/tf -r /tf_static:=/a1_1/tf_static'].

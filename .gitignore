@@ -1,0 +1,22 @@
+# 빌드 산출물 (팀원이 colcon build 로 다시 만듦)
+ws/build/
+ws/install/
+ws/log/
+ws/build.log
+
+# 실행 결과: 시험 기록 중 통과 실행 2 개만 올림 (docs/mission_design.md 5 절이 가리킴)
+results/*
+!results/20261113_035152_set0/
+!results/20261114_062151_set0/
+
+# 옛 묶음 zip (소스는 code/ 에 이미 있음, 66 MB)
+history/bundles/
+
+# 백업·캐시·편집기
+*.bak
+*.bak_*
+*.orig
+__pycache__/
+*.pyc
+.pytest_cache/
+*.swp

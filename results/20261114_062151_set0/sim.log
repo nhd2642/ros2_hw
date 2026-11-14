@@ -1,0 +1,430 @@
+[INFO] [launch]: All log files can be found below /home/nhd2642/.ros/log/2026-11-14-06-24-33-792875-BOOK-DL9F6KHCRB-1267
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [ign gazebo-1]: process started with pid [1273]
+[INFO] [parameter_bridge-2]: process started with pid [1275]
+[INFO] [clock_throttle-3]: process started with pid [1278]
+[parameter_bridge-2] [INFO] [1794605074.054397403] [clock_bridge]: Creating GZ->ROS Bridge: [/clock (ignition.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[INFO] [create-4]: process started with pid [1332]
+[INFO] [parameter_bridge-5]: process started with pid [1334]
+[create-4] [INFO] [1794605078.060699033] [ros_gz_sim]: Requesting list of world names.
+[parameter_bridge-5] [INFO] [1794605078.076246013] [husky_bridge]: Creating ROS->GZ Bridge: [/husky/cmd_vel (geometry_msgs/msg/Twist) -> /husky/cmd_vel (ignition.msgs.Twist)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1794605078.078207501] [husky_bridge]: Creating GZ->ROS Bridge: [/husky/odom (ignition.msgs.Odometry) -> /husky/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1794605078.079437608] [husky_bridge]: Creating GZ->ROS Bridge: [/husky/odom/ground_truth (ignition.msgs.Odometry) -> /husky/odom/ground_truth (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1794605078.080019257] [husky_bridge]: Creating GZ->ROS Bridge: [/husky/imu (ignition.msgs.IMU) -> /husky/imu (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1794605078.081517426] [husky_bridge]: Creating GZ->ROS Bridge: [/husky/scan (ignition.msgs.LaserScan) -> /husky/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[create-4] [INFO] [1794605078.263348459] [ros_gz_sim]: Requested creation of entity.
+[create-4] [INFO] [1794605078.263398546] [ros_gz_sim]: OK creation of entity.
+[INFO] [create-4]: process has finished cleanly [pid 1332]
+[INFO] [robot_state_publisher-6]: process started with pid [1407]
+[INFO] [create-7]: process started with pid [1409]
+[INFO] [parameter_bridge-8]: process started with pid [1411]
+[INFO] [state_estimation_node-9]: process started with pid [1413]
+[INFO] [ekf_node-10]: process started with pid [1415]
+[INFO] [ekf_node-11]: process started with pid [1419]
+[create-7] [INFO] [1794605080.271849774] [a1_1.ros_gz_sim]: Requesting list of world names.
+[ekf_node-10] [WARN] [1794605080.273865675] [a1_1.base_to_footprint_ekf]: Warning: Some linear velocity entries in parameter imu0_config are listed true, but an sensor_msgs/Imu contains no information about linear velocities
+[ekf_node-10] Warning: imu/data is listed as an input topic, but all its update variables are false
+[robot_state_publisher-6] [INFO] [1794605080.280819153] [a1_1.robot_state_publisher]: got segment FL_calf
+[robot_state_publisher-6] [INFO] [1794605080.280925271] [a1_1.robot_state_publisher]: got segment FL_foot
+[robot_state_publisher-6] [INFO] [1794605080.280931832] [a1_1.robot_state_publisher]: got segment FL_hip
+[robot_state_publisher-6] [INFO] [1794605080.280934641] [a1_1.robot_state_publisher]: got segment FL_thigh
+[robot_state_publisher-6] [INFO] [1794605080.280937157] [a1_1.robot_state_publisher]: got segment FL_thigh_shoulder
+[robot_state_publisher-6] [INFO] [1794605080.280939559] [a1_1.robot_state_publisher]: got segment FR_calf
+[robot_state_publisher-6] [INFO] [1794605080.280941943] [a1_1.robot_state_publisher]: got segment FR_foot
+[robot_state_publisher-6] [INFO] [1794605080.280944221] [a1_1.robot_state_publisher]: got segment FR_hip
+[robot_state_publisher-6] [INFO] [1794605080.280946542] [a1_1.robot_state_publisher]: got segment FR_thigh
+[robot_state_publisher-6] [INFO] [1794605080.280948786] [a1_1.robot_state_publisher]: got segment FR_thigh_shoulder
+[robot_state_publisher-6] [INFO] [1794605080.280950993] [a1_1.robot_state_publisher]: got segment RL_calf
+[robot_state_publisher-6] [INFO] [1794605080.280953398] [a1_1.robot_state_publisher]: got segment RL_foot
+[robot_state_publisher-6] [INFO] [1794605080.280955658] [a1_1.robot_state_publisher]: got segment RL_hip
+[robot_state_publisher-6] [INFO] [1794605080.280957993] [a1_1.robot_state_publisher]: got segment RL_thigh
+[robot_state_publisher-6] [INFO] [1794605080.280960673] [a1_1.robot_state_publisher]: got segment RL_thigh_shoulder
+[robot_state_publisher-6] [INFO] [1794605080.280962951] [a1_1.robot_state_publisher]: got segment RR_calf
+[robot_state_publisher-6] [INFO] [1794605080.280965226] [a1_1.robot_state_publisher]: got segment RR_foot
+[robot_state_publisher-6] [INFO] [1794605080.280967316] [a1_1.robot_state_publisher]: got segment RR_hip
+[robot_state_publisher-6] [INFO] [1794605080.280969569] [a1_1.robot_state_publisher]: got segment RR_thigh
+[robot_state_publisher-6] [INFO] [1794605080.280971906] [a1_1.robot_state_publisher]: got segment RR_thigh_shoulder
+[robot_state_publisher-6] [INFO] [1794605080.280974181] [a1_1.robot_state_publisher]: got segment base_link
+[robot_state_publisher-6] [INFO] [1794605080.280976692] [a1_1.robot_state_publisher]: got segment camera_link
+[robot_state_publisher-6] [INFO] [1794605080.280979017] [a1_1.robot_state_publisher]: got segment imu_link
+[robot_state_publisher-6] [INFO] [1794605080.280981223] [a1_1.robot_state_publisher]: got segment lidar_link
+[robot_state_publisher-6] [INFO] [1794605080.280983435] [a1_1.robot_state_publisher]: got segment terrain_camera_link
+[robot_state_publisher-6] [INFO] [1794605080.280985707] [a1_1.robot_state_publisher]: got segment terrain_camera_optical
+[robot_state_publisher-6] [INFO] [1794605080.280988286] [a1_1.robot_state_publisher]: got segment trunk
+[state_estimation_node-9] [INFO] [1794605080.304550983] [rclcpp]: Successfully parsed urdf file
+[create-7] [INFO] [1794605080.476285755] [a1_1.ros_gz_sim]: Waiting messages on topic [/a1_1/robot_description].
+[create-7] [INFO] [1794605080.489687828] [a1_1.ros_gz_sim]: Requested creation of entity.
+[create-7] [INFO] [1794605080.489733240] [a1_1.ros_gz_sim]: OK creation of entity.
+[ign gazebo-1] [INFO] [1794605080.577500082] [GazeboSimROS2ControlPlugin]: robot_param_node is robot_state_publisher
+[ign gazebo-1] [INFO] [1794605080.577540476] [GazeboSimROS2ControlPlugin]: robot_param_node is robot_description
+[INFO] [create-7]: process has finished cleanly [pid 1409]
+[INFO] [spawner-12]: process started with pid [1508]
+[INFO] [spawner-13]: process started with pid [1510]
+[ign gazebo-1] [INFO] [1794605080.618555601] [a1_1.gz_ros2_control]: connected to service!! /a1_1/robot_state_publisher asking for robot_description
+[ign gazebo-1] [INFO] [1794605080.619687537] [a1_1.gz_ros2_control]: Received URDF from param server
+[ign gazebo-1] [INFO] [1794605080.624137077] [a1_1.gz_ros2_control]: The position_proportional_gain has been set to: 0.1
+[ign gazebo-1] [INFO] [1794605080.624230625] [a1_1.gz_ros2_control]: Loading joint: FL_hip_joint
+[ign gazebo-1] [INFO] [1794605080.624240270] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605080.624245531] [a1_1.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605080.624250379] [a1_1.gz_ros2_control]: 			 found initial value: 0.000000
+[ign gazebo-1] [INFO] [1794605080.624254831] [a1_1.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605080.624258157] [a1_1.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605080.624261098] [a1_1.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605080.624399827] [a1_1.gz_ros2_control]: Loading joint: FL_thigh_joint
+[ign gazebo-1] [INFO] [1794605080.624456110] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605080.624464683] [a1_1.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605080.624474558] [a1_1.gz_ros2_control]: 			 found initial value: 1.047200
+[ign gazebo-1] [INFO] [1794605080.624485596] [a1_1.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605080.624490590] [a1_1.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605080.624495220] [a1_1.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605080.624657869] [a1_1.gz_ros2_control]: Loading joint: FL_calf_joint
+[ign gazebo-1] [INFO] [1794605080.624685931] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605080.624690369] [a1_1.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605080.624695574] [a1_1.gz_ros2_control]: 			 found initial value: -2.094400
+[ign gazebo-1] [INFO] [1794605080.624700290] [a1_1.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605080.624703100] [a1_1.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605080.624706124] [a1_1.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605080.624739803] [a1_1.gz_ros2_control]: Loading joint: FR_hip_joint
+[ign gazebo-1] [INFO] [1794605080.624751103] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605080.624754929] [a1_1.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605080.624757708] [a1_1.gz_ros2_control]: 			 found initial value: 0.000000
+[ign gazebo-1] [INFO] [1794605080.624760913] [a1_1.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605080.624763396] [a1_1.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605080.624766310] [a1_1.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605080.624786320] [a1_1.gz_ros2_control]: Loading joint: FR_thigh_joint
+[ign gazebo-1] [INFO] [1794605080.624798815] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605080.624801503] [a1_1.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605080.624804985] [a1_1.gz_ros2_control]: 			 found initial value: 1.047200
+[ign gazebo-1] [INFO] [1794605080.624808494] [a1_1.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605080.624811541] [a1_1.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605080.624814973] [a1_1.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605080.624833942] [a1_1.gz_ros2_control]: Loading joint: FR_calf_joint
+[ign gazebo-1] [INFO] [1794605080.624837196] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605080.624839712] [a1_1.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605080.624842223] [a1_1.gz_ros2_control]: 			 found initial value: -2.094400
+[ign gazebo-1] [INFO] [1794605080.624845163] [a1_1.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605080.624847443] [a1_1.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605080.624849813] [a1_1.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605080.624865971] [a1_1.gz_ros2_control]: Loading joint: RL_hip_joint
+[ign gazebo-1] [INFO] [1794605080.624869074] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605080.624871541] [a1_1.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605080.624874036] [a1_1.gz_ros2_control]: 			 found initial value: 0.000000
+[ign gazebo-1] [INFO] [1794605080.624876953] [a1_1.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605080.624879496] [a1_1.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605080.624882261] [a1_1.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605080.624898165] [a1_1.gz_ros2_control]: Loading joint: RL_thigh_joint
+[ign gazebo-1] [INFO] [1794605080.624902085] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605080.624904956] [a1_1.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605080.624907750] [a1_1.gz_ros2_control]: 			 found initial value: 1.047200
+[ign gazebo-1] [INFO] [1794605080.624911237] [a1_1.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605080.624967830] [a1_1.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605080.624979722] [a1_1.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605080.625003412] [a1_1.gz_ros2_control]: Loading joint: RL_calf_joint
+[ign gazebo-1] [INFO] [1794605080.625008520] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605080.625011619] [a1_1.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605080.625017806] [a1_1.gz_ros2_control]: 			 found initial value: -2.094400
+[ign gazebo-1] [INFO] [1794605080.625021711] [a1_1.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605080.625024281] [a1_1.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605080.625026639] [a1_1.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605080.625042523] [a1_1.gz_ros2_control]: Loading joint: RR_hip_joint
+[ign gazebo-1] [INFO] [1794605080.625046219] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605080.625049163] [a1_1.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605080.625051656] [a1_1.gz_ros2_control]: 			 found initial value: 0.000000
+[ign gazebo-1] [INFO] [1794605080.625055083] [a1_1.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605080.625057798] [a1_1.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605080.625060112] [a1_1.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605080.625074107] [a1_1.gz_ros2_control]: Loading joint: RR_thigh_joint
+[ign gazebo-1] [INFO] [1794605080.625077674] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605080.625080499] [a1_1.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605080.625082762] [a1_1.gz_ros2_control]: 			 found initial value: 1.047200
+[ign gazebo-1] [INFO] [1794605080.625085792] [a1_1.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605080.625088355] [a1_1.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605080.625090693] [a1_1.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605080.625104336] [a1_1.gz_ros2_control]: Loading joint: RR_calf_joint
+[ign gazebo-1] [INFO] [1794605080.625107433] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605080.625109830] [a1_1.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605080.625112192] [a1_1.gz_ros2_control]: 			 found initial value: -2.094400
+[ign gazebo-1] [INFO] [1794605080.625114956] [a1_1.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605080.625117450] [a1_1.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605080.625119942] [a1_1.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605080.625601080] [a1_1.gz_ros2_control]: Loading sensor: imu
+[ign gazebo-1] [INFO] [1794605080.625666298] [a1_1.gz_ros2_control]: Topic name: /husky/imu
+[ign gazebo-1] [INFO] [1794605080.625753711] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [WARN] [1794605080.625851722] [a1_1.gz_ros2_control]: IMU sensor 'imu' not found in hardware_info, skipping.
+[ign gazebo-1] [INFO] [1794605080.625896801] [a1_1.gz_ros2_control]: Loading sensor: imu_sensor
+[ign gazebo-1] [INFO] [1794605080.625907781] [a1_1.gz_ros2_control]: 	State:
+[ign gazebo-1] [WARN] [1794605080.625913634] [a1_1.gz_ros2_control]: IMU sensor 'imu_sensor' not found in hardware_info, skipping.
+[ign gazebo-1] [INFO] [1794605080.627361224] [resource_manager]: Initialize hardware 'a1_system' 
+[ign gazebo-1] [WARN] [1794605080.627557765] [a1_1.gz_ros2_control]: The ign_ros2_control plugin got renamed to gz_ros2_control.
+[ign gazebo-1] Update the <ros2_control> tag and gazebo plugin to
+[ign gazebo-1] <hardware>
+[ign gazebo-1]   <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+[ign gazebo-1] </hardware>
+[ign gazebo-1] <gazebo>
+[ign gazebo-1]   <plugin filename="gz_ros2_control-system"name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+[ign gazebo-1]     ...
+[ign gazebo-1]   </plugin>
+[ign gazebo-1] </gazebo>
+[ign gazebo-1] [INFO] [1794605080.627636528] [resource_manager]: Successful initialization of hardware 'a1_system'
+[ign gazebo-1] [INFO] [1794605080.627715393] [resource_manager]: 'configure' hardware 'a1_system' 
+[ign gazebo-1] [INFO] [1794605080.627733390] [a1_1.gz_ros2_control]: System Successfully configured!
+[ign gazebo-1] [INFO] [1794605080.627745664] [resource_manager]: Successful 'configure' of hardware 'a1_system'
+[ign gazebo-1] [INFO] [1794605080.627751982] [resource_manager]: 'activate' hardware 'a1_system' 
+[ign gazebo-1] [INFO] [1794605080.627759847] [resource_manager]: Successful 'activate' of hardware 'a1_system'
+[ign gazebo-1] [INFO] [1794605080.627765059] [a1_1.gz_ros2_control]: Loading controller_manager
+[ign gazebo-1] [1;31m[Err] [SystemPaths.cc:474] [0m[1;31mCould not resolve file [[0m[1;31mtrunk_A1.png[0m[1;31m][0m[1;31m[0m
+[ign gazebo-1] [1;31m[Err] [Material.cc:164] [0m[1;31mUnable to find texture [[0m[1;31mtrunk_A1.png[0m[1;31m] as a locally cached texture or in path [[0m[1;31m/home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/meshes[0m[1;31m][0m
+[ign gazebo-1] [INFO] [1794605080.866681265] [a1_1.controller_manager]: Loading controller 'joint_states_controller'
+[spawner-13] [INFO] [1794605080.874541745] [a1_1.spawner_joint_group_effort_controller]: waiting for service /a1_1/controller_manager/list_controllers to become available...
+[spawner-12] [INFO] [1794605080.962200802] [a1_1.spawner_joint_states_controller]: [94mLoaded [1mjoint_states_controller[0m
+[ign gazebo-1] [INFO] [1794605080.964317426] [a1_1.controller_manager]: Configuring controller 'joint_states_controller'
+[ign gazebo-1] [INFO] [1794605080.964548338] [a1_1.joint_states_controller]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[spawner-12] [INFO] [1794605080.977774112] [a1_1.spawner_joint_states_controller]: [92mConfigured and activated [1mjoint_states_controller[0m
+[INFO] [spawner-12]: process has finished cleanly [pid 1508]
+[ign gazebo-1] [INFO] [1794605081.127351115] [a1_1.controller_manager]: Loading controller 'joint_group_effort_controller'
+[ign gazebo-1] [WARN] [1794605081.148420699] [a1_1.joint_group_effort_controller]: [Deprecated]: "allow_nonzero_velocity_at_trajectory_end" is set to true. The default behavior will change to false.
+[spawner-13] [INFO] [1794605081.150031588] [a1_1.spawner_joint_group_effort_controller]: [94mLoaded [1mjoint_group_effort_controller[0m
+[ign gazebo-1] [INFO] [1794605081.151217869] [a1_1.controller_manager]: Configuring controller 'joint_group_effort_controller'
+[ign gazebo-1] [INFO] [1794605081.151422160] [a1_1.joint_group_effort_controller]: No specific joint names are used for command interfaces. Using 'joints' parameter.
+[ign gazebo-1] [WARN] [1794605081.151472006] [a1_1.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605081.151629765] [a1_1.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605081.151683893] [a1_1.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605081.151742544] [a1_1.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605081.151848175] [a1_1.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605081.152200621] [a1_1.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605081.152437954] [a1_1.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605081.152654005] [a1_1.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605081.152754672] [a1_1.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605081.152818474] [a1_1.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605081.153201628] [a1_1.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605081.153455193] [a1_1.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [INFO] [1794605081.153645179] [a1_1.joint_group_effort_controller]: Command interfaces are [effort] and state interfaces are [position velocity].
+[ign gazebo-1] [INFO] [1794605081.153714084] [a1_1.joint_group_effort_controller]: Using 'splines' interpolation method.
+[ign gazebo-1] [INFO] [1794605081.155232523] [a1_1.joint_group_effort_controller]: Controller state will be published at 50.00 Hz.
+[ign gazebo-1] [INFO] [1794605081.157923629] [a1_1.joint_group_effort_controller]: Action status changes will be monitored at 20.00 Hz.
+[spawner-13] [INFO] [1794605081.170416880] [a1_1.spawner_joint_group_effort_controller]: [92mConfigured and activated [1mjoint_group_effort_controller[0m
+[parameter_bridge-8] [INFO] [1794605081.277791695] [a1_1.sensor_bridge]: Creating GZ->ROS Bridge: [/a1_1/scan (ignition.msgs.LaserScan) -> /a1_1/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-8] [INFO] [1794605081.279650430] [a1_1.sensor_bridge]: Creating GZ->ROS Bridge: [/a1_1/imu/data (ignition.msgs.IMU) -> /a1_1/imu/data (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-8] [INFO] [1794605081.280844133] [a1_1.sensor_bridge]: Creating GZ->ROS Bridge: [/a1_1/front_camera/image_raw (ignition.msgs.Image) -> /a1_1/front_camera/image_raw (sensor_msgs/msg/Image)] (Lazy 0)
+[parameter_bridge-8] [INFO] [1794605081.282046565] [a1_1.sensor_bridge]: Creating GZ->ROS Bridge: [/a1_1/front_camera/camera_info (ignition.msgs.CameraInfo) -> /a1_1/front_camera/camera_info (sensor_msgs/msg/CameraInfo)] (Lazy 0)
+[parameter_bridge-8] [INFO] [1794605081.283367187] [a1_1.sensor_bridge]: Creating GZ->ROS Bridge: [/a1_1/terrain_camera/depth/points (ignition.msgs.PointCloudPacked) -> /a1_1/terrain_camera/points (sensor_msgs/msg/PointCloud2)] (Lazy 0)
+[parameter_bridge-8] [INFO] [1794605081.284796856] [a1_1.sensor_bridge]: Creating GZ->ROS Bridge: [/a1_1/odom/ground_truth (ignition.msgs.Odometry) -> /a1_1/odom/ground_truth (nav_msgs/msg/Odometry)] (Lazy 0)
+[INFO] [spawner-13]: process has finished cleanly [pid 1510]
+[INFO] [quadruped_controller_node-14]: process started with pid [1565]
+[quadruped_controller_node-14] [INFO] [1794605081.373415816] [rclcpp]: Successfully parsed urdf file
+[INFO] [robot_state_publisher-15]: process started with pid [1633]
+[INFO] [create-16]: process started with pid [1635]
+[INFO] [parameter_bridge-17]: process started with pid [1637]
+[INFO] [state_estimation_node-18]: process started with pid [1639]
+[INFO] [ekf_node-19]: process started with pid [1643]
+[INFO] [ekf_node-20]: process started with pid [1648]
+[create-16] [INFO] [1794605094.334721222] [a1_2.ros_gz_sim]: Requesting list of world names.
+[robot_state_publisher-15] [INFO] [1794605094.357105915] [a1_2.robot_state_publisher]: got segment FL_calf
+[robot_state_publisher-15] [INFO] [1794605094.357945638] [a1_2.robot_state_publisher]: got segment FL_foot
+[robot_state_publisher-15] [INFO] [1794605094.357968722] [a1_2.robot_state_publisher]: got segment FL_hip
+[robot_state_publisher-15] [INFO] [1794605094.357973694] [a1_2.robot_state_publisher]: got segment FL_thigh
+[robot_state_publisher-15] [INFO] [1794605094.357977899] [a1_2.robot_state_publisher]: got segment FL_thigh_shoulder
+[robot_state_publisher-15] [INFO] [1794605094.357981980] [a1_2.robot_state_publisher]: got segment FR_calf
+[robot_state_publisher-15] [INFO] [1794605094.357985696] [a1_2.robot_state_publisher]: got segment FR_foot
+[robot_state_publisher-15] [INFO] [1794605094.357989388] [a1_2.robot_state_publisher]: got segment FR_hip
+[robot_state_publisher-15] [INFO] [1794605094.357993004] [a1_2.robot_state_publisher]: got segment FR_thigh
+[robot_state_publisher-15] [INFO] [1794605094.357996976] [a1_2.robot_state_publisher]: got segment FR_thigh_shoulder
+[robot_state_publisher-15] [INFO] [1794605094.358000870] [a1_2.robot_state_publisher]: got segment RL_calf
+[robot_state_publisher-15] [INFO] [1794605094.358004645] [a1_2.robot_state_publisher]: got segment RL_foot
+[robot_state_publisher-15] [INFO] [1794605094.358008215] [a1_2.robot_state_publisher]: got segment RL_hip
+[robot_state_publisher-15] [INFO] [1794605094.358011820] [a1_2.robot_state_publisher]: got segment RL_thigh
+[robot_state_publisher-15] [INFO] [1794605094.358015536] [a1_2.robot_state_publisher]: got segment RL_thigh_shoulder
+[robot_state_publisher-15] [INFO] [1794605094.358019290] [a1_2.robot_state_publisher]: got segment RR_calf
+[robot_state_publisher-15] [INFO] [1794605094.358023159] [a1_2.robot_state_publisher]: got segment RR_foot
+[robot_state_publisher-15] [INFO] [1794605094.358026481] [a1_2.robot_state_publisher]: got segment RR_hip
+[robot_state_publisher-15] [INFO] [1794605094.358030356] [a1_2.robot_state_publisher]: got segment RR_thigh
+[robot_state_publisher-15] [INFO] [1794605094.358033839] [a1_2.robot_state_publisher]: got segment RR_thigh_shoulder
+[robot_state_publisher-15] [INFO] [1794605094.358037735] [a1_2.robot_state_publisher]: got segment base_link
+[robot_state_publisher-15] [INFO] [1794605094.358041104] [a1_2.robot_state_publisher]: got segment camera_link
+[robot_state_publisher-15] [INFO] [1794605094.358044510] [a1_2.robot_state_publisher]: got segment imu_link
+[robot_state_publisher-15] [INFO] [1794605094.358048197] [a1_2.robot_state_publisher]: got segment lidar_link
+[robot_state_publisher-15] [INFO] [1794605094.358051727] [a1_2.robot_state_publisher]: got segment terrain_camera_link
+[robot_state_publisher-15] [INFO] [1794605094.358055222] [a1_2.robot_state_publisher]: got segment terrain_camera_optical
+[robot_state_publisher-15] [INFO] [1794605094.358137173] [a1_2.robot_state_publisher]: got segment trunk
+[state_estimation_node-18] [INFO] [1794605094.362124021] [rclcpp]: Successfully parsed urdf file
+[ekf_node-19] [WARN] [1794605094.370726920] [a1_2.base_to_footprint_ekf]: Warning: Some linear velocity entries in parameter imu0_config are listed true, but an sensor_msgs/Imu contains no information about linear velocities
+[ekf_node-19] Warning: imu/data is listed as an input topic, but all its update variables are false
+[create-16] [INFO] [1794605094.538088788] [a1_2.ros_gz_sim]: Waiting messages on topic [/a1_2/robot_description].
+[create-16] [INFO] [1794605094.552267644] [a1_2.ros_gz_sim]: Requested creation of entity.
+[create-16] [INFO] [1794605094.552316830] [a1_2.ros_gz_sim]: OK creation of entity.
+[ign gazebo-1] [INFO] [1794605094.618768434] [GazeboSimROS2ControlPlugin]: robot_param_node is robot_state_publisher
+[ign gazebo-1] [INFO] [1794605094.618803727] [GazeboSimROS2ControlPlugin]: robot_param_node is robot_description
+[ign gazebo-1] [INFO] [1794605094.632955031] [a1_2.gz_ros2_control]: connected to service!! /a1_2/robot_state_publisher asking for robot_description
+[ign gazebo-1] [INFO] [1794605094.633787064] [a1_2.gz_ros2_control]: Received URDF from param server
+[ign gazebo-1] [INFO] [1794605094.636234543] [a1_2.gz_ros2_control]: The position_proportional_gain has been set to: 0.1
+[ign gazebo-1] [INFO] [1794605094.636319227] [a1_2.gz_ros2_control]: Loading joint: FL_hip_joint
+[ign gazebo-1] [INFO] [1794605094.636327133] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605094.636330930] [a1_2.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605094.636335113] [a1_2.gz_ros2_control]: 			 found initial value: 0.000000
+[ign gazebo-1] [INFO] [1794605094.636339596] [a1_2.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605094.636342821] [a1_2.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605094.636346066] [a1_2.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605094.636378620] [a1_2.gz_ros2_control]: Loading joint: FL_thigh_joint
+[ign gazebo-1] [INFO] [1794605094.636383013] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605094.636385990] [a1_2.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605094.636389463] [a1_2.gz_ros2_control]: 			 found initial value: 1.047200
+[ign gazebo-1] [INFO] [1794605094.636393304] [a1_2.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605094.636396099] [a1_2.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605094.636399004] [a1_2.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605094.636421794] [a1_2.gz_ros2_control]: Loading joint: FL_calf_joint
+[ign gazebo-1] [INFO] [1794605094.636426081] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605094.636429247] [a1_2.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605094.636432736] [a1_2.gz_ros2_control]: 			 found initial value: -2.094400
+[ign gazebo-1] [INFO] [1794605094.636436241] [a1_2.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605094.636439146] [a1_2.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605094.636441922] [a1_2.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605094.636468098] [a1_2.gz_ros2_control]: Loading joint: FR_hip_joint
+[ign gazebo-1] [INFO] [1794605094.636472319] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605094.636475345] [a1_2.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605094.636478141] [a1_2.gz_ros2_control]: 			 found initial value: 0.000000
+[ign gazebo-1] [INFO] [1794605094.636481528] [a1_2.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605094.636484254] [a1_2.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605094.636487254] [a1_2.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605094.636515014] [a1_2.gz_ros2_control]: Loading joint: FR_thigh_joint
+[ign gazebo-1] [INFO] [1794605094.636518781] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605094.636521457] [a1_2.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605094.636525321] [a1_2.gz_ros2_control]: 			 found initial value: 1.047200
+[ign gazebo-1] [INFO] [1794605094.636529045] [a1_2.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605094.636532321] [a1_2.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605094.636535229] [a1_2.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605094.636562778] [a1_2.gz_ros2_control]: Loading joint: FR_calf_joint
+[ign gazebo-1] [INFO] [1794605094.636566888] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605094.636569745] [a1_2.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605094.636572710] [a1_2.gz_ros2_control]: 			 found initial value: -2.094400
+[ign gazebo-1] [INFO] [1794605094.636576159] [a1_2.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605094.636578896] [a1_2.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605094.636581620] [a1_2.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605094.636603342] [a1_2.gz_ros2_control]: Loading joint: RL_hip_joint
+[ign gazebo-1] [INFO] [1794605094.636606686] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605094.636609572] [a1_2.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605094.636612200] [a1_2.gz_ros2_control]: 			 found initial value: 0.000000
+[ign gazebo-1] [INFO] [1794605094.636615579] [a1_2.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605094.636618506] [a1_2.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605094.636621240] [a1_2.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605094.636640946] [a1_2.gz_ros2_control]: Loading joint: RL_thigh_joint
+[ign gazebo-1] [INFO] [1794605094.636644373] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605094.636665856] [a1_2.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605094.636670407] [a1_2.gz_ros2_control]: 			 found initial value: 1.047200
+[ign gazebo-1] [INFO] [1794605094.636674136] [a1_2.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605094.636677290] [a1_2.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605094.636680347] [a1_2.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605094.636699226] [a1_2.gz_ros2_control]: Loading joint: RL_calf_joint
+[ign gazebo-1] [INFO] [1794605094.636704036] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605094.636706543] [a1_2.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605094.636710313] [a1_2.gz_ros2_control]: 			 found initial value: -2.094400
+[ign gazebo-1] [INFO] [1794605094.636713699] [a1_2.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605094.636716415] [a1_2.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605094.636718854] [a1_2.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605094.636736474] [a1_2.gz_ros2_control]: Loading joint: RR_hip_joint
+[ign gazebo-1] [INFO] [1794605094.636739996] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605094.636742632] [a1_2.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605094.636745204] [a1_2.gz_ros2_control]: 			 found initial value: 0.000000
+[ign gazebo-1] [INFO] [1794605094.636748563] [a1_2.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605094.636751742] [a1_2.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605094.636754379] [a1_2.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605094.636772242] [a1_2.gz_ros2_control]: Loading joint: RR_thigh_joint
+[ign gazebo-1] [INFO] [1794605094.636776514] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605094.636779610] [a1_2.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605094.636782480] [a1_2.gz_ros2_control]: 			 found initial value: 1.047200
+[ign gazebo-1] [INFO] [1794605094.636786079] [a1_2.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605094.636788814] [a1_2.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605094.636791616] [a1_2.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605094.636808148] [a1_2.gz_ros2_control]: Loading joint: RR_calf_joint
+[ign gazebo-1] [INFO] [1794605094.636811781] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [INFO] [1794605094.636814798] [a1_2.gz_ros2_control]: 		 position
+[ign gazebo-1] [INFO] [1794605094.636817451] [a1_2.gz_ros2_control]: 			 found initial value: -2.094400
+[ign gazebo-1] [INFO] [1794605094.636820689] [a1_2.gz_ros2_control]: 		 velocity
+[ign gazebo-1] [INFO] [1794605094.636823372] [a1_2.gz_ros2_control]: 	Command:
+[ign gazebo-1] [INFO] [1794605094.636826105] [a1_2.gz_ros2_control]: 		 effort
+[ign gazebo-1] [INFO] [1794605094.636845647] [a1_2.gz_ros2_control]: Loading sensor: imu
+[ign gazebo-1] [INFO] [1794605094.636851235] [a1_2.gz_ros2_control]: Topic name: /husky/imu
+[ign gazebo-1] [INFO] [1794605094.636854277] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [WARN] [1794605094.636857317] [a1_2.gz_ros2_control]: IMU sensor 'imu' not found in hardware_info, skipping.
+[ign gazebo-1] [INFO] [1794605094.636861112] [a1_2.gz_ros2_control]: Loading sensor: imu_sensor
+[ign gazebo-1] [INFO] [1794605094.636864693] [a1_2.gz_ros2_control]: Topic name: /a1_1/imu/data
+[ign gazebo-1] [INFO] [1794605094.636867224] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [WARN] [1794605094.636869887] [a1_2.gz_ros2_control]: IMU sensor 'imu_sensor' not found in hardware_info, skipping.
+[ign gazebo-1] [INFO] [1794605094.636872712] [a1_2.gz_ros2_control]: Loading sensor: imu_sensor
+[ign gazebo-1] [INFO] [1794605094.636875441] [a1_2.gz_ros2_control]: 	State:
+[ign gazebo-1] [WARN] [1794605094.636877936] [a1_2.gz_ros2_control]: IMU sensor 'imu_sensor' not found in hardware_info, skipping.
+[ign gazebo-1] [INFO] [1794605094.636883570] [resource_manager]: Initialize hardware 'a1_system' 
+[ign gazebo-1] [WARN] [1794605094.637070288] [a1_2.gz_ros2_control]: The ign_ros2_control plugin got renamed to gz_ros2_control.
+[ign gazebo-1] Update the <ros2_control> tag and gazebo plugin to
+[ign gazebo-1] <hardware>
+[ign gazebo-1]   <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+[ign gazebo-1] </hardware>
+[ign gazebo-1] <gazebo>
+[ign gazebo-1]   <plugin filename="gz_ros2_control-system"name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+[ign gazebo-1]     ...
+[ign gazebo-1]   </plugin>
+[ign gazebo-1] </gazebo>
+[ign gazebo-1] [INFO] [1794605094.637095563] [resource_manager]: Successful initialization of hardware 'a1_system'
+[ign gazebo-1] [INFO] [1794605094.637114537] [resource_manager]: 'configure' hardware 'a1_system' 
+[ign gazebo-1] [INFO] [1794605094.637117586] [a1_2.gz_ros2_control]: System Successfully configured!
+[ign gazebo-1] [INFO] [1794605094.637123174] [resource_manager]: Successful 'configure' of hardware 'a1_system'
+[ign gazebo-1] [INFO] [1794605094.637129169] [resource_manager]: 'activate' hardware 'a1_system' 
+[ign gazebo-1] [INFO] [1794605094.637138758] [resource_manager]: Successful 'activate' of hardware 'a1_system'
+[ign gazebo-1] [INFO] [1794605094.637141795] [a1_2.gz_ros2_control]: Loading controller_manager
+[INFO] [create-16]: process has finished cleanly [pid 1635]
+[INFO] [spawner-21]: process started with pid [1733]
+[INFO] [spawner-22]: process started with pid [1735]
+[spawner-22] [INFO] [1794605095.078338785] [a1_2.spawner_joint_group_effort_controller]: waiting for service /a1_2/controller_manager/list_controllers to become available...
+[parameter_bridge-17] [INFO] [1794605095.324439549] [a1_2.sensor_bridge]: Creating GZ->ROS Bridge: [/a1_2/scan (ignition.msgs.LaserScan) -> /a1_2/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-17] [INFO] [1794605095.328670637] [a1_2.sensor_bridge]: Creating GZ->ROS Bridge: [/a1_2/imu/data (ignition.msgs.IMU) -> /a1_2/imu/data (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-17] [INFO] [1794605095.331503659] [a1_2.sensor_bridge]: Creating GZ->ROS Bridge: [/a1_2/front_camera/image_raw (ignition.msgs.Image) -> /a1_2/front_camera/image_raw (sensor_msgs/msg/Image)] (Lazy 0)
+[parameter_bridge-17] [INFO] [1794605095.333422670] [a1_2.sensor_bridge]: Creating GZ->ROS Bridge: [/a1_2/front_camera/camera_info (ignition.msgs.CameraInfo) -> /a1_2/front_camera/camera_info (sensor_msgs/msg/CameraInfo)] (Lazy 0)
+[parameter_bridge-17] [INFO] [1794605095.334499758] [a1_2.sensor_bridge]: Creating GZ->ROS Bridge: [/a1_2/terrain_camera/depth/points (ignition.msgs.PointCloudPacked) -> /a1_2/terrain_camera/points (sensor_msgs/msg/PointCloud2)] (Lazy 0)
+[parameter_bridge-17] [INFO] [1794605095.335485120] [a1_2.sensor_bridge]: Creating GZ->ROS Bridge: [/a1_2/odom/ground_truth (ignition.msgs.Odometry) -> /a1_2/odom/ground_truth (nav_msgs/msg/Odometry)] (Lazy 0)
+[ign gazebo-1] [INFO] [1794605096.024611714] [a1_2.controller_manager]: Loading controller 'joint_group_effort_controller'
+[ign gazebo-1] [WARN] [1794605096.058502288] [a1_2.joint_group_effort_controller]: [Deprecated]: "allow_nonzero_velocity_at_trajectory_end" is set to true. The default behavior will change to false.
+[spawner-22] [INFO] [1794605096.091351196] [a1_2.spawner_joint_group_effort_controller]: [94mLoaded [1mjoint_group_effort_controller[0m
+[ign gazebo-1] [INFO] [1794605096.091525090] [a1_2.controller_manager]: Loading controller 'joint_states_controller'
+[ign gazebo-1] [INFO] [1794605096.148549132] [a1_2.controller_manager]: Configuring controller 'joint_group_effort_controller'
+[ign gazebo-1] [INFO] [1794605096.148753183] [a1_2.joint_group_effort_controller]: No specific joint names are used for command interfaces. Using 'joints' parameter.
+[ign gazebo-1] [WARN] [1794605096.148769415] [a1_2.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605096.149055467] [a1_2.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605096.149227043] [a1_2.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605096.149523489] [a1_2.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605096.149772888] [a1_2.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605096.150046020] [a1_2.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605096.150124669] [a1_2.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605096.150167936] [a1_2.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605096.150199662] [a1_2.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605096.150232416] [a1_2.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605096.150786030] [a1_2.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [WARN] [1794605096.150963660] [a1_2.joint_group_effort_controller]: 'ff_velocity_scale' parameters is not defined under 'gains.<joint_name>.' structure. Maybe you are using deprecated format 'ff_velocity_scale/<joint_name>'!
+[ign gazebo-1] [INFO] [1794605096.151170468] [a1_2.joint_group_effort_controller]: Command interfaces are [effort] and state interfaces are [position velocity].
+[ign gazebo-1] [INFO] [1794605096.151187344] [a1_2.joint_group_effort_controller]: Using 'splines' interpolation method.
+[ign gazebo-1] [INFO] [1794605096.152011158] [a1_2.joint_group_effort_controller]: Controller state will be published at 50.00 Hz.
+[ign gazebo-1] [INFO] [1794605096.155154127] [a1_2.joint_group_effort_controller]: Action status changes will be monitored at 20.00 Hz.
+[spawner-21] [INFO] [1794605096.159778810] [a1_2.spawner_joint_states_controller]: [94mLoaded [1mjoint_states_controller[0m
+[ign gazebo-1] [INFO] [1794605096.206432489] [a1_2.controller_manager]: Configuring controller 'joint_states_controller'
+[ign gazebo-1] [INFO] [1794605096.206572535] [a1_2.joint_states_controller]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[spawner-21] [INFO] [1794605096.368185198] [a1_2.spawner_joint_states_controller]: [92mConfigured and activated [1mjoint_states_controller[0m
+[spawner-22] [INFO] [1794605096.478560762] [a1_2.spawner_joint_group_effort_controller]: [92mConfigured and activated [1mjoint_group_effort_controller[0m
+[INFO] [spawner-21]: process has finished cleanly [pid 1733]
+[INFO] [spawner-22]: process has finished cleanly [pid 1735]
+[INFO] [quadruped_controller_node-23]: process started with pid [1780]
+[quadruped_controller_node-23] [INFO] [1794605096.671004915] [rclcpp]: Successfully parsed urdf file
+[parameter_bridge-5] [INFO] [1794605147.563449519] [husky_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[ERROR] [ign gazebo-1]: process has died [pid 1273, exit code -9, cmd 'ruby /usr/bin/ign gazebo -r --render-engine ogre -s /home/nhd2642/disaster_develop/ws/install/disaster_sim/share/disaster_sim/worlds/mission.world --force-version 6'].
+[ERROR] [parameter_bridge-2]: process has died [pid 1275, exit code -9, cmd '/opt/ros/humble/lib/ros_gz_bridge/parameter_bridge /clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock --ros-args -r __node:=clock_bridge'].
+[ERROR] [ekf_node-11]: process has died [pid 1419, exit code -9, cmd '/opt/ros/humble/lib/robot_localization/ekf_node --ros-args -r __node:=footprint_to_odom_ekf -r __ns:=/a1_1 --params-file /tmp/launch_params_p5yahlnj --params-file /tmp/tmpaye4z6na -r odometry/filtered:=odom -r /tf:=tf -r /tf_static:=tf_static'].
+[ERROR] [robot_state_publisher-6]: process has died [pid 1407, exit code -9, cmd '/opt/ros/humble/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/a1_1 --params-file /tmp/launch_params_gdzbvbkc -r /tf:=tf -r /tf_static:=tf_static'].
+[ERROR] [parameter_bridge-5]: process has died [pid 1334, exit code -9, cmd '/opt/ros/humble/lib/ros_gz_bridge/parameter_bridge /husky/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist /husky/odom@nav_msgs/msg/Odometry[ignition.msgs.Odometry /husky/odom/ground_truth@nav_msgs/msg/Odometry[ignition.msgs.Odometry /husky/imu@sensor_msgs/msg/Imu[ignition.msgs.IMU /husky/scan@sensor_msgs/msg/LaserScan[ignition.msgs.LaserScan --ros-args -r __node:=husky_bridge'].
+[ERROR] [quadruped_controller_node-14]: process has died [pid 1565, exit code -9, cmd '/home/nhd2642/disaster_develop/ws/install/champ_base/lib/champ_base/quadruped_controller_node --ros-args -r __ns:=/a1_1 --params-file /tmp/launch_params_kvdnkpdg --params-file /home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/config/joints.yaml --params-file /home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/config/links.yaml --params-file /home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/config/gait.yaml -r cmd_vel/smooth:=cmd_vel -r /tf:=tf -r /tf_static:=tf_static'].
+[ERROR] [state_estimation_node-9]: process has died [pid 1413, exit code -9, cmd '/home/nhd2642/disaster_develop/ws/install/champ_base/lib/champ_base/state_estimation_node --ros-args -r __ns:=/a1_1 --params-file /tmp/launch_params_01krgh9m --params-file /home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/config/joints.yaml --params-file /home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/config/links.yaml --params-file /home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/config/gait.yaml -r /tf:=tf -r /tf_static:=tf_static'].
+[ERROR] [quadruped_controller_node-23]: process has died [pid 1780, exit code -9, cmd '/home/nhd2642/disaster_develop/ws/install/champ_base/lib/champ_base/quadruped_controller_node --ros-args -r __ns:=/a1_2 --params-file /tmp/launch_params_eofvcjqx --params-file /home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/config/joints.yaml --params-file /home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/config/links.yaml --params-file /home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/config/gait.yaml -r cmd_vel/smooth:=cmd_vel -r /tf:=tf -r /tf_static:=tf_static'].
+[ERROR] [state_estimation_node-18]: process has died [pid 1639, exit code -9, cmd '/home/nhd2642/disaster_develop/ws/install/champ_base/lib/champ_base/state_estimation_node --ros-args -r __ns:=/a1_2 --params-file /tmp/launch_params_d8dfcjnu --params-file /home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/config/joints.yaml --params-file /home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/config/links.yaml --params-file /home/nhd2642/disaster_develop/ws/install/a1_champ/share/a1_champ/config/gait.yaml -r /tf:=tf -r /tf_static:=tf_static'].
+[ERROR] [robot_state_publisher-15]: process has died [pid 1633, exit code -9, cmd '/opt/ros/humble/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/a1_2 --params-file /tmp/launch_params_lg7ex39r -r /tf:=tf -r /tf_static:=tf_static'].
+[ERROR] [ekf_node-10]: process has died [pid 1415, exit code -9, cmd '/opt/ros/humble/lib/robot_localization/ekf_node --ros-args -r __node:=base_to_footprint_ekf -r __ns:=/a1_1 --params-file /tmp/launch_params_87lf9ctw --params-file /tmp/tmp4hytktss -r odometry/filtered:=odom/local -r /tf:=tf -r /tf_static:=tf_static'].
+[ERROR] [parameter_bridge-8]: process has died [pid 1411, exit code -9, cmd '/opt/ros/humble/lib/ros_gz_bridge/parameter_bridge --ros-args -r __node:=sensor_bridge -r __ns:=/a1_1 --params-file /tmp/launch_params_4rjotrx4'].
+[ERROR] [ekf_node-19]: process has died [pid 1643, exit code -9, cmd '/opt/ros/humble/lib/robot_localization/ekf_node --ros-args -r __node:=base_to_footprint_ekf -r __ns:=/a1_2 --params-file /tmp/launch_params_i_vo9iky --params-file /tmp/tmpp7_w5ybx -r odometry/filtered:=odom/local -r /tf:=tf -r /tf_static:=tf_static'].
+[ERROR] [ekf_node-20]: process has died [pid 1648, exit code -9, cmd '/opt/ros/humble/lib/robot_localization/ekf_node --ros-args -r __node:=footprint_to_odom_ekf -r __ns:=/a1_2 --params-file /tmp/launch_params_4waxsh5e --params-file /tmp/tmpq9o9tbjz -r odometry/filtered:=odom -r /tf:=tf -r /tf_static:=tf_static'].
+[ERROR] [parameter_bridge-17]: process has died [pid 1637, exit code -9, cmd '/opt/ros/humble/lib/ros_gz_bridge/parameter_bridge --ros-args -r __node:=sensor_bridge -r __ns:=/a1_2 --params-file /tmp/launch_params_v4n0p2z7'].
+[ERROR] [clock_throttle-3]: process has died [pid 1278, exit code -9, cmd '/home/nhd2642/disaster_develop/ws/install/comm_relay/lib/comm_relay/clock_throttle --ros-args'].

@@ -1,0 +1,15 @@
+/**:
+  ros__parameters:
+    gait:
+      knee_orientation: ">>"
+      pantograph_leg: false
+      odom_scaler: 1.125    # 1.11 -> 1.125 (2026-11-12 gait_sweep: /odom 이동이 정답보다 1.3 % 짧음 -> 도로 40 m 에 지도가 0.5 m 줄어듦)
+      max_linear_velocity_x: 0.5
+      max_linear_velocity_y: 0.25
+      max_angular_velocity_z: 1.0
+      com_x_translation: -0.015
+      com_y_translation: 0.0018
+      swing_height: 0.04
+      stance_depth: 0.0
+      stance_duration: 0.25
+      nominal_height: 0.2

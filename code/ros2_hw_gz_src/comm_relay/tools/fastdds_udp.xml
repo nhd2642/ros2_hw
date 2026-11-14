@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 시험 스크립트용: Fast DDS 공유 메모리(SHM) 전송을 끄고 UDPv4 만 씀.
+     왜: 강제 종료된 프로세스가 남긴 /dev/shm 잠금 때문에 'RTPS_TRANSPORT_SHM Error ... open_and_lock_file failed' 뒤
+     일부 노드끼리 데이터가 안 가는 실행이 반복됨 (2026-11-09 record4 2 회차, record7b 2 회차). -->
+<profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
+  <transport_descriptors>
+    <transport_descriptor>
+      <transport_id>udp_only</transport_id>
+      <type>UDPv4</type>
+    </transport_descriptor>
+  </transport_descriptors>
+  <participant profile_name="udp_only_participant" is_default_profile="true">
+    <rtps>
+      <userTransports>
+        <transport_id>udp_only</transport_id>
+      </userTransports>
+      <useBuiltinTransports>false</useBuiltinTransports>
+    </rtps>
+  </participant>
+</profiles>
