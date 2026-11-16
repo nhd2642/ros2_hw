@@ -1,12 +1,12 @@
-"""Draw the result figures used by the docs from the committed PASS runs.
+"""문서에 쓰는 결과 그래프를 그린다 (기본은 저장소에 들어 있는 PASS 실행 2 개).
 
-    python3 docs_site/scripts/make_figures.py                      the two committed PASS runs (default)
-    python3 docs_site/scripts/make_figures.py <run> [<run> ...]    first run = paths/SLAM/people plots, all runs = phase timeline
-    make -C docs_site figures RUNS="<run> <run>"                   same, via make (<run> = folder name under results/)
+    python3 docs_site/scripts/make_figures.py                       저장소의 PASS 실행 2 개 (기본)
+    python3 docs_site/scripts/make_figures.py <실행> [<실행> ...]     첫 실행 = 경로·SLAM·사람 그래프, 전부 = 단계 시간 그래프
+    make -C docs_site figures RUNS="<실행> <실행>"                     위와 같음, make 로 (<실행> = results/ 아래 폴더 이름)
 
-Inputs : results/<run>/timeline.csv (10 sim-s samples written by mission_watch.py),
-         code/ros2_hw_gz_src/disaster_sim/config/mission.yaml (zones, park points, people truth).
-Outputs: docs_site/images/figures/*.png. Labels are English so both languages share the files.
+입력: results/<실행>/timeline.csv (mission_watch.py 가 시뮬 10 초마다 쓴 표),
+      code/ros2_hw_gz_src/disaster_sim/config/mission.yaml (구역, 주차점, 사람 정답).
+출력: docs_site/images/figures/*.png. 두 언어가 같은 그림을 쓰도록 라벨은 영어.
 """
 import csv
 import os
@@ -24,7 +24,7 @@ OUT = os.path.join(ROOT, 'docs_site', 'images', 'figures')
 RUNS = {'20261114_062151_set0': 'run B (comm 0/1 in set 1)', '20261113_035152_set0': 'run A (no comm test)'}
 MAIN = '20261114_062151_set0'
 
-# black denim + red knit; entity colors stay fixed across every figure
+# 흑청바지 + 빨간 니트; 로봇마다 색은 모든 그림에서 고정
 INK, INK_SOFT, RULE, PAPER = '#1C1F24', '#4A515C', '#E3E2DE', '#FFFFFF'
 COLOR = {'a1_1': '#C8102E', 'a1_2': '#4C6A92', 'husky': '#2A3038'}
 STYLE = {'a1_1': '-', 'a1_2': '-', 'husky': '--'}
@@ -53,7 +53,7 @@ def load(run):
 
 
 def phases(rows):
-    """[(phase, set, t0, t1)] spans from consecutive samples."""
+    """연속한 표본에서 [(단계, 세트, 시작, 끝)] 구간을 만든다."""
     spans, cur = [], None
     for r in rows:
         key = (r['phase'], int(r['set']))
@@ -86,7 +86,7 @@ def trajectories(rows, cfg):
         ax.plot(*s['park'], marker='s', ms=8, color=COLOR['husky'], zorder=4, mfc='white', mew=1.6)
         ax.annotate(s['name'], s['park'], xytext=(0, -16), textcoords='offset points', ha='center', fontsize=8,
                     color=INK_SOFT)
-    ax.axhspan(-1.5, 1.5, color='#ECEBE7', zorder=0)   # road (3 m wide along x)
+    ax.axhspan(-1.5, 1.5, color='#ECEBE7', zorder=0)   # 도로 (x 축 따라 폭 3 m)
     for ns in ('husky', 'a1_1', 'a1_2'):
         ax.plot([r[f'{ns}_x'] for r in rows], [r[f'{ns}_y'] for r in rows], STYLE[ns], color=COLOR[ns], lw=1.8,
                 label=ns, zorder=3)
@@ -136,12 +136,12 @@ def people(rows):
 
 
 def summary_phases(run):
-    """Exact spans from the '=== 요약' block of summary.txt: '  EXPLORE  세트 0:     57 ->    322 s (  265 s)'."""
+    """summary.txt 의 '=== 요약' 블록에서 정확한 구간을 읽는다: '  EXPLORE  세트 0:     57 ->    322 s (  265 s)'."""
     spans = []
     for line in open(os.path.join(ROOT, 'results', run, 'summary.txt'), encoding='utf-8'):
         m = re.match(r'\s+([A-Z]+)\s+\S+\s+(\d+):\s+(\d+) ->\s+(\d+) s \(\s*(\d+) s\)', line)
         if m:
-            spans.append((m[1], int(m[2]), float(m[3]), float(m[3]) + float(m[5])))   # printed duration is exact
+            spans.append((m[1], int(m[2]), float(m[3]), float(m[3]) + float(m[5])))   # 괄호 안 걸린 시간이 정확한 값
     return spans
 
 
@@ -168,7 +168,7 @@ def phase_bars():
 
 
 def gait():
-    # docs/mission_design.md 5 (tools/gait_sweep.sh, flat ground, 8 s each, ground-truth position)
+    # docs/mission_design.md 5 절 (tools/gait_sweep.sh, 평지, 명령마다 8 s, 정답 위치 기준)
     v = [0.1, 0.2, 0.3, 0.4, 0.5]
     ratio = [99, 95, 107, 108, 107]
     tilt = [2.3, 2.3, 3.7, 4.6, 5.5]
@@ -190,7 +190,7 @@ def gait():
 
 def main():
     global MAIN, RUNS
-    if len(sys.argv) > 1:      # new runs: label them by folder name
+    if len(sys.argv) > 1:      # 새 실행: 폴더 이름을 라벨로
         RUNS = {r: r for r in sys.argv[1:]}
         MAIN = sys.argv[1]
     os.makedirs(OUT, exist_ok=True)

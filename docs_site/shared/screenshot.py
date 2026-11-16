@@ -1,9 +1,9 @@
-"""``screenshot`` directive: shows docs_site/images/screenshots/<file> if it exists, otherwise a dashed placeholder.
+"""``screenshot`` 지시어: docs_site/images/screenshots/<파일> 이 있으면 그 그림을, 없으면 점선 '스크린샷 자리' 상자를 보여 준다.
 
     ```{screenshot} world_overview.png
-    Caption text (also printed in the placeholder as "what to capture").
+    캡션 (그림이 없을 때는 상자에 '여기에 넣을 화면' 으로 찍힘).
     ```
-Drop the PNG into images/screenshots/ and rebuild (make clean html) to swap the placeholder for the picture.
+PNG 를 images/screenshots/ 에 넣고 다시 빌드(make clean html)하면 상자가 그림으로 바뀐다.
 """
 import os
 

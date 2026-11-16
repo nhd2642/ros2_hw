@@ -1,5 +1,5 @@
-/* Black denim + red knit theme on top of sphinx_rtd_theme.
-   Denim = deep blue-black greys for frame, sidebar and code. Knit = one red, used as the only accent. */
+/* sphinx_rtd_theme 위에 입히는 흑청바지 + 빨간 니트 테마.
+   데님 = 틀·사이드바·코드에 쓰는 짙은 남흑색 계열. 니트 = 빨강 하나, 유일한 강조색. */
 :root {
   --denim-950: #0E1014;
   --denim-900: #14171C;
@@ -27,12 +27,12 @@ body, .rst-content, .wy-body-for-nav {
   font-family: "JetBrains Mono", "Noto Sans Mono", Consolas, monospace;
 }
 
-/* ---------- frame ---------- */
+/* ---------- 틀 ---------- */
 .wy-body-for-nav { background: var(--denim-900); }
 .wy-nav-content-wrap { background: var(--paper); }
 .wy-nav-content { background: var(--paper); max-width: 1000px; padding: 2.2em 3em; }
 
-/* sidebar */
+/* 사이드바 */
 .wy-nav-side { background: var(--denim-850); }
 .wy-side-nav-search {
   background: var(--denim-950);
@@ -67,7 +67,7 @@ body, .rst-content, .wy-body-for-nav {
 .wy-menu-vertical li.current a:hover { background: var(--denim-600); color: #fff; }
 .wy-menu-vertical a button.toctree-expand { color: var(--denim-400); }
 
-/* language switch under the logo */
+/* 로고 아래 언어 전환 버튼 */
 .lang-switch { margin-top: .8em; display: flex; gap: .4em; justify-content: center; font-size: 85%; }
 .lang-switch span, .lang-switch a {
   padding: .15em .8em; border-radius: 999px; border: 1px solid var(--denim-600);
@@ -76,11 +76,11 @@ body, .rst-content, .wy-body-for-nav {
 .lang-switch .lang-other { color: var(--denim-200); }
 .lang-switch .lang-other:hover { border-color: var(--knit-bright); color: #fff; }
 
-/* mobile top bar */
+/* 모바일 위쪽 막대 */
 .wy-nav-top { background: var(--denim-950); border-bottom: 3px solid var(--knit); }
 .wy-nav-top a { color: #fff; }
 
-/* ---------- content ---------- */
+/* ---------- 본문 ---------- */
 .rst-content h1 {
   font-weight: 700; color: var(--denim-950); padding-bottom: .35em;
   border-bottom: 3px solid var(--knit); display: inline-block; margin-bottom: .9em;
@@ -104,12 +104,12 @@ footer { color: var(--ink-soft); }
 }
 .rst-footer-buttons .btn-neutral:hover { background: var(--knit) !important; }
 
-/* inline code */
+/* 본문 속 코드 */
 .rst-content code.literal, .rst-content tt.literal {
   color: var(--knit-deep); background: #F1EFEC; border: 1px solid var(--rule); border-radius: 4px;
   padding: 1px 5px; font-size: 85%;
 }
-/* code blocks: denim with a red rule on the left */
+/* 코드 블록: 데님 바탕 + 왼쪽 빨간 줄 */
 .rst-content div[class^="highlight"], .rst-content pre.literal-block {
   border: none; border-left: 4px solid var(--knit); border-radius: 6px; overflow: hidden;
 }
@@ -120,7 +120,7 @@ footer { color: var(--ink-soft); }
 button.copybtn { background: var(--denim-700); border-color: var(--denim-600); }
 button.copybtn img { filter: invert(1); }
 
-/* tables */
+/* 표 */
 .rst-content table.docutils { border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
 .rst-content table.docutils thead th {
   background: var(--denim-900); color: #fff; border-color: var(--denim-700); font-weight: 600;
@@ -129,7 +129,7 @@ button.copybtn img { filter: invert(1); }
 .rst-content table.docutils:not(.field-list) tr:nth-child(2n-1) td { background: #F4F3F0; }
 .wy-table-responsive table td, .wy-table-responsive table th { white-space: normal; }
 
-/* admonitions: note/tip = denim, warning/important = red */
+/* 안내 상자: note/tip = 데님, warning/important = 빨강 */
 .rst-content .admonition { border-radius: 6px; background: #F1F2F4; box-shadow: none; }
 .rst-content .admonition .admonition-title { background: var(--denim-800); color: #fff; font-weight: 600; }
 .rst-content .tip .admonition-title, .rst-content .hint .admonition-title { background: var(--denim-600); }
@@ -137,12 +137,12 @@ button.copybtn img { filter: invert(1); }
 .rst-content .warning .admonition-title, .rst-content .danger .admonition-title,
 .rst-content .important .admonition-title, .rst-content .caution .admonition-title,
 .rst-content .attention .admonition-title { background: var(--knit); }
-/* screenshot placeholder: an admonition with class "screenshot" */
+/* 스크린샷 자리: class 가 "screenshot" 인 안내 상자 */
 .rst-content .admonition.screenshot { background: repeating-linear-gradient(135deg, #F4F3F0, #F4F3F0 12px, #ECEBE7 12px, #ECEBE7 24px); border: 2px dashed var(--denim-400); }
 .rst-content .admonition.screenshot .admonition-title { background: var(--denim-950); }
 .rst-content .admonition.screenshot .admonition-title::before { content: "\f030"; }
 
-/* figures */
+/* 그림 */
 .rst-content figure, .rst-content .figure { margin: 1.6em auto; }
 .rst-content figure img, .rst-content .figure img, .rst-content img.framed {
   border: 1px solid var(--rule); border-radius: 6px; background: #fff; padding: 6px;
@@ -152,7 +152,7 @@ button.copybtn img { filter: invert(1); }
 .rst-content .graphviz { margin: 1.4em 0; text-align: center; overflow-x: auto; }
 .rst-content .graphviz object, .rst-content .graphviz img { max-width: 100%; }
 
-/* ---------- landing page ---------- */
+/* ---------- 첫 화면 ---------- */
 .hero {
   background: linear-gradient(120deg, var(--denim-950) 0%, var(--denim-800) 62%, #3A1018 100%);
   color: #fff; border-radius: 10px; padding: 2.2em 2.4em; margin-bottom: 2em; border-bottom: 5px solid var(--knit);
@@ -177,7 +177,7 @@ button.copybtn img { filter: invert(1); }
 .sd-tab-set > label:hover { color: var(--knit-deep) !important; }
 .sd-tab-content { box-shadow: 0 -.0625rem var(--rule) !important; }
 
-/* key-value strip used on concept pages */
+/* 개념 페이지의 키-값 띠 */
 .kv { display: grid; grid-template-columns: max-content 1fr; gap: .3em 1.2em; padding: .9em 1.1em; background: #F1F2F4; border-radius: 6px; border-left: 4px solid var(--denim-800); margin: 1em 0; }
 .kv b { color: var(--denim-950); }
 
@@ -186,12 +186,12 @@ button.copybtn img { filter: invert(1); }
   .hero { padding: 1.4em 1.2em; }
 }
 
-/* RTD uses Roboto Slab for headings; keep one sans family for Korean and English */
+/* RTD 는 제목에 Roboto Slab 을 씀; 한국어·영어 모두 같은 고딕 계열로 */
 h1, h2, h3, h4, h5, h6, legend, .rst-content .toctree-wrapper > p.caption, .wy-side-nav-search > a, .hero h1 {
   font-family: "Noto Sans KR", "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
-/* RTD paints the current page's section list light grey; keep it on denim */
+/* RTD 는 지금 페이지의 절 목록을 연회색으로 칠함; 데님 바탕으로 유지 */
 .wy-menu-vertical li.toctree-l1.current li.toctree-l2 > a,
 .wy-menu-vertical li.toctree-l2.current li.toctree-l3 > a,
 .wy-menu-vertical li.toctree-l3.current li.toctree-l4 > a {

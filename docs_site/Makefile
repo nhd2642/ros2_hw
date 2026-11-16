@@ -1,7 +1,7 @@
-# Build both languages:  make html   -> _build/html/{ko,en}/index.html (open _build/html/index.html)
-# Live preview:          make live            (Korean, rebuilds on save; DOCLANG=en for English)
-# Redraw result graphs:  make figures         (RUNS="<run> <run>" to use other results/ folders)
-# Local only: nothing here publishes the site.
+# 두 언어 빌드:     make html       -> _build/html/{ko,en}/index.html (_build/html/index.html 을 열면 됨)
+# 고치면서 보기:    make live       (한국어, 저장할 때마다 다시 빌드; 영어는 DOCLANG=en)
+# 결과 그래프 다시:  make figures    (다른 results/ 폴더를 쓰려면 RUNS="<실행> <실행>")
+# 로컬 전용: 여기 있는 어떤 대상도 사이트를 외부에 올리지 않는다.
 SPHINXBUILD ?= python3 -m sphinx
 OUT = _build/html
 DOCLANG ?= ko

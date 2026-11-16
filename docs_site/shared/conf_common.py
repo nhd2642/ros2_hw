@@ -1,8 +1,8 @@
-"""Settings shared by the Korean (ko/) and English (en/) builds. Each conf.py sets SHARED (this folder) then exec()s this file."""
+"""한국어(ko/)·영어(en/) 빌드가 같이 쓰는 설정. 각 conf.py 가 SHARED(이 폴더)를 정한 뒤 이 파일을 exec() 한다."""
 import os
 import sys
 
-HERE = SHARED   # set by ko/conf.py or en/conf.py before exec()
+HERE = SHARED   # ko/conf.py, en/conf.py 가 exec() 전에 정함
 sys.path.insert(0, HERE)
 
 project = 'Disaster Exploration Sim'
@@ -40,7 +40,7 @@ html_theme_options = {
 html_show_sourcelink = False
 pygments_style = 'monokai'
 
-# Diagrams: drawn at build time by Graphviz (dot) as SVG. Labels are in English so both languages share one source.
+# 다이어그램: 빌드할 때 Graphviz(dot)가 SVG 로 그림. 두 언어가 같은 원본을 쓰도록 라벨은 영어.
 graphviz_output_format = 'svg'
 graphviz_dot_args = [
     '-Gbgcolor=transparent', '-Gfontname=Helvetica', '-Nfontname=Helvetica', '-Efontname=Helvetica',
