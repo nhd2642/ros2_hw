@@ -1,0 +1,15 @@
+digraph nav_executor {
+  rankdir=LR; nodesep=0.35; ranksep=0.55;
+  node [shape=box, style="rounded,filled", fillcolor="#1F242B", fontcolor="white", color="#1F242B", margin="0.15,0.07"];
+  edge [color="#3A4250", fontcolor="#1F242B", arrowsize=0.7, fontsize=9];
+  IDLE; PLANNING [label="PLANNING\nComputePathToPose"]; TURNING [label="TURNING\nturn in place\n(> 45 deg off path)"]; FOLLOWING [label="FOLLOWING\nFollowPath (DWB)"];
+  FAIL [label="failure handling\nblacklist / ESCAPING / nudge", fillcolor="#6A1420", color="#6A1420"];
+  HOMING [label="HOMING\nback to explore start", fillcolor="#3A4250", color="#3A4250"]; DONE [fillcolor="#C8102E", color="#C8102E", label="DONE\n/<ns>/set_done = k"];
+  FALLEN [label="FALLEN\ntilt > 45 deg", fillcolor="#14171C", color="#C8102E"];
+  IDLE -> PLANNING [label=" nav_goal_local"]; PLANNING -> TURNING [label=" path ok"]; PLANNING -> FOLLOWING [label=" aligned"];
+  TURNING -> FOLLOWING [label=" within 20 deg"]; FOLLOWING -> IDLE [label=" arrived"];
+  PLANNING -> FAIL [label=" plan failed"]; FOLLOWING -> FAIL [label=" no progress\n/ timeout"]; FAIL -> IDLE;
+  IDLE -> HOMING [label=" 0 frontiers 30 s\nor no goal 90 s\nor REGROUP", color="#C8102E", fontcolor="#C8102E"];
+  HOMING -> DONE [label=" arrived", color="#C8102E", fontcolor="#C8102E"];
+  FOLLOWING -> FALLEN [style=dotted]; FALLEN -> IDLE [label=" upright 3 s", style=dotted];
+}

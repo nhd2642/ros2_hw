@@ -1,0 +1,33 @@
+digraph architecture {
+  rankdir=TB; nodesep=0.3; ranksep=0.55; compound=true; splines=spline;
+  node [shape=box, style="rounded,filled", fillcolor="#1F242B", fontcolor="white", color="#1F242B", margin="0.16,0.07", fontsize=11];
+  edge [color="#7A8494", arrowsize=0.7, fontsize=9, fontcolor="#4A515C"];
+
+  subgraph cluster_mission { label="Mission layer  (comm_relay)"; fontcolor="#C8102E"; color="#C8102E"; style="rounded"; penwidth=2; fontsize=12;
+    husky_mission [label="husky_mission\nphases, zones, comm 0/1, survivors", fillcolor="#C8102E", color="#C8102E"];
+    { rank=same; husky_driver [label="husky_driver"]; a1_follower [label="a1_follower\n(TRANSIT)"]; nav_executor [label="nav_executor\n(EXPLORE)"]; return_relay [label="return_relay\n(comm lost)"]; survivor_detector [label="survivor_detector"]; }
+    cmd_vel_arbiter [label="cmd_vel_arbiter  (per A1)", fillcolor="#8F0B20", color="#8F0B20"];
+  }
+  subgraph cluster_expl { label="Exploration  (a1_exploration)"; color="#3A4250"; style="rounded"; fontsize=12;
+    expl [label="nav_goal_bridge  ->  frontier_detector  ->  frontier_comm_filter  ->  goal_assigner\nshared map, frontiers, goal per robot"];
+  }
+  subgraph cluster_nav { label="Navigation & perception  (per A1)"; color="#3A4250"; style="rounded"; fontsize=12;
+    { rank=same; slam [label="slam_toolbox\n+ scan_ready_relay"]; nav2 [label="Nav2\nplanner + controller"]; terrain [label="terrain_node"]; }
+  }
+  subgraph cluster_sim { label="Simulation  (disaster_sim, a1_champ, champ)"; color="#3A4250"; style="rounded"; fontsize=12;
+    { rank=same; husky_model [label="Husky A200\nDiffDrive, lidar, IMU", fillcolor="#3A4250", color="#3A4250"]; gz [label="Gazebo Sim\nmission.world", fillcolor="#3A4250", color="#3A4250"]; champ [label="A1 x2\nCHAMP gait + EKF", fillcolor="#3A4250", color="#3A4250"]; }
+  }
+
+  husky_mission -> {husky_driver a1_follower nav_executor return_relay} [label=" /mission/state"];
+  survivor_detector -> husky_mission [label=" report", constraint=false];
+  {a1_follower return_relay survivor_detector} -> cmd_vel_arbiter;
+  nav_executor -> expl [dir=back, label=" nav_goal_local", color="#C8102E", fontcolor="#C8102E"];
+  nav_executor -> nav2 [label=" actions", style=dashed, color="#C8102E", fontcolor="#C8102E"];
+  expl -> slam [dir=back, label=" /<ns>/map"];
+  terrain -> nav2 [label=" hazards"];
+  nav2 -> cmd_vel_arbiter [label=" cmd_vel_nav_test", constraint=false];
+  husky_driver -> husky_model [label=" /husky/cmd_vel"];
+  cmd_vel_arbiter -> champ [label=" /<ns>/cmd_vel", color="#C8102E", fontcolor="#C8102E", penwidth=2];
+  champ -> slam [label=" scan, odom", constraint=false];
+  gz -> champ [dir=both, arrowsize=0.5]; gz -> husky_model [dir=both, arrowsize=0.5];
+}

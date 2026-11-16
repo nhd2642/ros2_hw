@@ -1,0 +1,13 @@
+digraph arbiter {
+  rankdir=LR; nodesep=0.18; ranksep=0.8;
+  node [shape=box, style="rounded,filled", fontcolor="white", color="#1F242B", fillcolor="#1F242B", margin="0.15,0.07"];
+  edge [color="#7A8494", arrowsize=0.7];
+  t4 [label="4  cmd_vel_teleop\nhuman teleop", fillcolor="#C8102E", color="#C8102E"];
+  t3 [label="3  cmd_vel_hold\nsurvivor_detector (1 s stop)", fillcolor="#A30E26", color="#A30E26"];
+  t2 [label="2  cmd_vel_return\nreturn_relay", fillcolor="#6A1420", color="#6A1420"];
+  t1 [label="1  cmd_vel_nav_test\nNav2 controller_server"];
+  t0 [label="0  cmd_vel_follow\na1_follower (TRANSIT)", fillcolor="#3A4250", color="#3A4250"];
+  arb [label="cmd_vel_arbiter\nhighest fresh input wins\n(timeout 0.5 s, 20 Hz)", shape=ellipse, fillcolor="#14171C", color="#C8102E", penwidth=2];
+  out [label="/<ns>/cmd_vel\n-> CHAMP", shape=box, style="rounded", fontcolor="#14171C", color="#C8102E", penwidth=2];
+  {t4 t3 t2 t1 t0} -> arb; arb -> out [color="#C8102E", penwidth=2];
+}

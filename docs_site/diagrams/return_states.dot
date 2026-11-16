@@ -1,0 +1,12 @@
+digraph return_states {
+  rankdir=LR; nodesep=0.5;
+  node [shape=box, style="rounded,filled", fillcolor="#1F242B", fontcolor="white", color="#1F242B", margin="0.18,0.08"];
+  edge [color="#3A4250", fontcolor="#1F242B", arrowsize=0.8];
+  WAIT [fillcolor="#3A4250", color="#3A4250"]; NORMAL [label="NORMAL\nrecord breadcrumbs (0.1 m)"];
+  RETURNING [label="RETURNING\nretrace breadcrumbs", fillcolor="#C8102E", color="#C8102E"]; HOLD [label="HOLD\nstop at home"]; STOPPING [label="STOPPING\nzero cmd 1 s"];
+  WAIT -> NORMAL [label=" first heartbeat + odom"];
+  NORMAL -> RETURNING [label=" no heartbeat 1 s\n(user typed 0)", color="#C8102E", fontcolor="#C8102E"];
+  RETURNING -> HOLD [label=" reached home,\n still no comm"];
+  RETURNING -> STOPPING [label=" heartbeat back (1)"]; HOLD -> STOPPING [label=" heartbeat back (1)"];
+  STOPPING -> NORMAL [label=" after 1 s"];
+}

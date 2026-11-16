@@ -1,0 +1,12 @@
+digraph launch_order {
+  rankdir=LR; nodesep=0.25; ranksep=0.35;
+  node [shape=box, style="rounded,filled", fillcolor="#1F242B", fontcolor="white", color="#1F242B", margin="0.15,0.08", fontsize=11];
+  edge [color="#C8102E", arrowsize=0.7, penwidth=1.6];
+  s1 [label="1  sim.launch.py\nworld + Husky + a1_1, a1_2\n(wait: 2 controllers active)"];
+  s2 [label="2  dual_slam.launch.py\nslam_toolbox x2"];
+  s3 [label="3  nav2_planners / nav2_controllers\n(wait: 4 servers active)"];
+  s4 [label="4  terrain.launch.py"];
+  s5 [label="5  mission.launch.py\nmission layer nodes"];
+  s6 [label="6  'start'\n/husky/cmd", fillcolor="#C8102E", color="#C8102E"];
+  s1 -> s2 -> s3 -> s4 -> s5 -> s6;
+}

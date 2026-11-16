@@ -1,0 +1,9 @@
+digraph survivor {
+  rankdir=LR; nodesep=0.3; ranksep=0.4;
+  node [shape=box, style="rounded,filled", fillcolor="#1F242B", fontcolor="white", color="#1F242B", margin="0.15,0.07"];
+  edge [color="#7A8494", arrowsize=0.7, fontsize=9];
+  cam [label="front_camera\n640x480, 2 Hz", fillcolor="#3A4250", color="#3A4250"]; ssd [label="MobileNet-SSD\nfull frame + 3 slices\n(SAHI, IoU 0.5 NMS)"];
+  rng [label="range from box height\n(person 1.75 m)"]; lid [label="match lidar cluster\nat that bearing / range"]; map [label="robot map (x, y)\nmerge within 1 m"];
+  hold [label="cmd_vel_hold\nstop 1 s", fillcolor="#6A1420", color="#6A1420"]; q [label="queue\n(if comm lost)"]; rep [label="/husky/survivor_report", fillcolor="#C8102E", color="#C8102E"];
+  cam -> ssd [label=" conf >= 0.5"]; ssd -> rng -> lid -> map; map -> hold; map -> q -> rep [label=" comm 1"];
+}

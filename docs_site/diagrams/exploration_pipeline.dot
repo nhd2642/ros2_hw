@@ -1,0 +1,15 @@
+digraph exploration {
+  rankdir=TB; nodesep=0.35; ranksep=0.4;
+  node [shape=ellipse, style="filled", fillcolor="#1F242B", fontcolor="white", color="#1F242B"];
+  edge [color="#7A8494", arrowsize=0.7, fontsize=9];
+  scan [label="/<ns>/scan", shape=box, style="rounded", fontcolor="#1F242B", color="#3A4250"];
+  srr [label="scan_ready_relay"]; slam [label="slam_toolbox"];
+  map [label="/<ns>/map", shape=box, style="rounded", fontcolor="#1F242B", color="#3A4250"];
+  bridge [label="nav_goal_bridge"]; smap [label="/shared_map\n(world aligned)", shape=box, style="rounded", fontcolor="#1F242B", color="#3A4250"];
+  fd [label="frontier_detector"]; fcf [label="frontier_comm_filter\n(zone, blacklist)"]; ga [label="goal_assigner\n(every 3 s)"];
+  ex [label="nav_executor", fillcolor="#C8102E", color="#C8102E"]; nav2 [label="Nav2"];
+  scan -> srr [label=" drop tilted /\nrobot hits"]; srr -> slam [label=" scan_ready"]; slam -> map -> bridge -> smap -> fd;
+  fd -> fcf [label=" frontier_candidates"]; fcf -> ga [label=" ..._comm"]; ga -> bridge [label=" exploration_goal"];
+  bridge -> ex [label=" nav_goal_local (map)", color="#C8102E", fontcolor="#C8102E"]; ex -> nav2 [style=dashed, label=" actions"];
+  ex -> fcf [label=" exploration_blacklist", style=dashed]; ga -> ex [label=" frontier_options", style=dashed];
+}

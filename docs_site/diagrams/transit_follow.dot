@@ -1,0 +1,11 @@
+digraph transit {
+  rankdir=LR; nodesep=0.3; ranksep=0.5;
+  node [shape=ellipse, style="filled", fillcolor="#1F242B", fontcolor="white", color="#1F242B"];
+  edge [color="#7A8494", arrowsize=0.7, fontsize=9];
+  hm [label="husky_mission", fillcolor="#C8102E", color="#C8102E"]; hd [label="husky_driver\n(Steer + odom x IMU yaw)"]; af [label="a1_follower\n(Steer + find_body)"];
+  hb [label="Husky (Gazebo)", shape=box, style="rounded,filled", fillcolor="#3A4250", color="#3A4250"]; arb [label="cmd_vel_arbiter"]; br [label="nav_goal_bridge"];
+  hm -> hd [label=" /husky/goal, /husky/go"]; hd -> hb [label=" /husky/cmd_vel"]; hb -> hd [label=" odom, imu, scan"];
+  hd -> af [label=" /husky/pose"]; hd -> hm [label=" /husky/driver_state"];
+  af -> arb [label=" cmd_vel_follow"]; af -> hm [label=" slot_error"]; af -> br [label=" pose_fix (end of TRANSIT)", color="#C8102E", fontcolor="#C8102E"];
+  hm -> af [label=" /mission/state"]; br -> af [label=" pose_shared"];
+}

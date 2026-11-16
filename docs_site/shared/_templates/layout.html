@@ -1,0 +1,16 @@
+{% extends "!layout.html" %}
+{%- block extrahead %}
+  {{ super() }}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="doc-lang" content="{{ language }}">
+  <meta name="doc-other-lang" content="{{ other_lang }}">
+{%- endblock %}
+{%- block sidebartitle %}
+  {{ super() }}
+  <div class="lang-switch">
+    <span class="lang-current">{{ '한국어' if language == 'ko' else 'English' }}</span>
+    <a class="lang-other" href="#" data-other-lang="{{ other_lang }}">{{ other_lang_label }}</a>
+  </div>
+{%- endblock %}

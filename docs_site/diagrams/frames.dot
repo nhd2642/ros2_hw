@@ -1,0 +1,12 @@
+digraph frames {
+  rankdir=TB; nodesep=0.4; ranksep=0.4;
+  node [shape=box, style="rounded,filled", fillcolor="#1F242B", fontcolor="white", color="#1F242B", margin="0.15,0.06", fontsize=11];
+  edge [color="#7A8494", arrowsize=0.7, fontsize=9];
+  world [label="world (Gazebo)\n= shared_map frame", fillcolor="#C8102E", color="#C8102E"];
+  m1 [label="a1_1 map"]; o1 [label="a1_1 odom"]; b1 [label="a1_1 base_footprint"];
+  m2 [label="a1_2 map"]; o2 [label="a1_2 odom"]; b2 [label="a1_2 base_footprint"];
+  hp [label="/husky/pose\n(world, wheel speed x IMU yaw)", fillcolor="#3A4250", color="#3A4250"];
+  world -> m1 [label=" spawn pose\n+ pose_fix shift"]; world -> m2 [label=" spawn pose\n+ pose_fix shift"];
+  m1 -> o1 [label=" slam_toolbox"]; o1 -> b1 [label=" EKF"]; m2 -> o2 [label=" slam_toolbox"]; o2 -> b2 [label=" EKF"];
+  world -> hp [style=dashed];
+}
