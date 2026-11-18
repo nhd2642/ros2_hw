@@ -17,7 +17,7 @@ The limitations known today, written down plainly. Use this as a starting point 
 ## Following & exploration
 
 - **Turning entrances.** DWB following still sometimes fails with "no progress" on paths around a wall end (a run gave up a room after 3 failures even at a 2.4 m entrance). After 3 failures at the same place the set gives it up, so the mission continues but people in that room are missed.
-- **Return failure.** If an A1 can't get back after 8 attempts, it reports the set done where it is. The Husky then waits for it in the next transit.
+- **Return failure.** If an A1 can't get back after 8 attempts, it reports the set done where it is. The Husky then waits for it in the next transit. It happened in 3 full missions, in the common building center room (1.6 m east doorway, a person in the middle) and the set 2 south hall (1.6 m between pillars), both below the layout rules. Since 2026-11-19 the PASS verdict counts it as FAIL.
 - **The 90 s tail.** Many sets end not with 0 frontiers but with "no reachable goal for 90 s" (frontiers within 0.4 m of obstacles remain) → up to 90 s more per set.
 - **Clearance between robots.** A1 centers came as close as 0.46 m (body length 0.6 m). Contact was not measured.
 

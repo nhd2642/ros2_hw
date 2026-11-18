@@ -2,7 +2,7 @@
 
 Test setup: Gazebo Sim headless, WSL2, RTF about 0.3 (2026-11-12 to 14). Positions and person truth come from Gazebo ground truth and are used **for evaluation only**.
 
-Verdict (`mission_watch.py`): **PASS** = reached the end + 0 falls + 0 exploration timeouts (REGROUP) + every person of the assigned sets reported within 1.0 m of truth.
+Verdict (`mission_watch.py`): **PASS** = reached the end + 0 falls + 0 exploration timeouts (REGROUP) + every person of the assigned sets reported within 1.0 m of truth + 0 home failures (added 2026-11-19; before that an A1 that gave up after 8 return attempts and stopped where it was still counted as returned).
 
 ## Summary
 
@@ -100,15 +100,15 @@ Person reports received by the Husky.
 
 ## Reproducibility
 
-Counting from the first PASS, **7 full missions were run, 4 reached the end, and 3 of those passed with 9/9 people** (`20261113_035152_set0`, `20261114_011715_set0`, `20261114_062151_set0`). Each run fixed the problem found in the previous one, so the code differs slightly between runs.
+Counting from the first PASS, **7 full missions were run, 4 reached the end, and 2 of those passed (counting home failures)** (`20261113_035152_set0`, `20261114_062151_set0`). Each run fixed the problem found in the previous one, so the code differs slightly between runs.
 
 | Run | Change | Result |
 | --- | --- | --- |
 | `20261113_091042_set0` | (same code as the first PASS) | stopped in set 1: a1_1 returned by the 90 s rule after an inner-room follow failure (people 1/2), a1_2 failed its return plan 3 times (NavFn A* error) |
 | `20261113_100158_set0` | NavFn Dijkstra, retry failed goals after 60 s | sets 1 and 2 passed, 0 plan failures. Stuck in set 2 at a 1.6 m turning entrance |
 | `20261113_113239_set0` | turning entrances 2.4 m | revisited a never-clearing frontier in set 2 south; no end after 700 s |
-| `20261113_123720_set0` | limit of 3 visits to the same spot | **reached the end** (2007 s). People 7/9 (entrance follow failures, a timer bug) |
-| `20261114_011715_set0` | "no goal" timer reset every set | **PASS** 1895 s, 9/9 (2 extra reports, scores 0.52 and 0.56) |
+| `20261113_123720_set0` | limit of 3 visits to the same spot | **reached the end** (2007 s). People 7/9 (entrance follow failures, a timer bug), a1_1 home failure in the common building |
+| `20261114_011715_set0` | "no goal" timer reset every set | PASS at the time, **FAIL** by the current rule: a1_1 home failure in the common building. 1895 s, 9/9 (2 extra reports, scores 0.52 and 0.56) |
 | `20261114_062151_set0` | Husky box fit | **PASS** 1907 s, 9/9, 0 extra reports |
 
 ## Causes found in testing and fixes

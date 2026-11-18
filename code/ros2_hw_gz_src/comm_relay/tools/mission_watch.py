@@ -4,8 +4,11 @@
   python3 mission_watch.py <결과 폴더> <start_set> <세트 수> <시뮬 초 한도> [통신 끔 시각] [끈 시간]
 위치는 Gazebo 정답(/<이름>/odom/ground_truth) — 평가용으로만 쓴다 (로봇 노드는 안 씀).
 요약: 세트별 걸린 시간·찾은 사람(정답 1.0 m 안), 넘어짐, A1-Husky / A1-A1 최소 거리, 추종 중 Husky 와의 최대 거리,
-  nav_executor 복구 장치별 작동 횟수 (<결과 폴더>/mission.log 에서 셈 — 쓰이지 않는 장치를 가려내려고, 2026-11-18).
-PASS = 끝까지 감 + 넘어짐 0 + 탐색 시간 한도(REGROUP) 0 + 맡은 세트의 사람을 전부 찾음.
+  nav_executor 복구 장치별 작동 횟수 (<결과 폴더>/mission.log 에서 셈 — 쓰이지 않는 장치를 가려내려고, 2026-11-18),
+  세트별 홈 복귀 결과 (/<ns>/nav_executor/events 의 '홈 도착' / '홈 실패').
+PASS = 끝까지 감 + 넘어짐 0 + 탐색 시간 한도(REGROUP) 0 + 맡은 세트의 사람을 전부 찾음 + 홈 실패 0.
+  홈 실패: nav_executor 는 복귀를 home_retries 번 실패해도 그 자리에서 set_done 을 보내 husky_mission 은 '복귀한 A1' 로 센다.
+  그래서 실제 도착은 여기서 따로 본다 (2026-11-19: 홈 실패가 있던 실행 3 개가 전에는 PASS 로 찍혔음).
 """
 import csv
 import json
@@ -57,6 +60,7 @@ class Watch(Node):
         self.marks, self.falls, self.finished = [], set(), False
         self.min_d = {'a1_1-husky': 9.0, 'a1_2-husky': 9.0, 'a1_1-a1_2': 9.0}
         self.max_follow = 0.0
+        self.home = {}               # (세트, 로봇) -> '도착' | '실패' (마지막 것)
         for n in NAMES:
             self.create_subscription(Odometry, f'/{n}/odom/ground_truth', lambda m, n=n: self.on_odom(n, m), 10)
         for ns in NAMES[1:]:
@@ -64,6 +68,7 @@ class Watch(Node):
             self.create_subscription(PoseStamped, f'/{ns}/pose_shared', lambda m, n=ns: self.slam.__setitem__(
                 n, (m.pose.position.x, m.pose.position.y)), 10)
             self.create_subscription(String, f'/{ns}/comm_mode', lambda m, n=ns: self.st.__setitem__(n + '_comm', m.data), LATCHED)
+            self.create_subscription(String, f'/{ns}/nav_executor/events', lambda m, n=ns: self.on_event(n, m.data), 10)
         self.create_subscription(String, '/husky/driver_state', lambda m: self.st.__setitem__('husky', m.data), LATCHED)
         self.create_subscription(String, '/mission/state', self.on_mission, LATCHED)
         self.create_subscription(String, '/husky/survivors', lambda m: setattr(self, 'people', json.loads(m.data)), LATCHED)
@@ -88,6 +93,12 @@ class Watch(Node):
 
     def t(self):
         return self.now() - self.t0 if self.t0 is not None else 0.0
+
+    def on_event(self, ns, text):
+        if text in ('홈 도착', '홈 실패') and self.mission is not None:
+            self.home[(self.mission['set'], ns)] = text[2:]
+            if text == '홈 실패':
+                print(f"!! {ns} 홈 실패 t={self.t():.0f} s (세트 {self.mission['set']})", flush=True)
 
     def on_mission(self, m):
         d = json.loads(m.data)
@@ -143,6 +154,11 @@ class Watch(Node):
         hit = sum(1 for tx, ty in truth if any(math.hypot(tx - x, ty - y) <= 1.0 for x, y in self.people))
         print(f'  사람 보고 {len(self.people)} 건, 정답 {len(truth)} 명 중 1.0 m 안 일치 {hit} 명: {self.people}')
         print(f'  넘어짐: {sorted(self.falls) or "없음"}')
+        robots = NAMES[1:]
+        print(f'  홈 복귀 ({" / ".join(robots)}): ' + ', '.join(
+            f'세트 {k} ' + '/'.join(self.home.get((k, ns), '-') for ns in robots) for k in range(self.k0, self.k_end)
+            if k < len(self.cfg['sets'])))
+        home_fail = sum(1 for v in self.home.values() if v == '실패')
         print('  최소 중심 거리: ' + ', '.join(f'{k} {v:.2f} m' for k, v in self.min_d.items()) + f', 추종 중 Husky 와 최대 {self.max_follow:.2f} m')
         print('  SLAM 공유 자세 최대 오차: ' + ', '.join(f'{k} {v:.2f} m' for k, v in self.max_slam.items()))
         rc = recovery_counts(os.path.join(self.out, 'mission.log'))
@@ -153,9 +169,9 @@ class Watch(Node):
         last = self.mission or {}
         done = last.get('phase') == 'DONE' or last.get('set', 0) >= self.k_end
         timeouts = sum(1 for _, ph, _ in self.marks if ph == 'REGROUP')                 # 탐색 시간 한도로 불러들인 세트 수
-        ok = done and not self.falls and timeouts == 0 and hit == len(truth)
+        ok = done and not self.falls and timeouts == 0 and hit == len(truth) and home_fail == 0
         print(f"RESULT {'PASS' if ok else 'FAIL'} (마지막 단계 {last.get('phase')} 세트 {last.get('set')}, "
-              f"한도 초과 세트 {timeouts}, 사람 {hit}/{len(truth)})")
+              f"한도 초과 세트 {timeouts}, 사람 {hit}/{len(truth)}, 홈 실패 {home_fail})")
 
 
 def main():
