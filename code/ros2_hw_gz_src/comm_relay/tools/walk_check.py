@@ -13,8 +13,12 @@ gt = {}; od = {}; raw = {}
 def tilt(q):
     r = math.atan2(2*(q.w*q.x+q.y*q.z), 1-2*(q.x*q.x+q.y*q.y)); p = math.asin(max(-1, min(1, 2*(q.w*q.y-q.z*q.x)))); return math.degrees(max(abs(r), abs(p)))
 mx = [0.0]
+turn = [0.0, None]     # 누적 회전 (rad, 180° 넘게 돌아도 맞게), 직전 yaw
 def on_gt(m):
     gt.setdefault('0', m.pose.pose); gt['1'] = m.pose.pose; mx[0] = max(mx[0], tilt(m.pose.pose.orientation))
+    q = m.pose.pose.orientation; y = math.atan2(2*(q.w*q.z+q.x*q.y), 1-2*(q.y*q.y+q.z*q.z))
+    if turn[1] is not None and '0' in gt: turn[0] += math.atan2(math.sin(y - turn[1]), math.cos(y - turn[1]))
+    turn[1] = y
 def on_od(m): od.setdefault('0', m.pose.pose); od['1'] = m.pose.pose
 n.create_subscription(Odometry, f'/{ns}/odom/ground_truth', on_gt, 10)
 n.create_subscription(Odometry, f'/{ns}/odom', on_od, 10)
@@ -22,7 +26,7 @@ n.create_subscription(Odometry, f'/{ns}/odom/raw', lambda m: (raw.setdefault('0'
 pub = n.create_publisher(Twist, f'/{ns}/cmd_vel', 10)
 w0 = time.time()
 while ('0' not in gt or n.get_clock().now().nanoseconds == 0) and time.time() - w0 < 60: rclpy.spin_once(n, timeout_sec=0.1)
-gt.pop('0', None); od.pop('0', None); raw.pop('0', None)
+gt.pop('0', None); od.pop('0', None); raw.pop('0', None); turn[0] = 0.0
 while '0' not in gt: rclpy.spin_once(n, timeout_sec=0.1)
 t0 = n.get_clock().now().nanoseconds * 1e-9; w0 = time.time(); tw = Twist(); tw.linear.x = vx; tw.linear.y = vy; tw.angular.z = wz
 while n.get_clock().now().nanoseconds * 1e-9 - t0 < dur:
@@ -35,7 +39,7 @@ dod = math.hypot(od['1'].position.x-od['0'].position.x, od['1'].position.y-od['0
 draw = math.hypot(raw['1'].position.x-raw['0'].position.x, raw['1'].position.y-raw['0'].position.y) if '0' in raw and '1' in raw else float('nan')
 print(f'odom/raw 이동 {draw:.2f} m')
 v_cmd = math.hypot(vx, vy)
-dyaw = (yaw(b.orientation) - yaw(a.orientation) + 180) % 360 - 180
+dyaw = math.degrees(turn[0])
 y0 = math.radians(yaw(a.orientation))      # 처음 몸 방향 기준 옆 이동 (+ 왼쪽)
 side = -math.sin(y0) * (b.position.x - a.position.x) + math.cos(y0) * (b.position.y - a.position.y)
 print(f'{ns} vx={vx} vy={vy} wz={wz} sim {dur}s (wall {time.time()-w0:.0f}s): 정답 이동 {d:.2f} m ({d/dur:.3f} m/s, 명령의 {d/dur/max(v_cmd,1e-9)*100 if v_cmd else 0:.0f}%), '
