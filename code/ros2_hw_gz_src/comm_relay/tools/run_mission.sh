@@ -56,6 +56,11 @@ bringup() {   # 시뮬 -> SLAM -> Nav2 -> 지형
 }
 # Nav2 가 TF 를 못 받아 안 켜지는 기동 불량이 가끔 있다 (2026-11-12 1/4 회, 이전 기록 약 2/25 회) -> 정리하고 한 번 다시
 bringup || { echo "-> 정리하고 기동 다시 (1 회)"; cleanup; bringup || exit 1; }
+# nav2 launch 는 terrain_perception 을 못 불러오면 print 한 줄만 남기고 지형 층 없이 뜬다 -> 그런 실행은 결과를 못 믿으므로 멈춤
+if grep -q 'terrain_patch\] terrain_perception 없음' "$OUT/planner.log" "$OUT/controller.log"; then
+  echo "실패: Nav2 가 지형 층 없이 뜸 ($(grep -h -m1 'terrain_patch\]' "$OUT/planner.log" "$OUT/controller.log" | head -1 | cut -c1-160))"
+  exit 1
+fi
 ros2 launch comm_relay mission.launch.py start_set:=$K > "$OUT/mission.log" 2>&1 &
 sleep 10
 if [ "${START:-1}" = 1 ]; then
