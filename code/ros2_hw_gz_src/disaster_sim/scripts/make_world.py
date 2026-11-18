@@ -5,10 +5,13 @@
   python3 make_world.py layout.png # + 위에서 본 배치 그림 (matplotlib 필요)
 
 배치 (월드 좌표 m, 도로 = x 축, 폭 3 m):
-  출발(Husky 0,0)  세트1 x 4~12  세트2 x 16~24  세트3 x 28~36  공동 건물 x 40~54, y -6~6
+  출발(Husky 0,0)  세트1 x 4~12  세트2 x 16~24  세트3 x 28~36  세트4(어려움) x 40~48  공동 건물 x 52~66, y -6~6
   세트 = 도로 양옆 8x5 m 건물 한 쌍 (남 = a1_1, 북 = a1_2), 문은 도로 쪽 가운데 1.6 m.
 건물 안 좌표 (u, v): u = 도로 방향(문 가운데 0, -4~4), v = 문에서 안쪽(0~5). 남쪽 건물은 y 로 뒤집힌다.
-라이다 평면이 0.30 m 라 장애물은 0.5 m 이상으로만 만든다 (낮으면 2D 라이다가 못 봄).
+라이다 평면이 0.30 m 라 장애물은 0.5 m 이상으로만 만든다 (낮으면 2D 라이다가 못 봄). 세트4 의 낮은 잔해(debris)만 예외.
+세트4 (2026-11-19) 는 아래 배치 규칙을 일부러 어기는 '규칙 밖 시험 장면'이다: 보행·Nav·SLAM 의 강건성을 재려고 좁은 길(1.2 m, 90° 꺾임 2 번),
+  1.0 m 문, 물체 밀집 방(틈 1.0~1.2 m), 라이다에 안 보이는 낮은 잔해(0.12 m, 깊이 카메라 지형 층만 봄)를 둔다.
+  공동 건물은 안의 배치 그대로 12 m 동쪽으로 옮겼다 (COMMON_DX).
 """
 import math
 import os
@@ -44,8 +47,18 @@ INTERIORS = {
                ramps=[(0.0, 2.0, 'v', 3.92)], boxes=[(3.6, 4.6, 0.6, 0.6)], people=[(-2.8, 4.6)]),
     's3': dict(walls=[(-4, 2.8, 1.2, 2.8)],
                boxes=[(-3.6, 1.4, 0.6, 0.6)], pillars=[(2.6, 1.4)], people=[(-2.6, 4.6)]),
+    # 세트4 = 규칙 밖 시험 장면 (머리말). n4: 물체 밀집 방 — 기둥 줄(틈 1.0 m, 문 바로 앞) + 상자 줄(틈 1.1 m) + 낮은 잔해 2 개, 사람은 오른쪽 뒤 구석.
+    'n4': dict(pillars=[(-2.2, 1.9), (-0.8, 1.9), (0.6, 1.9)],
+               boxes=[(-1.6, 3.4, 0.5, 0.5), (0.0, 3.4, 0.5, 0.5), (1.6, 3.4, 0.5, 0.5)],
+               debris=[(2.6, 1.6, 0.4, 0.4), (-3.0, 3.0, 0.4, 0.4)], people=[(3.6, 4.6)]),
+    # s4: 좁은 길 — 문에서 안쪽으로 폭 1.2 m 복도(벽 중심 u ±0.675) -> 뒷벽 앞에서 오른쪽으로 꺾는 1.2 m 복도(v 3.65~5)
+    #     -> 다시 꺾어 1.2 m 틈으로 안쪽 방(사람). 복도 왼쪽 벽에 1.0 m 문(왼쪽 방, 상자).
+    's4': dict(walls=[(-0.675, 0, -0.675, 1.0), (-0.675, 2.15, -0.675, 5),        # 왼쪽 벽, v 1.0~2.15 = 1.0 m 문
+                      (0.675, 0, 0.675, 3.65), (0.675, 3.65, 2.65, 3.65)],         # 오른쪽 벽 + 꺾인 복도 바닥 벽 (끝 ~ 옆벽 1.2 m 틈)
+               boxes=[(-2.6, 3.6, 0.6, 0.6)], people=[(2.6, 0.4)]),
 }
-SETS = [('set1', 8.0, 'n1', 's1'), ('set2', 20.0, 'n2', 's2'), ('set3', 32.0, 'n3', 's3')]
+COMMON_DX = 12.0     # 공동 건물을 동쪽으로 옮긴 거리 (세트4 자리)
+SETS = [('set1', 8.0, 'n1', 's1'), ('set2', 20.0, 'n2', 's2'), ('set3', 32.0, 'n3', 's3'), ('set4', 44.0, 'n4', 's4')]
 COMMON = dict(x0=40.0, x1=54.0, y0=-6.0, y1=6.0, doors=(-3.0, 3.0), park=(38.0, 0.0),
               walls=[(45, -2, 45, 2), (45, 2, 49, 2), (45, -2, 49, -2), (49, -2, 49, -0.8), (49, 0.8, 49, 2),
                      (47, 3.6, 47, 6), (50.6, -6, 50.6, -4.2), (50.6, -2.6, 54, -2.6)],
@@ -109,6 +122,8 @@ def building(cx, side, key):
         wall(*P(u1, v1), *P(u2, v2))
     for u, v, su, sv in it.get('boxes', []):
         box('box', *P(u, v), 0.35, su, sv, 0.7, rgb='0.55 0.35 0.2')
+    for u, v, su, sv in it.get('debris', []):              # 낮은 잔해 0.12 m: 라이다 평면 아래, 깊이 카메라만 봄
+        box('debris', *P(u, v), 0.06, su, sv, 0.12, rgb='0.35 0.3 0.25')
     for u, v in it.get('pillars', []):
         pillar(*P(u, v))
     for u, v, along, half in it.get('ramps', []):
@@ -119,22 +134,23 @@ def building(cx, side, key):
     return [cx - W, cx + W, ys[0], ys[1]]
 
 
-def common():
+def common(dx=COMMON_DX):
     c = COMMON
-    x0, x1, y0, y1 = c['x0'], c['x1'], c['y0'], c['y1']
+    x0, x1, y0, y1 = c['x0'] + dx, c['x1'] + dx, c['y0'], c['y1']
     edges = sorted([y0] + [d + s * DOOR for d in c['doors'] for s in (-1, 1)] + [y1])
     for a, b in zip(edges[::2], edges[1::2]):               # 서쪽 벽 (문 2 개)
         wall(x0, a, x0, b)
-    for seg in [(x0, y0, x1, y0), (x0, y1, x1, y1), (x1, y0, x1, y1)] + c['walls']:
+    for seg in [(x0, y0, x1, y0), (x0, y1, x1, y1), (x1, y0, x1, y1)] + \
+            [(xa + dx, ya, xb + dx, yb) for xa, ya, xb, yb in c['walls']]:
         wall(*seg)
     for x, y, sx, sy in c['boxes']:
-        box('box', x, y, 0.35, sx, sy, 0.7, rgb='0.55 0.35 0.2')
+        box('box', x + dx, y, 0.35, sx, sy, 0.7, rgb='0.55 0.35 0.2')
     for x, y in c['pillars']:
-        pillar(x, y)
+        pillar(x + dx, y)
     for x, y, along, half in c['ramps']:
-        ramp(x, y, along, half)
+        ramp(x + dx, y, along, half)
     for x, y in c['people']:
-        person(x, y, math.pi / 2)
+        person(x + dx, y, math.pi / 2)
     return [x0, x1, y0, y1]
 
 
@@ -146,7 +162,7 @@ def main():
         sets.append(dict(name=label, park=[cx - SLOT['a1_1'][0], 0.0], zones=zones, people=len(people) - n0))
     n0 = len(people)
     z = common()
-    sets.append(dict(name='common', park=list(COMMON['park']), zones={'a1_1': z, 'a1_2': list(z)}, people=len(people) - n0))
+    sets.append(dict(name='common', park=[COMMON['park'][0] + COMMON_DX, COMMON['park'][1]], zones={'a1_1': z, 'a1_2': list(z)}, people=len(people) - n0))
     wall(*START['small_wall'], h=0.6)
 
     world = f'''<?xml version="1.0"?>
@@ -193,7 +209,7 @@ def draw(cfg, path):
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     from matplotlib.patches import Circle, Polygon, Rectangle
-    color = dict(wall='k', box='saddlebrown', ramp='0.75', pillar='peru')
+    color = dict(wall='k', box='saddlebrown', ramp='0.75', pillar='peru', debris='olive')
     fig, ax = plt.subplots(figsize=(22, 6.5))
     for kind, x, y, sx, sy, yaw in shapes:
         c, s = math.cos(yaw), math.sin(yaw)
@@ -211,7 +227,7 @@ def draw(cfg, path):
         ax.plot(x, y, 'o', color='gold' if k == 'husky' else 'c', ms=10)
         ax.text(x, y - 0.6, k, ha='center', fontsize=8)
     ax.set_aspect('equal')
-    ax.set_xlim(-5, 56)
+    ax.set_xlim(-5, 68)
     ax.set_ylim(-8, 8)
     ax.grid(alpha=0.3)
     ax.set_title('mission.world  (red star = person, blue square = Husky parking, gray = ramp hump, dashed = zones)')
