@@ -15,9 +15,12 @@ bash "$T/run_mission.sh" clean
 ros2 launch disaster_sim sim.launch.py gui:=false > "$OUT/sim.log" 2>&1 &
 until [ "$(grep -c 'activated.*joint_group_effort_controller' "$OUT/sim.log")" -ge 2 ]; do sleep 1; done
 sleep 10
-[ $# -eq 0 ] && set -- "0.1 0.0" "0.2 0.0" "0.3 0.0" "0.4 0.0" "0.5 0.0" "0.0 0.5" "0.0 -0.5" "0.25 0.3" "0.25 -0.3"
+# 항목 = "vx wz [vy]". 옆걸음(vy)·저속·제자리 회전 (2026-11-19, 좁은 곳 강건성)은 건물이 없는 출발 자리에서 먼저 (좌우가 서로 상쇄)
+[ $# -eq 0 ] && set -- "0.0 0.0 0.1" "0.0 0.0 -0.1" "0.0 0.0 0.2" "0.0 0.0 -0.2" "0.0 0.3" "0.0 -0.3" \
+  "0.05 0.0" "0.1 0.0" "0.2 0.0" "0.3 0.0" "0.4 0.0" "0.5 0.0" "0.0 0.5" "0.0 -0.5" "0.25 0.3" "0.25 -0.3"
 for c in "$@"; do
-  python3 -u "$T/walk_check.py" ${NS:-a1_2} $c 8 2>&1 | tail -1 | tee -a "$OUT/gait.txt"
+  set -- $c
+  python3 -u "$T/walk_check.py" ${NS:-a1_2} "$1" "$2" 8 "${3:-0}" 2>&1 | tail -1 | tee -a "$OUT/gait.txt"
   python3 "$T/sim_sleep.py" 2
 done
 echo "결과: $OUT/gait.txt"

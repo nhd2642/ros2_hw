@@ -5,7 +5,8 @@
 위치는 Gazebo 정답(/<이름>/odom/ground_truth) — 평가용으로만 쓴다 (로봇 노드는 안 씀).
 요약: 세트별 걸린 시간·찾은 사람(정답 1.0 m 안), 넘어짐, A1-Husky / A1-A1 최소 거리, 추종 중 Husky 와의 최대 거리,
   nav_executor 복구 장치별 작동 횟수 (<결과 폴더>/mission.log 에서 셈 — 쓰이지 않는 장치를 가려내려고, 2026-11-18),
-  세트별 홈 복귀 결과 (/<ns>/nav_executor/events 의 '홈 도착' / '홈 실패').
+  세트별 홈 복귀 결과 (/<ns>/nav_executor/events 의 '홈 도착' / '홈 실패'),
+  멈춤 분석 (motion.csv 2 Hz 기록 -> stuck_report.py: FOLLOWING 중 멈춘 시간을 보행 / Nav 로 나눔, 2026-11-19).
 PASS = 끝까지 감 + 넘어짐 0 + 탐색 시간 한도(REGROUP) 0 + 맡은 세트의 사람을 전부 찾음 + 홈 실패 0.
   홈 실패: nav_executor 는 복귀를 home_retries 번 실패해도 그 자리에서 set_done 을 보내 husky_mission 은 '복귀한 A1' 로 센다.
   그래서 실제 도착은 여기서 따로 본다 (2026-11-19: 홈 실패가 있던 실행 3 개가 전에는 PASS 로 찍혔음).
@@ -19,14 +20,20 @@ import sys
 import rclpy
 import yaml
 from ament_index_python.packages import get_package_share_directory
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, Twist
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
 from std_msgs.msg import String
 
+from stuck_report import MOTION_COLS, report
+
 LATCHED = QoSProfile(depth=1, reliability=ReliabilityPolicy.RELIABLE, durability=DurabilityPolicy.TRANSIENT_LOCAL)
 NAMES = ('husky', 'a1_1', 'a1_2')
+
+
+def yaw_of(q):
+    return math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))
 # nav_executor 복구 장치 -> 작동할 때 mission.log 에 남기는 문장 조각. * = throttle 로그라 실제보다 적게 셀 수 있음
 RECOVERY = (('0 명령 감시', '0 명령 감시: FOLLOWING 중'), ('기울기 가드', '이상 -> 추종 중단'),
             ('벗어나기', '-> ESCAPING (중심'), ('옮겨 보기', '옮겨 보기 odom'),
@@ -61,6 +68,7 @@ class Watch(Node):
         self.min_d = {'a1_1-husky': 9.0, 'a1_2-husky': 9.0, 'a1_1-a1_2': 9.0}
         self.max_follow = 0.0
         self.home = {}               # (세트, 로봇) -> '도착' | '실패' (마지막 것)
+        self.yaw, self.cmd, self.src, self.od = {}, {}, {}, {}     # motion.csv 용: 정답 yaw, 중재기 출력 (vx, wz), 출처, EKF odom (x, y, yaw)
         for n in NAMES:
             self.create_subscription(Odometry, f'/{n}/odom/ground_truth', lambda m, n=n: self.on_odom(n, m), 10)
         for ns in NAMES[1:]:
@@ -69,6 +77,10 @@ class Watch(Node):
                 n, (m.pose.position.x, m.pose.position.y)), 10)
             self.create_subscription(String, f'/{ns}/comm_mode', lambda m, n=ns: self.st.__setitem__(n + '_comm', m.data), LATCHED)
             self.create_subscription(String, f'/{ns}/nav_executor/events', lambda m, n=ns: self.on_event(n, m.data), 10)
+            self.create_subscription(Twist, f'/{ns}/cmd_vel', lambda m, n=ns: self.cmd.__setitem__(n, (m.linear.x, m.angular.z)), 10)
+            self.create_subscription(String, f'/{ns}/cmd_vel_source', lambda m, n=ns: self.src.__setitem__(n, m.data), LATCHED)
+            self.create_subscription(Odometry, f'/{ns}/odom', lambda m, n=ns: self.od.__setitem__(
+                n, (m.pose.pose.position.x, m.pose.pose.position.y, yaw_of(m.pose.pose.orientation))), 10)
         self.create_subscription(String, '/husky/driver_state', lambda m: self.st.__setitem__('husky', m.data), LATCHED)
         self.create_subscription(String, '/mission/state', self.on_mission, LATCHED)
         self.create_subscription(String, '/husky/survivors', lambda m: setattr(self, 'people', json.loads(m.data)), LATCHED)
@@ -78,14 +90,33 @@ class Watch(Node):
                            'husky', 'a1_1', 'a1_2', 'a1_1_comm', 'a1_2_comm', 'people', 'a1_1_slam_err', 'a1_2_slam_err'])
         self.create_timer(1.0, self.tick)
         self.last_row = -99.0
+        # 2 Hz 움직임 기록 -> stuck_report.py 가 '멈춤'을 보행 / Nav 로 나눈다 (명령은 나가는데 몸이 안 가는지, 명령이 머뭇거리는지)
+        self.motion_f = open(os.path.join(out, 'motion.csv'), 'w', newline='')
+        self.motion = csv.writer(self.motion_f)
+        self.motion.writerow(['t', 'phase', 'set'] + [f'{ns}_{k}' for ns in NAMES[1:] for k in MOTION_COLS])
+        self.create_timer(0.5, self.motion_tick)
 
     def now(self):
         return self.get_clock().now().nanoseconds * 1e-9
+
+    def motion_tick(self):
+        d = self.mission
+        if d is None or self.t0 is None or any(ns not in self.pos for ns in NAMES[1:]):
+            return
+        row = [f'{self.t():.1f}', d['phase'], d['set']]
+        for ns in NAMES[1:]:
+            vx, wz = self.cmd.get(ns, (0.0, 0.0))
+            ox, oy, oyaw = self.od.get(ns, (float('nan'),) * 3)
+            row += [self.st.get(ns, '-'), self.src.get(ns, '-'), f'{vx:.3f}', f'{wz:.3f}',
+                    f'{self.pos[ns][0]:.3f}', f'{self.pos[ns][1]:.3f}', f'{self.yaw.get(ns, 0.0):.3f}',
+                    f'{ox:.3f}', f'{oy:.3f}', f'{oyaw:.3f}']
+        self.motion.writerow(row)
 
     def on_odom(self, n, m):
         p = m.pose.pose.position
         self.pos[n], self.z[n] = (p.x, p.y), p.z
         q = m.pose.pose.orientation
+        self.yaw[n] = yaw_of(q)
         if n != 'husky' and 1 - 2 * (q.x * q.x + q.y * q.y) < 0.7:     # 기울기 45° 넘음
             if n not in self.falls:
                 print(f'!! {n} 넘어짐 t={self.t():.0f} s ({p.x:.2f}, {p.y:.2f})', flush=True)
@@ -161,6 +192,11 @@ class Watch(Node):
         home_fail = sum(1 for v in self.home.values() if v == '실패')
         print('  최소 중심 거리: ' + ', '.join(f'{k} {v:.2f} m' for k, v in self.min_d.items()) + f', 추종 중 Husky 와 최대 {self.max_follow:.2f} m')
         print('  SLAM 공유 자세 최대 오차: ' + ', '.join(f'{k} {v:.2f} m' for k, v in self.max_slam.items()))
+        self.motion_f.flush()
+        stuck = report(os.path.join(self.out, 'motion.csv'))
+        with open(os.path.join(self.out, 'stuck.txt'), 'w') as f:
+            f.write(stuck + '\n')
+        print('  ' + stuck.splitlines()[0])        # 전체 한 줄 (세트·로봇별 표는 stuck.txt)
         rc = recovery_counts(os.path.join(self.out, 'mission.log'))
         if rc:
             print('  복구 장치 작동 (mission.log 줄 수, * 는 throttle 로그라 덜 셀 수 있음):')

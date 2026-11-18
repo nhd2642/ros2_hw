@@ -4,7 +4,8 @@
 # 환경 변수: GUI=1 (Gazebo 화면), SETS=n (n 세트만 하고 끝, 기본 전부), DUR=시뮬 초 한도 (기본 6000),
 #           START=0 (start 를 자동으로 보내지 않음 -> 사용자가 husky_mission 터미널이나 /husky/cmd 로),
 #           COMM_OFF_AT / COMM_OFF_FOR = 탐색 시작 뒤 시뮬 초에 통신 0, 그 뒤 몇 초 뒤 1 (통신 시험)
-# 결과: $OUT (기본 <저장소>/results/<시각>_set<k>) 에 로그와 timeline.csv, summary.txt
+#           BAG=1 (SLAM 오프라인 재생용 rosbag: 스캔·odom·TF·IMU·정답, 시뮬 시간 -> $OUT/bag, slam_replay.sh 가 씀)
+# 결과: $OUT (기본 <저장소>/results/<시각>_set<k>) 에 로그와 timeline.csv, motion.csv, stuck.txt, summary.txt
 T=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 R=$(cd "$T/../../.." && pwd)
 [ -f "$R/install/setup.bash" ] || R=$(cd "$R/../ws" 2>/dev/null && pwd)   # code/ 쪽 실제 경로로 불러도 작업 공간(<저장소>/ws)을 찾게
@@ -22,7 +23,7 @@ kill_all() {   # $1 신호, $2 무늬. 이 스크립트의 조상(부른 셸)은
   done
 }
 cleanup() {
-  kill_all -INT "sim.launch.py|mission.launch.py|dual_slam.launch|nav2_(planners|controllers).launch|terrain.launch"
+  kill_all -INT "sim.launch.py|mission.launch.py|dual_slam.launch|nav2_(planners|controllers).launch|terrain.launch|ros2 bag record"
   sleep 2
   kill_all -9 "ign gazebo|ruby.*ign |quadruped_controller_node|state_estimation_node|ekf_node|robot_state_publisher|parameter_bridge"
   kill_all -9 "planner_server|controller_server|lifecycle_manager|async_slam_toolbox|scan_ready_relay|terrain_hazards"
@@ -61,6 +62,12 @@ if grep -q 'terrain_patch\] terrain_perception 없음' "$OUT/planner.log" "$OUT/
   echo "실패: Nav2 가 지형 층 없이 뜸 ($(grep -h -m1 'terrain_patch\]' "$OUT/planner.log" "$OUT/controller.log" | head -1 | cut -c1-160))"
   exit 1
 fi
+BAGPID=
+if [ "${BAG:-0}" = 1 ]; then   # 시뮬 시간으로 기록 -> 재생(--clock)하면 같은 시간축 (slam_replay.sh)
+  ros2 bag record --use-sim-time -o "$OUT/bag" /clock_slow /mission/state $(for ns in a1_1 a1_2; do
+    echo /$ns/scan_ready /$ns/odom /$ns/tf /$ns/tf_static /$ns/imu/data /$ns/odom/ground_truth; done) > "$OUT/bag.log" 2>&1 &
+  BAGPID=$!
+fi
 ros2 launch comm_relay mission.launch.py start_set:=$K > "$OUT/mission.log" 2>&1 &
 sleep 10
 if [ "${START:-1}" = 1 ]; then
@@ -69,4 +76,5 @@ if [ "${START:-1}" = 1 ]; then
 fi
 python3 -u "$T/mission_watch.py" "$OUT" "$K" "${SETS:-99}" "${DUR:-6000}" "${COMM_OFF_AT:-0}" "${COMM_OFF_FOR:-60}" 2>&1 | tee "$OUT/summary.txt"
 grep -E "\[MISSION\]|\[COMM\]|\[HUSKY\]" "$OUT/mission.log" | sed -E 's/^\[[^]]*\] //' | cut -c1-200 > "$OUT/mission_events.txt"
+[ -n "$BAGPID" ] && { kill -INT "$BAGPID" 2>/dev/null; wait "$BAGPID"; echo "bag: $(du -sh "$OUT/bag" 2>/dev/null | cut -f1)"; }   # 끝까지 써야 metadata 가 생김
 echo "결과 폴더: $OUT"
