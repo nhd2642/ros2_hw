@@ -86,18 +86,6 @@ def test_stale_odom_means_stand_still():
     assert lg.state == RETURNING and c == (0.0, 0.0)
 
 
-def test_nav_mode_and_fallback():
-    lg = ReturnLogic(return_drive='auto')
-    t = walk(lg, [(0.0, 0.05 * i) for i in range(30)], 0.0)
-    lg.on_pose(0.0, 1.45, math.pi / 2, t + 1.5)
-    assert lg.step(t + 1.5, nav_available=True) is None      # Nav2 가 복귀 주행
-    assert lg.drive == 'nav'
-    path = lg.return_path()
-    assert path[-1] == lg.home and len(path) >= 2
-    c = lg.step(t + 1.6, nav_available=True, nav_failed=True)  # Nav2 실패 -> 직접 주행
-    assert lg.drive == 'direct' and c is not None
-
-
 def test_odom_jump_breaks_breadcrumbs():
     lg = ReturnLogic()
     t = walk(lg, [(0.0, 0.05 * i) for i in range(20)], 0.0)
@@ -128,17 +116,13 @@ def disconnected_far(lg, t):
     return t + 1.5
 
 
-def test_direct_is_default_even_with_nav():
+def test_returning_drives_back():
     lg = ReturnLogic()
     t = disconnected_far(lg, 0.0)
-    c = lg.step(t, nav_available=True)
-    assert lg.drive == 'direct' and c is not None and c[0] > 0
-
-
-def test_auto_uses_nav():
-    lg = ReturnLogic(return_drive='auto')
-    t = disconnected_far(lg, 0.0)
-    assert lg.step(t, nav_available=True) is None and lg.drive == 'nav'
+    c = lg.step(t)
+    assert c is not None and c[0] > 0
+    path = lg.return_path()
+    assert path[-1] == lg.home and len(path) >= 2
 
 
 def test_blocked_stops_forward_and_resumes():
@@ -159,42 +143,16 @@ def test_rotation_not_blocked():
     assert c[0] == 0.0 and abs(c[1]) > 0
 
 
-def test_block_handover_to_nav_once():
-    lg = ReturnLogic(block_handover=10.0)
-    t = disconnected_far(lg, 0.0)
-    for k in range(120):                               # 12 s 막힘
-        lg.on_pose(0.0, 2.95, -math.pi / 2, t + 0.1 * k)
-        c = lg.step(t + 0.1 * k, nav_available=True, blocked=lambda: True)
-    assert lg.drive == 'nav' and c is None
-    t2 = t + 12.1
-    lg.on_pose(0.0, 2.95, -math.pi / 2, t2)
-    lg.step(t2, nav_available=True, nav_failed=True)  # Nav2 실패 -> direct, 다시 넘기지 않음
-    for k in range(150):
-        lg.on_pose(0.0, 2.95, -math.pi / 2, t2 + 0.1 * (k + 1))
-        c = lg.step(t2 + 0.1 * (k + 1), nav_available=True, blocked=lambda: True)
-    assert lg.drive == 'direct' and c == (0.0, 0.0)
-
-
-def test_no_handover_by_default():
-    # 기본(block_handover 0): Nav2 가 살아 있어도 넘기지 않고 계속 기다린다
+def test_blocked_keeps_waiting():
+    # 막히면 다른 길로 넘기지 않고 그 자리에서 계속 기다린다
     lg = ReturnLogic()
     t = walk(lg, [(0.0, 0.1 * i) for i in range(11)], 0.0)
     lg.on_heartbeat(t - 5.0)
-    lg.step(t, nav_available=True)
+    lg.step(t)
     for k in range(300):
         lg.on_pose(0.0, 1.0, -math.pi / 2, t + 0.1 * k)
-        out = lg.step(t + 0.1 * k, nav_available=True, blocked=lambda: True)
+        out = lg.step(t + 0.1 * k, blocked=lambda: True)
         assert out == (0.0, 0.0)
-    assert lg.drive == 'direct'
-
-
-def test_no_handover_without_nav():
-    lg = ReturnLogic()
-    t = disconnected_far(lg, 0.0)
-    for k in range(150):
-        lg.on_pose(0.0, 2.95, -math.pi / 2, t + 0.1 * k)
-        c = lg.step(t + 0.1 * k, nav_available=False, blocked=lambda: True)
-    assert lg.drive == 'direct' and c == (0.0, 0.0)
 
 
 def scan_with(points, n=360):

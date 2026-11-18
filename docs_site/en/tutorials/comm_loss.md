@@ -72,6 +72,6 @@ In the passing run `20261114_062151_set0` the link was cut from 144 to 194 s dur
 
 ## Good to know
 
-- With the default (`return_drive: direct`), `return_relay` drives the breadcrumbs backwards **directly** (0.15 m/s, turning in place first when needed). If lidar points show up in the strip along the path to retrace (±0.15 m wide, 0.5 m ahead) in both of the last two scans (3 or more), it stops. `return_drive: auto` lets Nav2 follow the path instead (the tested setting is `direct`).
+- `return_relay` drives the breadcrumbs backwards **directly** (0.15 m/s, turning in place first when needed). If lidar points show up in the strip along the path to retrace (±0.15 m wide, 0.5 m ahead) in both of the last two scans (3 or more), it stops.
 - The heartbeat timeout is **wall-clock** 1 s (not sim time).
 - The principles are in {doc}`../concepts/communication_return`.

@@ -64,7 +64,7 @@ Nav2 planning and following in EXPLORE/REGROUP, failure handling, done detection
 
 | Direction | Topic |
 | --- | --- |
-| sub | `/mission/state`, `/frontier_candidates_comm`, `/<ns>/nav_goal_local`, `/<ns>/home_local`, `/<ns>/frontier_options`, `/<ns>/comm_mode`, `/<ns>/return_path`, `/<ns>/imu/data`, `/<ns>/odom`, `/<ns>/local_costmap/costmap` |
+| sub | `/mission/state`, `/frontier_candidates_comm`, `/<ns>/nav_goal_local`, `/<ns>/home_local`, `/<ns>/frontier_options`, `/<ns>/comm_mode`, `/<ns>/imu/data`, `/<ns>/odom`, `/<ns>/local_costmap/costmap` |
 | pub | `/<ns>/cmd_vel_nav_test` (turns, escapes), `/<ns>/nav_executor/state`, `/<ns>/nav_executor/events`, `/<ns>/nav_executor/path`, `/<ns>/set_done`, `/<ns>/exploration_blacklist`, `/exploration_blacklist` |
 | action | `/<ns>/compute_path_to_pose`, `/<ns>/follow_path` (client) |
 
@@ -85,7 +85,7 @@ Nav2 planning and following in EXPLORE/REGROUP, failure handling, done detection
 | `tilt_guard` | 25.0 | `closed_radius` | 0.4 |
 | `idle_done` | 90.0 | `fail_area_radius` | 1.0 |
 | `fail_area_n` | 3 | `fail_area_ttl` | 900.0 |
-| `return_retries` | 2 | `goal_refine_radius` | 0.5 |
+| `goal_refine_radius` | 0.5 | | |
 
 ## return_relay
 
@@ -93,8 +93,8 @@ Comm loss → retrace breadcrumbs home.
 
 | Direction | Topic |
 | --- | --- |
-| sub | `/mission/state`, `/<ns>/comm_status`, `/<ns>/odom`, `/<ns>/nav_executor/state`, `/<ns>/scan` |
-| pub | `/<ns>/cmd_vel_return`, `/<ns>/comm_mode` (transient local), `/<ns>/return_events`, `/<ns>/return_path` |
+| sub | `/mission/state`, `/<ns>/comm_status`, `/<ns>/odom`, `/<ns>/scan` |
+| pub | `/<ns>/cmd_vel_return`, `/<ns>/comm_mode` (transient local), `/<ns>/return_events` |
 
 | Parameter | Default | Parameter | Default |
 | --- | --- | --- | --- |
@@ -103,7 +103,6 @@ Comm loss → retrace breadcrumbs home.
 | `max_breadcrumbs` | 5000 | `vx` | 0.15 |
 | `wz_turn` / `wz_max` | 0.4 / 0.4 | `turn_threshold` | 0.35 |
 | `stop_duration` | 1.0 | `jump_threshold` | 0.5 |
-| `return_drive` | `direct` | `nav_timeout` | 2.0 |
 | `obstacle_check` | True | `half_width` / `look_ahead` | 0.15 / 0.5 |
 | `min_points` | 3 | `output_topic` | `cmd_vel_return` |
 

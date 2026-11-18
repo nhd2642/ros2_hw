@@ -28,8 +28,8 @@
 | `/<ns>/slot_error` | `Float32` | a1_follower | husky_mission | distance to follow slot |
 | `/<ns>/pose_fix` | `PointStamped` (world) | a1_follower | nav_goal_bridge, husky_mission | once on set arrival |
 | `/<ns>/comm_mode` | `String` | return_relay | nav_executor | transient local |
-| `/<ns>/return_events`, `/<ns>/return_path` | `String`, `Path` | return_relay | nav_executor, monitors | |
-| `/<ns>/nav_executor/state` | `String` | nav_executor | return_relay, mission_watch | |
+| `/<ns>/return_events` | `String` | return_relay | monitors | |
+| `/<ns>/nav_executor/state` | `String` | nav_executor | mission_watch | |
 | `/<ns>/nav_executor/events`, `/path` | `String`, `Path` | nav_executor | monitors, RViz | |
 | `/<ns>/survivor_markers` | `MarkerArray` (map) | survivor_detector | RViz | latched |
 | `/<ns>/survivor`, `/survivor_events`, `/person_score` | | survivor_detector | monitors | |

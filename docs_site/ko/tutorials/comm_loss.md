@@ -72,6 +72,6 @@ ros2 topic echo /a1_1/return_events
 
 ## 알아 둘 점
 
-- 기본 설정(`return_drive: direct`)에서는 `return_relay` 가 breadcrumb 를 거꾸로 **직접** 몰아갑니다(0.15 m/s, 제자리 회전 뒤 진행). 되짚을 길 띠(폭 ±0.15 m, 앞 0.5 m) 안에 라이다 점이 최근 두 스캔 모두 3 개 이상 보이면 멈춥니다. `return_drive: auto` 로 바꾸면 Nav2 가 지나온 길을 따르게 할 수 있습니다(시험한 설정은 `direct`).
+- `return_relay` 가 breadcrumb 를 거꾸로 **직접** 몰아갑니다(0.15 m/s, 제자리 회전 뒤 진행). 되짚을 길 띠(폭 ±0.15 m, 앞 0.5 m) 안에 라이다 점이 최근 두 스캔 모두 3 개 이상 보이면 멈춥니다.
 - 하트비트 판정은 **벽시계** 1 초입니다(시뮬 시간 아님).
 - 원리는 {doc}`../concepts/communication_return` 에 있습니다.

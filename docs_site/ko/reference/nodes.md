@@ -64,7 +64,7 @@ EXPLORE·REGROUP 때 Nav2 계획·추종, 실패 처리, 완료 판정, 홈 복�
 
 | 방향 | 토픽 |
 | --- | --- |
-| 구독 | `/mission/state`, `/frontier_candidates_comm`, `/<ns>/nav_goal_local`, `/<ns>/home_local`, `/<ns>/frontier_options`, `/<ns>/comm_mode`, `/<ns>/return_path`, `/<ns>/imu/data`, `/<ns>/odom`, `/<ns>/local_costmap/costmap` |
+| 구독 | `/mission/state`, `/frontier_candidates_comm`, `/<ns>/nav_goal_local`, `/<ns>/home_local`, `/<ns>/frontier_options`, `/<ns>/comm_mode`, `/<ns>/imu/data`, `/<ns>/odom`, `/<ns>/local_costmap/costmap` |
 | 발행 | `/<ns>/cmd_vel_nav_test` (회전·벗어나기), `/<ns>/nav_executor/state`, `/<ns>/nav_executor/events`, `/<ns>/nav_executor/path`, `/<ns>/set_done`, `/<ns>/exploration_blacklist`, `/exploration_blacklist` |
 | 액션 | `/<ns>/compute_path_to_pose`, `/<ns>/follow_path` (클라이언트) |
 
@@ -85,7 +85,7 @@ EXPLORE·REGROUP 때 Nav2 계획·추종, 실패 처리, 완료 판정, 홈 복�
 | `tilt_guard` | 25.0 | `closed_radius` | 0.4 |
 | `idle_done` | 90.0 | `fail_area_radius` | 1.0 |
 | `fail_area_n` | 3 | `fail_area_ttl` | 900.0 |
-| `return_retries` | 2 | `goal_refine_radius` | 0.5 |
+| `goal_refine_radius` | 0.5 | | |
 
 ## return_relay
 
@@ -93,8 +93,8 @@ EXPLORE·REGROUP 때 Nav2 계획·추종, 실패 처리, 완료 판정, 홈 복�
 
 | 방향 | 토픽 |
 | --- | --- |
-| 구독 | `/mission/state`, `/<ns>/comm_status`, `/<ns>/odom`, `/<ns>/nav_executor/state`, `/<ns>/scan` |
-| 발행 | `/<ns>/cmd_vel_return`, `/<ns>/comm_mode` (transient local), `/<ns>/return_events`, `/<ns>/return_path` |
+| 구독 | `/mission/state`, `/<ns>/comm_status`, `/<ns>/odom`, `/<ns>/scan` |
+| 발행 | `/<ns>/cmd_vel_return`, `/<ns>/comm_mode` (transient local), `/<ns>/return_events` |
 
 | 파라미터 | 기본 | 파라미터 | 기본 |
 | --- | --- | --- | --- |
@@ -103,7 +103,6 @@ EXPLORE·REGROUP 때 Nav2 계획·추종, 실패 처리, 완료 판정, 홈 복�
 | `max_breadcrumbs` | 5000 | `vx` | 0.15 |
 | `wz_turn` / `wz_max` | 0.4 / 0.4 | `turn_threshold` | 0.35 |
 | `stop_duration` | 1.0 | `jump_threshold` | 0.5 |
-| `return_drive` | `direct` | `nav_timeout` | 2.0 |
 | `obstacle_check` | True | `half_width` / `look_ahead` | 0.15 / 0.5 |
 | `min_points` | 3 | `output_topic` | `cmd_vel_return` |
 

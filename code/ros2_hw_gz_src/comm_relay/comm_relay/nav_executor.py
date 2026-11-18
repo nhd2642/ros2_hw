@@ -10,9 +10,7 @@
     그 로봇에게만 근처 프런티어를 안 줌 — assigner_setup.sh). 이전엔 공용으로 보내 다른 로봇 몫까지 지웠음.
   - 목표가 통신 구역 밖(+여유), 도착했는데 같은 목표 반복 -> 공용 /exploration_blacklist (frontier_comm_filter 가
     둘 다에서 뺌).
-복귀:  /<ns>/comm_mode 가 RETURNING 이면 탐색 목표를 취소하고 /<ns>/return_path (odom 프레임, 지나온 길)를
-  FollowPath 로 따른다 -> DWB 국소 장애물 회피가 붙은 복귀. 두 번 실패하면 RETURN_FAILED 를 알리고
-  return_relay 가 직접 주행으로 넘어간다. NORMAL 이 되면 복귀 추종을 취소한다.
+통신 끊김:  /<ns>/comm_mode 가 NORMAL 이 아니면 탐색 목표를 취소하고 PAUSED. 복귀 주행은 return_relay 가 직접 한다.
 먼저 돌기: 계획한 경로의 앞쪽(turn_sample 0.5 m)이 몸 방향과 turn_first(45°) 넘게 다르면 FollowPath 전에
   제자리 회전(turn_speed 0.5 rad/s, /<ns>/cmd_vel_nav_test)으로 turn_done(20°) 안까지 돌린다 (TURNING).
   왜: DWB 는 경로가 뒤쪽이면 제자리 회전보다 정지를 골라 영영 서 있음. Nav2 RotationShimController 가 그걸 하지만
@@ -57,8 +55,7 @@
   20° 아래로 3 s 서 있으면 IDLE 로 돌아감. (2026-11-07 mission: 넘어진 a1_1 이 계획 실패 블랙리스트를 쏟아내
   공용 프런티어가 15 -> 3 개로 줄어 a1_2 탐색까지 멈춤)
 사건 /<ns>/nav_executor/events: '도착 x y' (FollowPath 성공), '실패 이유' (블랙리스트할 때). 시험·모니터용.
-상태 하트비트 /<ns>/nav_executor/state 는 FollowPath 서버가 준비됐을 때만 보낸다
-  (return_relay 는 이 하트비트가 있을 때만 복귀를 Nav2 에 맡긴다).
+상태 하트비트 /<ns>/nav_executor/state 는 FollowPath 서버가 준비됐을 때만 보낸다.
 """
 import json
 import math
@@ -133,7 +130,6 @@ class Executor:
         node.create_subscription(PoseStamped, f'/{ns}/nav_goal_local', self.on_local_goal, 10)
         node.create_subscription(PoseStamped, f'/{ns}/exploration_goal', self.on_shared_goal, 10)
         node.create_subscription(String, f'/{ns}/comm_mode', self.on_mode, LATCHED)
-        node.create_subscription(Path, f'/{ns}/return_path', self.on_return_path, 10)
         node.create_subscription(PoseStamped, f'/{ns}/home_local', lambda m: setattr(self, 'home', m), 10)
         node.create_subscription(Imu, f'/{ns}/imu/data', self.on_imu, qos_profile_sensor_data)
         node.create_subscription(Odometry, f'/{ns}/odom', self.on_odom, 10)
@@ -163,10 +159,6 @@ class Executor:
         self.reached = []             # (local x, y, 도착 시각) 최근 도착한 목표
         self.visits = []              # (local x, y) 이번 세트에 도착한 목표 전부 — 같은 자리 3 번이면 그만 감
         self.last_shared = None       # (shared, 받은 시각)
-        self.return_path = None
-        self.return_path_t = 0.0      # 받은 시각 (이전 단절 때 경로를 다시 쓰지 않게)
-        self.return_sent_t = 0.0
-        self.return_tries = 0
         self.fallen = False
         self.upright_since = None
         self.odom_yaw = None          # (yaw, 받은 시각)
@@ -384,44 +376,20 @@ class Executor:
         prev, self.mode = self.mode, msg.data
         if prev == self.mode:
             return
-        if self.mode != 'RETURNING':
-            self.return_path = None      # 이번 복귀 경로는 버린다 (다음 단절 때 새 경로를 기다림)
         if self.fallen:
             return
         if self.mode == 'NORMAL':
-            if self.state.startswith('RETURN'):
-                self.cancel()
-                self.set_state('IDLE', '통신 복구')
-            elif self.state == 'PAUSED':
+            if self.state == 'PAUSED':
                 self.set_state('IDLE', '통신 정상')
             self.resume_t = sim_now(self.node)
             if self.home_phase == 'DONE' and self.state == 'IDLE':
                 self.set_state('DONE', '탐색 완료 상태 유지')
             return
-        # NORMAL 이 아닌 모든 모드: 탐색 중단
+        # NORMAL 이 아닌 모든 모드: 탐색 중단 (복귀 주행은 return_relay 가 직접)
         if self.state in ('PLANNING', 'TURNING', 'FOLLOWING', 'ESCAPING'):
-            self.cancel()
             self.goal, self.pending = None, None
-        if self.mode == 'RETURNING':
-            self.return_tries = 0
-            if self.return_path is not None and sim_now(self.node) - self.return_path_t < 2.0:
-                self.start_return('복귀 시작')
-            else:
-                self.set_state('PAUSED', '복귀 경로 대기')
-        else:
-            self.cancel()
-            self.set_state('PAUSED', f'comm_mode={self.mode}')
-
-    def on_return_path(self, msg):
-        if not msg.poses or self.fallen:
-            return
-        self.return_path, self.return_path_t = msg, sim_now(self.node)
-        if self.mode != 'RETURNING' or self.state == 'RETURN_FAILED':
-            return
-        if self.state != 'RETURNING':
-            self.start_return('복귀 경로 수신')
-        elif sim_now(self.node) - self.return_sent_t >= self.p['return_resend']:
-            self.start_return('복귀 경로 갱신', quiet=True)
+        self.cancel()
+        self.set_state('PAUSED', f'comm_mode={self.mode}')
 
     def on_local_goal(self, local):
         if not self.active or self.mode != 'NORMAL' or self.fallen or self.home_phase is not None:
@@ -663,16 +631,6 @@ class Executor:
             self.backing = False
             self.finish()
             return
-        if self.state == 'RETURNING':
-            if status == GoalStatus.STATUS_SUCCEEDED:
-                self.set_state('RETURN_DONE', '복귀 경로 끝(홈) 도착')
-            else:
-                self.return_tries += 1
-                if self.return_tries < self.p['return_retries'] and self.return_path is not None:
-                    self.start_return(f'복귀 추종 실패 (status {status}), 재시도 {self.return_tries}')
-                else:
-                    self.set_state('RETURN_FAILED', f'복귀 추종 실패 (status {status}) -> 직접 주행으로')
-            return
         if status == GoalStatus.STATUS_SUCCEEDED and self.home_phase == 'HOMING':
             self.home_phase, self.goal, self.pending = 'DONE', None, None
             self.pub_cmd.publish(Twist())
@@ -701,19 +659,6 @@ class Executor:
         if self.pending is not None and self.mode == 'NORMAL':
             local, shared = self.pending
             self.start_goal(local, shared)
-
-    # ---------- 복귀 ----------
-    def start_return(self, why, quiet=False):
-        if not self.follow_ac.server_is_ready():
-            self.set_state('RETURN_FAILED', 'FollowPath 서버 없음')
-            return
-        self.cancel()
-        g = self.gen
-        self.return_sent_t = sim_now(self.node)
-        self.pub_path.publish(self.return_path)
-        if not quiet:
-            self.log.warn(f'[{self.ns}] {why}: 지나온 길 {len(self.return_path.poses)}점 FollowPath')
-        self.send_follow(self.return_path, g, 'RETURNING')
 
     # ---------- 주기 ----------
     def tilt_guard(self, now):
@@ -868,7 +813,7 @@ class NavExecutorNode(Node):
         super().__init__('nav_executor')
         robots = list(self.declare_parameter('robots', ['a1_1', 'a1_2']).value)
         defaults = dict(same_goal_tol=0.5, min_dwell=8.0, goal_timeout=90.0, goal_margin=0.2,
-                        return_resend=5.0, return_retries=2, planner_id='GridBased', reached_ttl=60.0, reached_grace=8.0, fall_tilt=45.0,
+                        planner_id='GridBased', reached_ttl=60.0, reached_grace=8.0, fall_tilt=45.0,
                         controller_id='FollowPath', goal_checker_id='general_goal_checker',
                         turn_first=0.785, turn_done=0.35, turn_speed=0.5, turn_sample=0.5, turn_timeout=30.0,
                         turn_max_tilt=6.0, commit=True, commit_radius=1.0,
