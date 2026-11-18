@@ -31,6 +31,8 @@ The full standard output of `mission_watch.py` (in Korean): status lines (space 
   넘어짐: 없음 | <robot> <time> ...                                   # falls: none | ...
   최소 중심 거리: a1_1-husky … m, a1_2-husky … m, a1_1-a1_2 … m, 추종 중 Husky 와 최대 … m   # min center distances; max distance to Husky while following
   SLAM 공유 자세 최대 오차: a1_1 … m, a1_2 … m                        # max SLAM shared-pose error
+  복구 장치 작동 (mission.log 줄 수, * 는 throttle 로그라 덜 셀 수 있음):   # recovery-layer activations (mission.log lines; * = throttled log, may undercount)
+    a1_1: 0 명령 감시 <n>, 기울기 가드 <n>, 벗어나기 <n>, 옮겨 보기 <n>, … , 도착 목표 다시 옴* <n>   # per robot, 13 layers
 RESULT PASS|FAIL (마지막 단계 …, 한도 초과 세트 …, 사람 j/m)            # last phase, sets over limit, people
 ```
 
