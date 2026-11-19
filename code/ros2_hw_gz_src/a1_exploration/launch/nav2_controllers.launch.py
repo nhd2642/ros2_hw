@@ -1,4 +1,3 @@
-import os
 import tempfile
 import yaml
 
@@ -47,65 +46,42 @@ def generate_launch_description():
                 'stateful': True
             },
 
+            # 2026-11-19 N1: DWB -> MPPI (nav2_mppi_controller 1.1.20). 기준선 멈춤의 99 % 가 Nav (DWB 0 명령·진동·제자리 회전).
+            # 속도 한도는 DWB 와 같게 (앞 0~0.2 m/s, 후진 없음: N2 에서 후진이 앞뒤 진동·odom 흐름을 키워 기각), 컨트롤러만 바꿈.
+            # 비평가 값은 Nav2 기본 설정 그대로, 목표 방향(GoalAngle)·전진 선호(PreferForward)는 뺌 (도착 방향 무관, 후진 없음).
             'FollowPath': {
-                'plugin': 'dwb_core::DWBLocalPlanner',
-
-                'min_vel_x': 0.0,
-                'max_vel_x': 0.2,   # 2026-11-10: 0.15 -> 0.2 (walk_check 0.2 m/s 직진 102 %)
-
-                'min_vel_y': 0.0,
-                'max_vel_y': 0.0,
-
-                'max_vel_theta': 0.5,
-
-                'min_speed_xy': 0.03,   # 0 명령(정지) 궤적 제외: 선속도 < 0.03 이고 |회전| < 0.05 인 샘플은 무효 (fix12, DWB xy_theta_iterator.isValidSpeed)
-                'max_speed_xy': 0.2,   # 2026-11-10: 0.15 -> 0.2 (walk_check 0.2 m/s 직진 102 %)
-                'min_speed_theta': 0.05,
-
-                'acc_lim_x': 1.0,
-                'acc_lim_y': 0.0,
-                'acc_lim_theta': 1.0,
-
-                'decel_lim_x': -1.0,
-                'decel_lim_y': 0.0,
-                'decel_lim_theta': -1.0,
-
-                'vx_samples': 10,
-                'vy_samples': 1,
-                'vtheta_samples': 15,
-
-                'sim_time': 1.0,
-
-                'linear_granularity': 0.05,
-                'angular_granularity': 0.025,
-
+                'plugin': 'nav2_mppi_controller::MPPIController',
+                'time_steps': 40,          # model_dt 0.1 x 40 = 4 s 앞 (0.2 m/s 면 0.8 m, 국소 지도 3x3 m 안)
+                'model_dt': 0.1,           # = 1 / controller_frequency
+                'batch_size': 1000,        # 기본 2000 의 절반: 시뮬과 로봇 둘이 CPU 를 같이 씀
+                'iteration_count': 1,
+                'vx_std': 0.2,
+                'vy_std': 0.0,
+                'wz_std': 0.4,
+                'vx_max': 0.2,
+                'vx_min': 0.0,
+                'vy_max': 0.0,
+                'wz_max': 0.5,
+                'temperature': 0.3,
+                'gamma': 0.015,
+                'motion_model': 'DiffDrive',
+                'prune_distance': 1.5,     # 국소 지도 반 폭
                 'transform_tolerance': 0.4,
-
-                'critics': [
-                    'Oscillation',
-                    'BaseObstacle',
-                    'GoalAlign',
-                    'PathAlign',
-                    'PathDist',
-                    'GoalDist'
-                ],
-
-                'BaseObstacle.scale': 0.02,
-
-                'PathAlign.scale': 32.0,
-                'PathAlign.forward_point_distance': 0.1,
-
-                'GoalAlign.scale': 24.0,
-                'GoalAlign.forward_point_distance': 0.1,
-
-                'PathDist.scale': 32.0,
-                'GoalDist.scale': 24.0,
-
-                'RotateToGoal.scale': 32.0,
-                'RotateToGoal.slowing_factor': 5.0,
-                'RotateToGoal.lookahead_time': -1.0,
-                # 0 명령 진단 (2026-11-10, comm_relay tools/dwb_diag.py): A1_DWB_DIAG=1 일 때만 /<ns>/evaluation 발행 (궤적 159 개 점수라 무거움)
-                'publish_evaluation': os.environ.get('A1_DWB_DIAG', '0') == '1'
+                'retry_attempt_limit': 1,
+                'visualize': False,
+                'critics': ['ConstraintCritic', 'CostCritic', 'GoalCritic', 'PathAlignCritic', 'PathFollowCritic', 'PathAngleCritic'],
+                'ConstraintCritic': {'enabled': True, 'cost_power': 1, 'cost_weight': 4.0},
+                'CostCritic': {'enabled': True, 'cost_power': 1, 'cost_weight': 3.81, 'critical_cost': 300.0,
+                               'consider_footprint': True,       # A1 직사각형 발자국으로 충돌 검사
+                               'collision_cost': 1000000.0, 'near_goal_distance': 1.0, 'trajectory_point_step': 2},
+                'GoalCritic': {'enabled': True, 'cost_power': 1, 'cost_weight': 5.0, 'threshold_to_consider': 1.4},
+                'PathAlignCritic': {'enabled': True, 'cost_power': 1, 'cost_weight': 14.0, 'max_path_occupancy_ratio': 0.05,
+                                    'trajectory_point_step': 4, 'threshold_to_consider': 0.5, 'offset_from_furthest': 20,
+                                    'use_path_orientations': False},
+                'PathFollowCritic': {'enabled': True, 'cost_power': 1, 'cost_weight': 5.0, 'offset_from_furthest': 5,
+                                     'threshold_to_consider': 1.4},
+                'PathAngleCritic': {'enabled': True, 'cost_power': 1, 'cost_weight': 2.0, 'offset_from_furthest': 4,
+                                    'threshold_to_consider': 0.5, 'max_angle_to_furthest': 1.0, 'mode': 0}
             }
         }
 
