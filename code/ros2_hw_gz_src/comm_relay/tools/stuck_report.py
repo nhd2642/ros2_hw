@@ -20,7 +20,7 @@ import os
 import sys
 from collections import deque
 
-MOTION_COLS = ('state', 'src', 'vx', 'wz', 'gt_x', 'gt_y', 'gt_yaw', 'od_x', 'od_y', 'od_yaw')
+MOTION_COLS = ('state', 'src', 'vx', 'wz', 'gt_x', 'gt_y', 'gt_yaw', 'od_x', 'od_y', 'od_yaw', 'vy')   # vy: G2 옆걸음 (2026-11-19)
 ROBOTS = ('a1_1', 'a1_2')
 WINDOW, STILL, FWD, TURN, YAW_STILL, FLIPS = 5.0, 0.10, 0.05, 0.15, 0.2, 3
 KINDS = ('보행: 전진 안 됨', '보행: 회전 안 됨', 'Nav: 진동', 'Nav: 제자리 회전', 'Nav: 명령 0')

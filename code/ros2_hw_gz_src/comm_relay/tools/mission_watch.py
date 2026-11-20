@@ -77,7 +77,7 @@ class Watch(Node):
                 n, (m.pose.position.x, m.pose.position.y)), 10)
             self.create_subscription(String, f'/{ns}/comm_mode', lambda m, n=ns: self.st.__setitem__(n + '_comm', m.data), LATCHED)
             self.create_subscription(String, f'/{ns}/nav_executor/events', lambda m, n=ns: self.on_event(n, m.data), 10)
-            self.create_subscription(Twist, f'/{ns}/cmd_vel', lambda m, n=ns: self.cmd.__setitem__(n, (m.linear.x, m.angular.z)), 10)
+            self.create_subscription(Twist, f'/{ns}/cmd_vel', lambda m, n=ns: self.cmd.__setitem__(n, (m.linear.x, m.angular.z, m.linear.y)), 10)
             self.create_subscription(String, f'/{ns}/cmd_vel_source', lambda m, n=ns: self.src.__setitem__(n, m.data), LATCHED)
             self.create_subscription(Odometry, f'/{ns}/odom', lambda m, n=ns: self.od.__setitem__(
                 n, (m.pose.pose.position.x, m.pose.pose.position.y, yaw_of(m.pose.pose.orientation))), 10)
@@ -105,11 +105,11 @@ class Watch(Node):
             return
         row = [f'{self.t():.1f}', d['phase'], d['set']]
         for ns in NAMES[1:]:
-            vx, wz = self.cmd.get(ns, (0.0, 0.0))
+            vx, wz, vy = self.cmd.get(ns, (0.0, 0.0, 0.0))
             ox, oy, oyaw = self.od.get(ns, (float('nan'),) * 3)
             row += [self.st.get(ns, '-'), self.src.get(ns, '-'), f'{vx:.3f}', f'{wz:.3f}',
                     f'{self.pos[ns][0]:.3f}', f'{self.pos[ns][1]:.3f}', f'{self.yaw.get(ns, 0.0):.3f}',
-                    f'{ox:.3f}', f'{oy:.3f}', f'{oyaw:.3f}']
+                    f'{ox:.3f}', f'{oy:.3f}', f'{oyaw:.3f}', f'{vy:.3f}']
         self.motion.writerow(row)
 
     def on_odom(self, n, m):

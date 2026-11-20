@@ -136,7 +136,7 @@ class Executor:
         node.create_subscription(OccupancyGrid, f'/{ns}/local_costmap/costmap', lambda m: setattr(self, 'costmap', m),
                                  LATCHED)
         self.pub_cmd = node.create_publisher(Twist, f'/{ns}/cmd_vel_nav_test', 10)   # 먼저 돌기 (컨트롤러와 같은 출력)
-        node.create_subscription(Twist, f'/{ns}/cmd_vel_nav_test', lambda m: self.zero.msg(sim_now(self.node), m.linear.x, m.angular.z), 10)
+        node.create_subscription(Twist, f'/{ns}/cmd_vel_nav_test', lambda m: self.zero.msg(sim_now(self.node), math.hypot(m.linear.x, m.linear.y), m.angular.z), 10)
         self.pub_state = node.create_publisher(String, f'/{ns}/nav_executor/state', 10)
         self.pub_event = node.create_publisher(String, f'/{ns}/nav_executor/events', 10)   # '도착 x y' / '실패 이유'
         self.pub_path = node.create_publisher(Path, f'/{ns}/nav_executor/path', LATCHED)
