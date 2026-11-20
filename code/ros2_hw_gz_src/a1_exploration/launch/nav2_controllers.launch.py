@@ -56,15 +56,15 @@ def generate_launch_description():
                 'batch_size': 1000,        # 기본 2000 의 절반: 시뮬과 로봇 둘이 CPU 를 같이 씀
                 'iteration_count': 1,
                 'vx_std': 0.2,
-                'vy_std': 0.2,
+                'vy_std': 0.0,
                 'wz_std': 0.4,
                 'vx_max': 0.2,
                 'vx_min': 0.0,
-                'vy_max': 0.1,             # 2026-11-19 G2: 옆걸음 0 -> 0.1 m/s (walk_check vy ±0.1 105~108 %, 기울기 2° 이하)
+                'vy_max': 0.0,
                 'wz_max': 0.5,
                 'temperature': 0.3,
                 'gamma': 0.015,
-                'motion_model': 'Omni',    # G2: DiffDrive -> Omni (좁은 곳에서 옆으로 비킴)
+                'motion_model': 'DiffDrive',   # G2 (Omni, vy 0.1) 는 되돌림 (2026-11-20): 이동의 약 절반을 몸이 20° 넘게 비스듬히 걸어 카메라가 길을 안 봄 -> 사람 놓침
                 'prune_distance': 1.5,     # 국소 지도 반 폭
                 'transform_tolerance': 0.4,
                 'retry_attempt_limit': 1,
