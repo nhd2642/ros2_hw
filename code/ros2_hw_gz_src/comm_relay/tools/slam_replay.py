@@ -14,6 +14,7 @@ import json
 import math
 import os
 import random
+import signal
 import subprocess
 import sys
 import tempfile
@@ -55,6 +56,19 @@ class Errors:
         return f'평균 {sum(v) / len(v):.2f} / 최대 {max(v):.2f} m ({len(v)} 표본)' if v else '표본 없음'
 
 
+def stop(p):
+    """프로세스 그룹째 끈다: ros2 run 껍데기만 끄면 그 아래 노드가 남음 (2026-11-20, 재생마다 고아 slam_toolbox 가 쌓였음)."""
+    for sig in (signal.SIGINT, signal.SIGKILL):
+        try:
+            os.killpg(p.pid, sig)
+        except ProcessLookupError:
+            return
+        try:
+            p.wait(5)
+        except subprocess.TimeoutExpired:
+            pass
+
+
 def slam_params(ns, overrides):
     with open(CFG) as f:
         p = dict(yaml.safe_load(f)['/a1_1/slam_toolbox']['ros__parameters'])
@@ -85,7 +99,7 @@ def main():
                              '-r', f'__ns:=/{ns}', '-r', '__node:=slam_toolbox', '--params-file', tmp.name,
                              '-r', f'/tf:=/{ns}/tf', '-r', f'/tf_static:=/{ns}/tf_static', '-r', f'/scan:=/{ns}/scan_ready',
                              '-r', f'/map:=/{ns}/map', '-r', f'/map_metadata:=/{ns}/map_metadata'],
-                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
 
     rclpy.init()
     node = Node('slam_replay', parameter_overrides=[rclpy.parameter.Parameter('use_sim_time', value=True)])
@@ -133,13 +147,14 @@ def main():
     time.sleep(3.0)                                   # slam_toolbox 뜰 때까지
     topics = ['/mission/state'] + [f'/{ns}/{t}' for t in ('scan_ready', 'odom', 'tf', 'tf_static', 'imu/data', 'odom/ground_truth')]
     play = subprocess.Popen(['ros2', 'bag', 'play', bag, '--clock', '100', '-r', rate, '--topics', *topics,
-                             '--remap', f'/{ns}/tf:=/{ns}/tf_raw'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                             '--remap', f'/{ns}/tf:=/{ns}/tf_raw'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                            start_new_session=True)
     try:
         while play.poll() is None:
             rclpy.spin_once(node, timeout_sec=0.1)
     finally:
-        play.terminate()
-        slam.terminate()
+        stop(play)
+        stop(slam)
         os.unlink(tmp.name)
         node.destroy_node()
         rclpy.try_shutdown()
