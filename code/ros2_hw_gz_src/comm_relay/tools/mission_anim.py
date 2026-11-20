@@ -107,7 +107,7 @@ def main():
     handles += [plt.Line2D([], [], marker='s', ls='', color='gold', mec='k', ms=12, label='husky'),
                 plt.Line2D([], [], marker='*', ls='', color='0.6', ms=14, label='person (truth)'),
                 plt.Line2D([], [], marker='*', ls='', color='red', ms=14, label='person found')]
-    ax.legend(handles=handles, loc='upper right', fontsize=13, framealpha=0.9)
+    fig.legend(handles=handles, loc='center left', bbox_to_anchor=(0.01, 0.81), fontsize=13, frameon=False)   # 전체 지도 왼쪽 빈칸 (확대 화면을 안 가림)
 
     writer = cv2.VideoWriter(out, cv2.VideoWriter_fourcc(*'mp4v'), fps, (1920, 1080))
     dyn, cx = [], None
