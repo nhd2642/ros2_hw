@@ -31,7 +31,7 @@ SLAM and Nav2 launch files and exploration scripts (based on teammate code).
 | `launch/dual_slam.launch.py` | per-robot slam_toolbox + scan_ready_relay |
 | `launch/slam.launch.py` | SLAM for one robot |
 | `launch/nav2_planners.launch.py` | per-robot planner_server + global costmap |
-| `launch/nav2_controllers.launch.py` | per-robot controller_server (DWB) + local costmap |
+| `launch/nav2_controllers.launch.py` | per-robot controller_server (MPPI) + local costmap |
 | `config/slam_params.yaml` | slam_toolbox settings |
 | `scripts/nav_goal_bridge.py` | map merge (inherits `shared_map_with_robots`), coordinate conversion |
 | `scripts/frontier_detector.py` | frontier extraction |

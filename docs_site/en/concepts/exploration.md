@@ -75,7 +75,7 @@ The teammate Nav2 setup has only `planner_server`/`controller_server` (no `bt_na
 
 ### Turn first (TURNING)
 
-If the path ahead (0.5 m) differs from the body heading by more than 45°, it turns in place at 0.5 rad/s before `FollowPath` and stops within 20°. DWB picks **stopping** over turning when the path is behind the robot and stands still forever. Nav2's RotationShimController gives up turning when TF is late (A1: about 0.2-0.3 s), so it isn't used. Above 6° of tilt (on a ramp) there is no turn-first — an A1 once slid 0.5 m while turning in place on a 10° ramp and fell.
+If the path ahead (0.5 m) differs from the body heading by more than 45°, it turns in place at 0.5 rad/s before `FollowPath` and stops within 20°. In the DWB era the controller picked **stopping** over turning when the path was behind the robot and stood still forever; this was kept after the switch to MPPI. Nav2's RotationShimController gives up turning when TF is late (A1: about 0.2-0.3 s), so it isn't used. Above 6° of tilt (on a ramp) there is no turn-first — an A1 once slid 0.5 m while turning in place on a 10° ramp and fell.
 
 ### Failure handling
 
@@ -111,7 +111,7 @@ On arrival it goes `DONE` and publishes `/<ns>/set_done = k` (latched).
 | global costmap | SLAM map (static) + terrain layer + inflation **0.70 m** |
 | local costmap | 3 × 3 m rolling window, 5 Hz, lidar obstacle layer + terrain layer + inflation 0.35 m |
 | footprint | 0.60 × 0.32 m rectangle (it used to be a 0.23 m radius circle → could not pass the 0.5 m gap beside the Husky) |
-| controller | DWB: predicts 1 s trajectories for (vx, wz) samples and picks the lowest total cost |
+| controller | MPPI (`nav2_mppi_controller`, DiffDrive): rolls out 1000 noisy (vx, wz) trajectories 4 s ahead (40 × 0.1 s) and takes their cost-weighted average (footprint collision, path following, goal). No reverse, no sideways steps. Replaced DWB on 2026-11-19 ({doc}`../results/test_results`) |
 | speed | max 0.2 m/s, 0.5 rad/s |
 | goal | xy 0.20 m, any heading |
 | progress check | fail if less than 0.3 m in 10 s |

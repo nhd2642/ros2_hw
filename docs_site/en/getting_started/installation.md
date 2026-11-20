@@ -46,7 +46,7 @@ What each one is for:
 | `ros-humble-ros2-control`, `ros-humble-ros2-controllers` | passing CHAMP joint commands to the simulated joints |
 | `ros-humble-robot-localization` | A1 EKF (odom) |
 | `ros-humble-slam-toolbox` | per-robot 2D SLAM |
-| `ros-humble-nav2-bringup` | planning (NavFn) and following (DWB) servers |
+| `ros-humble-nav2-bringup` | planning (NavFn) and following (MPPI, `nav2-mppi-controller` from `ros-humble-navigation2`) servers |
 | `python3-opencv` | MobileNet-SSD person detection (OpenCV DNN) |
 | `python3-matplotlib`, `python3-pytest` | result plots, unit tests |
 

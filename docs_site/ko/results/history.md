@@ -1,6 +1,6 @@
 # 개발 이력과 이전 구조
 
-## 단계별 이력 (2026-11-03 ~ 11-14)
+## 단계별 이력 (2026-11-03 ~ 11-20)
 
 | 단계 | 기간 | 내용 |
 | --- | --- | --- |
@@ -11,7 +11,8 @@
 | 5. Gazebo Sim 이전 | 11-10 | Fortress 로 이전, 소프트웨어 렌더링, 시뮬 시간 한도, SAHI 사람 인식, footprint 사각형 |
 | 6. 정지·갇힘 | 11-10 ~ 11 | fix9~fix15: DWB 정지 궤적 제외, 폐경로 |
 | 7. 실험 규칙 | 11-11 ~ 12 | 한 변경·2 회·같은 시점 비교 규칙, fix16~19 |
-| **8. 임무 v2** | 11-12 ~ 14 | 세트 3 개 + 공동 건물, Husky 자율주행, A1 추종, Husky 기준 보정 → 전체 임무 PASS |
+| 8. 임무 v2 | 11-12 ~ 14 | 세트 3 개 + 공동 건물, Husky 자율주행, A1 추종, Husky 기준 보정 → 전체 임무 PASS |
+| **9. 강건성 실험** | 11-19 ~ 20 | 규칙 밖 세트 4 추가, 멈춤 진단 도구, 국소 컨트롤러 DWB → MPPI 채택 (후진·Smac·옆걸음·SLAM 파라미터는 기각·중단) |
 
 자세한 기록: 저장소 `history/CHANGELOG.md`, `docs/project_docs/` (21 개 문서), 누적 실행 요약 `history/results/runs.csv`.
 
@@ -41,7 +42,7 @@
 
 | 이전 | 지금 (임무 v2) |
 | --- | --- |
-| 건물 한 채 (`disaster.world`) | 세트 3 개 + 공동 건물 (`mission.world`, `make_world.py`) |
+| 건물 한 채 (`disaster.world`) | 세트 4 개 + 공동 건물 (`mission.world`, `make_world.py`) |
 | Husky 정지 | Husky 자율주행 (`husky_driver`) |
 | 구역 경계 y = 0 고정 (`husky_zone_planner`) | 세트마다 구역 사각형 (`/mission/state`) |
 | `husky_comm_switch`, `husky_survivor_board` | `husky_mission` 하나로 |

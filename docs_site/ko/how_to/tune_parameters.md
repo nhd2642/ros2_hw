@@ -28,11 +28,11 @@
 | --- | --- | --- |
 | Husky 주행 최대 | `husky_driver` `v_max` | 0.25 m/s |
 | A1 추종 최대 | `a1_follower` `v_max` | 0.35 m/s |
-| A1 탐색 (Nav2 DWB) | `nav2_controllers.launch.py` `max_vel_x` | 0.2 m/s |
+| A1 탐색 (Nav2 MPPI) | `nav2_controllers.launch.py` `vx_max` | 0.2 m/s |
 | 복귀 직접 주행 | `return_relay` `vx` | 0.15 m/s |
 | CHAMP 상한 | `gait.yaml` `max_linear_velocity_x` | 0.5 m/s |
 
-속도를 올리기 전에 {doc}`measure_gait` 로 그 속도의 응답과 기울기를 확인하세요. DWB 0.2 m/s 보다 높은 값은 시험하지 않았습니다.
+속도를 올리기 전에 {doc}`measure_gait` 로 그 속도의 응답과 기울기를 확인하세요. 탐색 0.2 m/s 보다 높은 값은 시험하지 않았습니다 (DWB·MPPI 모두).
 
 ## 탐색 실행기 (nav_executor)
 

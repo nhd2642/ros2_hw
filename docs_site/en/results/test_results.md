@@ -1,6 +1,6 @@
 # Test Results
 
-Test setup: Gazebo Sim headless, WSL2, RTF about 0.3 (2026-11-12 to 14). Positions and person truth come from Gazebo ground truth and are used **for evaluation only**.
+Test setup: Gazebo Sim headless, WSL2, RTF about 0.3 (2026-11-12 to 20). Positions and person truth come from Gazebo ground truth and are used **for evaluation only**.
 
 Verdict (`mission_watch.py`): **PASS** = reached the end + 0 falls + 0 exploration timeouts (REGROUP) + every person of the assigned sets reported within 1.0 m of truth + 0 home failures (added 2026-11-19; before that an A1 that gave up after 8 return attempts and stopped where it was still counted as returned).
 
@@ -11,40 +11,73 @@ Verdict (`mission_watch.py`): **PASS** = reached the end + 0 falls + 0 explorati
 
 :::{grid-item-card}
 :text-align: center
-**9 / 9**
+**11 / 11**
 ^^^
-people found (latest run)
+people found (final setup, passing run)
 :::
 
 :::{grid-item-card}
 :text-align: center
 **0**
 ^^^
-falls
+falls and home failures (4 MPPI full missions)
 :::
 
 :::{grid-item-card}
 :text-align: center
-**1,907 s**
+**1,910 s**
 ^^^
-sim time (about 2 h real)
+sim time (5 sets, about 1.6 h real)
 :::
 
 :::{grid-item-card}
 :text-align: center
-**3 / 7**
+**2 / 4**
 ^^^
-full-mission PASS rate (since first PASS)
+MPPI full-mission PASS (final setup 1 / 2)
 :::
 ::::
+
+## Robustness experiments (2026-11-19 to 20)
+
+Complex obstacles are what shows robustness, so the layout was kept (a rule-breaking set 4 was even added) and navigation, gait and SLAM were changed instead.
+
+- **Method**: one behavior change per bundle, verdict criteria written before running, and the number of times the changed behavior actually fired counted first. The benchmark is a partial run of three hard scenes (set 2 south hall, set 4, common building) × 2.
+- **Diagnosis**: `motion.csv` + `stuck_report.py` split stalls (5 s of following with under 0.1 m of true motion) into gait vs. navigation. 99 % of baseline stall time was navigation (DWB zero commands, oscillation, turning in place).
+
+| Bundle | Change | Benchmark result (6 runs) | Verdict |
+| --- | --- | --- | --- |
+| baseline | DWB + NavFn | PASS 5/6, 1 home failure, stall total 397 s, 24 "Failed to make progress", exploration total 2470 s | |
+| N2 | DWB reverse allowed + progress check 0.2 m | PASS 1 of 5, 3 home failures, stalls up in every scene (back-and-forth oscillation, odom drift up to 4.19 m) | rejected |
+| **N1** | **local controller DWB → MPPI** (forward 0-0.2 m/s, no reverse) | **PASS 6/6, 0 home failures, stall total 56 s, 3 "Failed to make progress", exploration total 2061 s** | **adopted** |
+| N3 | global planner NavFn → Smac 2D | PASS 4 of 5, no exploration-time gain | rejected |
+| G2 | MPPI sideways steps (Omni, vy 0.1 m/s) | PASS 6/6, stall 0 s, exploration total 2058 s | adopted, then reverted |
+| S1 | slam_toolbox matching window / minimum travel | 8 replays of the same bag with the same settings gave max error 0.97-4.03 m — not reproducible | stopped |
+
+- **Why G2 was reverted**: while following, the body heading differed from the direction of travel by more than 20° in 45-50 % of samples (N1: 1-2 %). Walking at a slant half the time, the camera did not look where the robot was going, and in a full mission a person was missed at 0.63 m because they were outside the field of view. The stall reduction was also 0 s under N3 (DiffDrive), so it was taken as run-to-run noise.
+- **Cost of MPPI**: thousands of "control loop missed its desired rate" warnings per run (10 Hz wall clock; DWB 0). See {doc}`limitations`.
+
+## Full missions with the final setup (baseline + N1) — 5 sets, 11 people
+
+| Run | Result | People | Home fail / falls | Sim time | Exploration (set 1 / 2 / 3 / 4 / common) | Stall | SLAM max (a1_1, a1_2) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `20261120_184028_set0_finaln1_1` | **PASS** | 11/11 | 0 / 0 | 1910 s | 228 / 405 / 400 / 348 / 324 s | 18 s | 0.72, 0.48 m |
+| `20261120_203446_set0_finaln1_2` | FAIL | 10/11 | 0 / 0 | 1582 s | 169 / 262 / 221 / 304 / 397 s | 6 s | 0.25, 0.23 m |
+| (G2) `20261120_134110_set0_final_1` | FAIL | 10/11 | 0 / 0 | 1738 s | 181 / 428 / 232 / 358 / 315 s | 0 s | 0.26, 0.32 m |
+| (G2) `20261120_153450_set0_final_2` | PASS | 11/11 | 0 / 0 | 1548 s | 178 / 266 / 203 / 361 / 334 s | 0 s | 0.43, 0.43 m |
+
+- 4 MPPI full missions: 2 PASS, 2 FAIL (each missed one person). All four finished all five sets with 0 home failures, falls, timeouts and "Failed to make progress". The last full mission with the baseline code (`20261118_220301_set0`, before set 4 was added) failed with 3 home failures, SLAM max 0.83 / 0.86 m.
+- **Person missed in N1 run 2**: the inner room at the end of the set 4 south L-shaped corridor. a1_1 failed path following twice near the 1.0 m door → "close as dead end and back off" → goals toward the inner room were then dropped as "passes a closed dead end" and exploration ended (2.6 m from the person, behind the corridor wall). The other 7 MPPI runs all found this person.
+- One of the 12 reports in N1 run 1 was a duplicate of the set 3 north person (1.5 m from truth).
+- 2D time-lapse video for presentations: `results/20261120_184028_set0_finaln1_1/mission_x20.mp4` (`tools/mission_anim.py`, 20×, 96 s). Set 4 3D scene clip: `results/20261120_224610_set3_clip/set4_x8.mp4` (final setup, set 4 partial run PASS, 8×, 39 s, stitched from Gazebo GUI screenshots taken every 0.5 s of sim time).
+
+## Last PASS in the DWB era — `results/20261114_062151_set0` (3 sets + common building)
 
 ```{figure} ../../images/figures/phase_timeline.png
 :width: 100%
 
-Per-phase times of the two committed passing runs. Red = exploration, grey = transit.
+Per-phase times of the two passing runs from the DWB era. Red = exploration, grey = transit.
 ```
-
-## Full mission with the current code — `results/20261114_062151_set0` (PASS)
 
 This run includes a comm 0/1 toggle during set 1 exploration.
 
@@ -85,7 +118,7 @@ SLAM shared-pose error. On arrival at set 2 the 1.37 m correction of a1_1 drops 
 Person reports received by the Husky.
 ```
 
-## Earlier PASS — `results/20261113_035152_set0` (no comm toggle)
+## Earlier DWB-era PASS — `results/20261113_035152_set0` (no comm toggle)
 
 | Phase | Sim time | People | SLAM error mean / max (a1_1, a1_2) |
 | --- | --- | --- | --- |
@@ -98,7 +131,7 @@ Person reports received by the Husky.
 - 11 person reports: 9 true + 2 with off positions in the common building.
 - Following in transit: both A1s about 1.9 m behind the Husky in ±0.65 m lanes (at that time the Husky center estimate was biased 0.15 m inward → later fixed with the box fit).
 
-## Reproducibility
+## Reproducibility (DWB era)
 
 Counting from the first PASS, **7 full missions were run, 4 reached the end, and 2 of those passed (counting home failures)** (`20261113_035152_set0`, `20261114_062151_set0`). Each run fixed the problem found in the previous one, so the code differs slightly between runs.
 
@@ -132,7 +165,11 @@ Counting from the first PASS, **7 full missions were run, 4 reached the end, and
 | returns right away in a new set | timer based on the previous set | reset every set |
 | 0.47 m wrong pose correction | Husky center estimated 0.4 m along the line of sight | box fit |
 | low RTF | every Python node receiving /clock at 1 kHz | `/clock_slow` 50 Hz, TF 200 → 50 Hz |
+| stalls while following, 6-32 "Failed to make progress" per run | 99 % of stall time was navigation (DWB zero commands, oscillation, turning in place) | MPPI local controller (N1) |
+| more home failures and stalls after allowing reverse | reverse amplified back-and-forth oscillation and odom drift | keep no reverse (N2 rejected) |
+| person missed at close range after allowing sideways steps | 45-50 % of travel at a slant, camera not facing the path | sideways off (G2 reverted) |
+| SLAM parameters can't be compared | replays of the same bag are not reproducible (cause unknown) | S1 stopped; fixed the replay tool's orphan-node bug |
 
 ## A1 gait
 
-See {doc}`../how_to/measure_gait`. Actual/commanded 95-108 %, tilt 2.3-5.5° (0.1-0.5 m/s).
+See {doc}`../how_to/measure_gait`. Forward actual/commanded 95-108 %, tilt 2.3-5.5° (0.1-0.5 m/s). Measured 2026-11-19: 0.05 m/s gives 81 %, sideways ±0.1 / ±0.2 m/s 105-108 %, turning in place ±0.3 / ±0.5 rad/s 107-109 %.

@@ -13,7 +13,6 @@ cd ~/ros2_hw/ws/src/comm_relay/tools
 | map doesn't grow | `slam_diag.sh` | sim + SLAM | saves the map before and after watching 10 s, a 360° turn, and 1 m forward |
 | odd lidar values (all 0.15 m etc.) | `lidar_check.sh` | sim with three rendering modes | reads one scan and one depth cloud each and compares |
 | Nav2 planning fails | `nav_probe.sh` | sim + SLAM + Nav2 | records map, costmap and plan result at 5/25/50 s |
-| Nav2 (DWB) won't move | `nav_debug.sh` | sim + SLAM + Nav2 + terrain | gives 3 goals and records commands, odom and DWB evaluation |
 | odd terrain hazards | `terrain_check.sh` | sim + SLAM + Nav2 + terrain | cloud frame, hazard positions at ramp edges |
 | odd walking or odom | `walk_check.sh` | sim | flat 0.2 m/s for 8 s, turn in place 0.5 rad/s for 6 s, compares odom to truth |
 | slow commands not followed | `lowspeed_check.sh` | flat sim, one A1 | 3 s ramp + 6 s measurement per speed |
@@ -29,7 +28,7 @@ python3 tf_check.py             # repeats the TF lookup the local costmap lidar 
 python3 sim_sleep.py 120        # wait 120 s of sim time (for scripts)
 ```
 
-To record moments when DWB outputs zero commands, start the Nav2 controller with `A1_DWB_DIAG=1 ros2 launch a1_exploration nav2_controllers.launch.py` to enable `/<ns>/evaluation` and record it with `dwb_diag.py` (trajectory scores are heavy, so it is off by default).
+Look for the cause of stalls while following in the `motion.csv` a mission run leaves. At the end `run_mission.sh` calls `stuck_report.py`, which splits stretches of FOLLOWING with under 0.1 m of true motion in 5 s into gait (forward command, body still) vs. navigation (mostly turning, oscillating or near-zero commands) and writes them to `stuck.txt` and the summary. (The DWB-era `nav_debug.sh` and `dwb_diag.py` were removed with the switch to MPPI.)
 
 ## Testing the planner alone (planner_probe)
 

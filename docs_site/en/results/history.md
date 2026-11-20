@@ -1,6 +1,6 @@
 # History & Previous Architecture
 
-## Development history (2026-11-03 to 11-14)
+## Development history (2026-11-03 to 11-20)
 
 | Stage | Dates | Content |
 | --- | --- | --- |
@@ -11,7 +11,8 @@
 | 5. Move to Gazebo Sim | 11-10 | ported to Fortress, software rendering, sim-time limits, SAHI person detection, rectangular footprint |
 | 6. Stalls and traps | 11-10 to 11 | fix9-fix15: excluded DWB stop trajectories, closed paths |
 | 7. Experiment rules | 11-11 to 12 | one change, two runs, same-time comparison; fix16-19 |
-| **8. Mission v2** | 11-12 to 14 | 3 sets + common building, autonomous Husky, A1 following, Husky-referenced correction → full mission PASS |
+| 8. Mission v2 | 11-12 to 14 | 3 sets + common building, autonomous Husky, A1 following, Husky-referenced correction → full mission PASS |
+| **9. Robustness experiments** | 11-19 to 20 | rule-breaking set 4 added, stall diagnosis tools, local controller DWB → MPPI adopted (reverse, Smac, sideways steps and SLAM parameters rejected or stopped) |
 
 Detailed records in the repository: `history/CHANGELOG.md`, `docs/project_docs/` (21 documents), cumulative run summary `history/results/runs.csv` (all in Korean).
 
@@ -41,7 +42,7 @@ Previous architecture rqt_graph 2: commands, comm and person detection.
 
 | Before | Now (mission v2) |
 | --- | --- |
-| one building (`disaster.world`) | 3 sets + common building (`mission.world`, `make_world.py`) |
+| one building (`disaster.world`) | 4 sets + common building (`mission.world`, `make_world.py`) |
 | stationary Husky | autonomous Husky (`husky_driver`) |
 | fixed zone boundary y = 0 (`husky_zone_planner`) | zone rectangles per set (`/mission/state`) |
 | `husky_comm_switch`, `husky_survivor_board` | merged into `husky_mission` |

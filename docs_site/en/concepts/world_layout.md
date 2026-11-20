@@ -8,10 +8,11 @@
 | --- | --- |
 | Road | along the x axis, 3 m wide (y −1.5-1.5) |
 | Start | Husky (0, 0), `a1_1` (−2.4, −0.8), `a1_2` (−2.4, +0.8). A small wall (1 m long, 0.6 m tall) 1.2 m in front of `a1_1` |
-| Sets 1·2·3 | x 4-12, 16-24, 28-36. An 8 × 5 m building pair either side of the road (south = `a1_1`, north = `a1_2`), 1.6 m door centered on the road side |
-| Common building | x 40-54, y −6-6 (14 × 12 m), two doors on the west side |
-| Parking spots | set 1 (9.6, 0), set 2 (21.6, 0), set 3 (33.6, 0), common (38.0, 0) |
-| People | one per building in each set, 3 in the common building, 9 in total |
+| Sets 1·2·3·4 | x 4-12, 16-24, 28-36, 40-48. An 8 × 5 m building pair either side of the road (south = `a1_1`, north = `a1_2`), 1.6 m door centered on the road side |
+| Set 4 (rule-breaking) | a test scene that deliberately breaks the layout rules below (2026-11-19). South: 1.2 m wide L-shaped corridor (two 90° turns) + 1.0 m door → person in the inner room. North: a room of pillars and boxes with 1.0-1.2 m gaps + 2 low debris pieces (0.12 m) below the lidar plane |
+| Common building | x 52-66, y −6-6 (14 × 12 m), two doors on the west side (moved 12 m east with its interior unchanged when set 4 was added) |
+| Parking spots | set 1 (9.6, 0), set 2 (21.6, 0), set 3 (33.6, 0), set 4 (45.6, 0), common (50.0, 0) |
+| People | one per building in each set, 3 in the common building, 11 in total |
 | Ramps | set 1 south, set 3 north, common building: 8° up-and-down hump, 0.14 m at the crest |
 
 Inside the buildings are rooms and partitions, boxes and pillars (at least 0.7 m tall).
@@ -35,7 +36,7 @@ Every rule was set **after an actual failure in testing**.
 
 ### 1. Corridors and rooms at least 2.0 m wide
 
-The Nav2 costmap thickens walls by 0.3 m on each side (inflation). A 1.7 m corridor effectively shrinks to 1.0 m, and at that width DWB spun in place and failed with "no progress". 1.6 m is used only for doors and openings passed **straight through**.
+The Nav2 costmap thickens walls by 0.3 m on each side (inflation). A 1.7 m corridor effectively shrinks to 1.0 m, and at that width (the then) DWB spun in place and failed with "no progress". 1.6 m is used only for doors and openings passed **straight through**.
 
 ### 2. Turning entrances at least 2.4 m
 

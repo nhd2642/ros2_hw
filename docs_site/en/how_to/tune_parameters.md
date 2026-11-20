@@ -28,11 +28,11 @@ This page collects **where the commonly changed values live** and how to change 
 | --- | --- | --- |
 | Husky drive max | `husky_driver` `v_max` | 0.25 m/s |
 | A1 follow max | `a1_follower` `v_max` | 0.35 m/s |
-| A1 exploration (Nav2 DWB) | `nav2_controllers.launch.py` `max_vel_x` | 0.2 m/s |
+| A1 exploration (Nav2 MPPI) | `nav2_controllers.launch.py` `vx_max` | 0.2 m/s |
 | Direct return drive | `return_relay` `vx` | 0.15 m/s |
 | CHAMP limit | `gait.yaml` `max_linear_velocity_x` | 0.5 m/s |
 
-Before raising a speed, check its response and tilt with {doc}`measure_gait`. DWB speeds above 0.2 m/s were not tested.
+Before raising a speed, check its response and tilt with {doc}`measure_gait`. Exploration speeds above 0.2 m/s were not tested (DWB or MPPI).
 
 ## Exploration executor (nav_executor)
 

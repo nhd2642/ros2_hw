@@ -31,7 +31,7 @@ SLAM·Nav2 launch 와 탐색 스크립트 (팀원 코드 기반).
 | `launch/dual_slam.launch.py` | 로봇별 slam_toolbox + scan_ready_relay |
 | `launch/slam.launch.py` | 로봇 한 대 SLAM |
 | `launch/nav2_planners.launch.py` | 로봇별 planner_server + 전역 비용지도 |
-| `launch/nav2_controllers.launch.py` | 로봇별 controller_server (DWB) + 국소 비용지도 |
+| `launch/nav2_controllers.launch.py` | 로봇별 controller_server (MPPI) + 국소 비용지도 |
 | `config/slam_params.yaml` | slam_toolbox 설정 |
 | `scripts/nav_goal_bridge.py` | 지도 병합(`shared_map_with_robots` 상속), 좌표 변환 |
 | `scripts/frontier_detector.py` | 프런티어 추출 |

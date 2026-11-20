@@ -49,7 +49,7 @@ World + Husky + two A1s. Husky spawns at 4 s, `a1_1` at 6 s, `a1_2` at 20 s.
 | --- | --- |
 | `dual_slam.launch.py` | slam_toolbox + scan_ready_relay for both robots |
 | `nav2_planners.launch.py` | planner_server + global costmap + lifecycle_manager for both robots |
-| `nav2_controllers.launch.py` | controller_server + local costmap for both robots. With `A1_DWB_DIAG=1` it publishes DWB evaluations |
+| `nav2_controllers.launch.py` | controller_server (MPPI, forward 0-0.2 m/s) + local costmap for both robots |
 
 ### terrain_perception/terrain.launch.py
 
@@ -77,15 +77,17 @@ Starts: `husky_driver`, `a1_follower`, `return_relay`, `cmd_vel_arbiter`, `front
 | --- | --- |
 | `run_mission.sh` | the whole mission |
 | `mission_watch.py` | observation log and verdict (`<folder> <start_set> <sets> <limit> [comm off at] [off for]`) |
-| `gait_sweep.sh` | gait speed response |
+| `gait_sweep.sh` | gait speed response (forward, sideways, turning in place, arcs) |
 | `walk_check.sh`/`.py` | walking and odom check |
 | `lowspeed_check.sh`/`.py` | slow command following |
 | `slam_diag.sh`/`.py` | SLAM map diagnosis |
 | `nav_probe.sh`/`.py` | Nav2 planning failure diagnosis |
-| `nav_debug.sh`/`.py` | DWB stall diagnosis |
 | `terrain_check.sh`/`.py` | terrain hazard check |
 | `lidar_check.sh`/`.py` | lidar value check |
-| `costmap_check.py`, `costmap_diag.py`, `tf_check.py`, `dwb_diag.py` | costmap, TF and DWB diagnosis |
+| `costmap_check.py`, `costmap_diag.py`, `tf_check.py` | costmap and TF diagnosis |
+| `stuck_report.py` | splits stalls while following into gait vs. navigation causes from `motion.csv` (called by `run_mission.sh` at the end) |
+| `slam_replay.py` | compares slam_toolbox parameters on a `BAG=1` bag (results vary even with the same settings, so not usable for comparison; see {doc}`../results/limitations`) |
+| `mission_anim.py` | result folder → top-down 2D time-lapse mp4 (`--speed=20`) |
 | `map_snapshot.py` | map + scan PNG |
 | `sim_sleep.py` | wait in sim time |
 | `common.sh` | shared tool functions (cleanup, visualization `VIS=1`) |

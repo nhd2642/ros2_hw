@@ -49,7 +49,7 @@ bash comm_relay/tools/run_mission.sh [start_set | clean]
 | --- | --- |
 | `dual_slam.launch.py` | 두 로봇 slam_toolbox + scan_ready_relay |
 | `nav2_planners.launch.py` | 두 로봇 planner_server + 전역 비용지도 + lifecycle_manager |
-| `nav2_controllers.launch.py` | 두 로봇 controller_server + 국소 비용지도. 환경 변수 `A1_DWB_DIAG=1` 이면 DWB 평가 발행 |
+| `nav2_controllers.launch.py` | 두 로봇 controller_server (MPPI, 앞 0~0.2 m/s) + 국소 비용지도 |
 
 ### terrain_perception/terrain.launch.py
 
@@ -77,15 +77,17 @@ bash comm_relay/tools/run_mission.sh [start_set | clean]
 | --- | --- |
 | `run_mission.sh` | 임무 전체 |
 | `mission_watch.py` | 관찰 기록·판정 (`<폴더> <start_set> <세트 수> <한도> [통신 끔 시각] [끈 시간]`) |
-| `gait_sweep.sh` | 보행 속도 응답 |
+| `gait_sweep.sh` | 보행 속도 응답 (전진·옆걸음·제자리 회전·선회) |
 | `walk_check.sh`/`.py` | 보행·odom 점검 |
 | `lowspeed_check.sh`/`.py` | 저속 명령 추종 |
 | `slam_diag.sh`/`.py` | SLAM 지도 진단 |
 | `nav_probe.sh`/`.py` | Nav2 계획 실패 진단 |
-| `nav_debug.sh`/`.py` | DWB 정지 진단 |
 | `terrain_check.sh`/`.py` | 지형 위험 확인 |
 | `lidar_check.sh`/`.py` | 라이다 값 점검 |
-| `costmap_check.py`, `costmap_diag.py`, `tf_check.py`, `dwb_diag.py` | 비용지도·TF·DWB 진단 |
+| `costmap_check.py`, `costmap_diag.py`, `tf_check.py` | 비용지도·TF 진단 |
+| `stuck_report.py` | `motion.csv` 로 추종 중 멈춤을 보행 / Nav 원인으로 나눔 (`run_mission.sh` 가 끝에 부름) |
+| `slam_replay.py` | `BAG=1` bag 으로 slam_toolbox 파라미터 비교 (같은 설정도 결과가 흔들려 비교에는 못 씀, {doc}`../results/limitations`) |
+| `mission_anim.py` | 결과 폴더 → 위에서 본 2D 배속 영상 mp4 (`--speed=20`) |
 | `map_snapshot.py` | 지도 + 스캔 PNG |
 | `sim_sleep.py` | 시뮬 시간으로 기다림 |
 | `common.sh` | 도구 공통 함수 (정리, 시각화 `VIS=1`) |

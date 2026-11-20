@@ -13,7 +13,6 @@ cd ~/ros2_hw/ws/src/comm_relay/tools
 | 지도가 안 커진다 | `slam_diag.sh` | 시뮬 + SLAM | 관찰 10 s, 360° 회전, 1 m 전진 전후의 지도를 그림으로 남김 |
 | 라이다 값이 이상하다 (전부 0.15 m 등) | `lidar_check.sh` | 시뮬을 세 가지 렌더링 방식으로 | 스캔·깊이 점구름 한 장씩 읽어 비교 |
 | Nav2 계획이 실패한다 | `nav_probe.sh` | 시뮬 + SLAM + Nav2 | 5/25/50 s 에 지도·비용지도·계획 결과 기록 |
-| Nav2(DWB) 가 안 움직인다 | `nav_debug.sh` | 시뮬 + SLAM + Nav2 + 지형 | 목표 3 개를 주고 명령·odom·DWB 평가 기록 |
 | 지형 위험이 이상하다 | `terrain_check.sh` | 시뮬 + SLAM + Nav2 + 지형 | 점구름 프레임, 경사로 가장자리 위험 위치 |
 | 걷기·odom 이 이상하다 | `walk_check.sh` | 시뮬 | 평지 0.2 m/s 8 s, 제자리 0.5 rad/s 6 s 뒤 정답과 odom 비교 |
 | 저속 명령을 못 따른다 | `lowspeed_check.sh` | 평지 시뮬, A1 한 대 | 속도마다 3 s 가속 + 6 s 측정 |
@@ -29,7 +28,7 @@ python3 tf_check.py             # 국소 비용지도 라이다 층이 하는 TF
 python3 sim_sleep.py 120        # 시뮬 시간으로 120 s 기다림 (스크립트용)
 ```
 
-DWB 가 0 명령을 내는 순간을 기록하려면 Nav2 추종 서버를 `A1_DWB_DIAG=1 ros2 launch a1_exploration nav2_controllers.launch.py` 로 띄워 `/<ns>/evaluation` 을 켜고 `dwb_diag.py` 로 기록합니다 (궤적 점수라 무거워서 기본은 끔).
+추종 중 멈춤의 원인은 임무 실행이 남기는 `motion.csv` 로 봅니다. `run_mission.sh` 가 끝에 `stuck_report.py` 를 불러 FOLLOWING 중 정답이 5 s 동안 0.1 m 미만인 구간을 보행(전진 명령인데 몸이 정지) / Nav(회전 위주·진동·거의 0 명령)로 나눠 `stuck.txt` 와 summary 에 적습니다. (DWB 시절의 `nav_debug.sh`, `dwb_diag.py` 는 MPPI 로 바꾸며 지웠습니다.)
 
 ## 경로 계획만 따로 시험 (planner_probe)
 

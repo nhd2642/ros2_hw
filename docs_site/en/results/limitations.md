@@ -5,30 +5,34 @@ The limitations known today, written down plainly. Use this as a starting point 
 ## Reproducibility
 
 :::{warning}
-**Only one run has passed the full mission with the current code** (three counting earlier code). Results varied between runs, and the same set took 180-810 s to explore. Not enough runs were made to say how often it passes.
+**2 of 4 full missions (5 sets) with MPPI passed** (1 of 2 with the final N1 setup). Both failures missed one person, for different reasons. The same set took 170-430 s to explore depending on the run. Not enough runs were made to say how often it passes.
 :::
 
 ## Position
 
-- **SLAM drift within a set.** An A1 map can drift close to 1 m even within one set (latest run `a1_1`: up to 0.97 m in set 1, 0.99 m in the common building). It is re-aligned to the Husky on every set arrival, but drift that builds up inside a set stays, so zone rectangles and reported person positions can be off by that much.
+- **SLAM drift within a set.** An A1 map can drift even within one set (DWB era `a1_1`: up to 0.97 m in set 1, 0.99 m in the common building; 4 MPPI full missions: max 0.23-0.72 m).
+- **SLAM offline replay is not reproducible.** Replaying the same bag with the same settings 8 times through `slam_replay.py` gave max errors of 0.97-4.03 m, so it could not be used to compare SLAM parameters. The cause was not found. It is re-aligned to the Husky on every set arrival, but drift that builds up inside a set stays, so zone rectangles and reported person positions can be off by that much.
 - **HOLD position offset.** The spot where a robot stops after a comm loss is odom based and can be away from the explore start (latest run 0.85 m).
 - **Drift while walking in place.** When an A1 is blocked and walks in place, leg odom keeps advancing and the SLAM position drifts. The cause is not fixed; it is avoided by removing trap features from the layout and re-aligning to the Husky every set.
 
 ## Following & exploration
 
-- **Turning entrances.** DWB following still sometimes fails with "no progress" on paths around a wall end (a run gave up a room after 3 failures even at a 2.4 m entrance). After 3 failures at the same place the set gives it up, so the mission continues but people in that room are missed.
+- **Following failures at narrow doors and corridors.** With MPPI, "no progress" failures dropped to 0-3 per run, but path-following failures at narrow doors and corridors remain. After 3 failures at the same place the set gives it up, so the mission continues but people in that room are missed.
+- **A dead-end closure can block the only way in.** After two following failures at the same place, the dead-end recovery closes that spot; if it is the only corridor into an inner room, that room is given up (set 4 south 1.2 m L-shaped corridor — why a person was missed in final-setup run 2). Nothing reopens a closed spot.
+- **MPPI compute load.** Thousands of "control loop missed its desired rate" warnings per run (10 Hz wall clock, with batch size cut to 1000). The results come from an Intel Core Ultra 5 226V (8 cores), WSL2 with 7.5 GB, load average about 24 during the sim, with Gazebo cameras drawn by the software renderer (swrast). Some parts are tied to the wall clock, so behavior may differ somewhat on a faster PC.
 - **Return failure.** If an A1 can't get back after 8 attempts, it reports the set done where it is. The Husky then waits for it in the next transit. It happened in 3 full missions, in the common building center room (1.6 m east doorway, a person in the middle) and the set 2 south hall (1.6 m between pillars), both below the layout rules. Since 2026-11-19 the PASS verdict counts it as FAIL.
 - **The 90 s tail.** Many sets end not with 0 frontiers but with "no reachable goal for 90 s" (frontiers within 0.4 m of obstacles remain) → up to 90 s more per set.
 - **Clearance between robots.** A1 centers came as close as 0.46 m (body length 0.6 m). Contact was not measured.
 
 ## Person detection
 
-- Extra reports with off positions or low scores can occur (latest run 0; the two earlier passing runs 2 each).
+- **Camera field of view.** A person is found only once inside the camera's field of view (about ±52°). If the body faces elsewhere while passing or stopping, a person can be missed at close range (confirmed outside the view at 0.63 m in a G2 run). Exploration ends when the (lidar) map is complete; what the camera has seen is not tracked.
+- Extra reports with off positions or low scores can occur (1 duplicate in 1 of 4 MPPI full missions; the two DWB-era passing runs 2 each).
 - Comparison with the configured person count is by count, so extra reports can mark "all found" early (set completion is decided only by both A1s returning).
 
 ## Scope
 
-- The layout is easier than the original map (corridors at least 2 m, ramps 8° humps without side edges). This mission structure was not run on the original `disaster.world`.
+- Sets 1-3 and the common building are easier than the original map (corridors at least 2 m, ramps 8° humps without side edges); set 4 is the one place that breaks the rules. This mission structure was not run on the original `disaster.world`.
 - The map merge assumes known spawn poses (it is not map registration).
 - Walking on slopes was not measured separately. The 8° humps were crossed many times in mission runs without falls.
 - `odom_scaler` was not re-measured after the change to 1.125.

@@ -46,7 +46,7 @@ sudo apt update && sudo apt install -y ros-humble-desktop ros-humble-ros-gz ros-
 | `ros-humble-ros2-control`, `ros-humble-ros2-controllers` | CHAMP 가 내는 관절 명령을 시뮬 관절에 전달 |
 | `ros-humble-robot-localization` | A1 의 EKF (odom) |
 | `ros-humble-slam-toolbox` | 로봇별 2D SLAM |
-| `ros-humble-nav2-bringup` | 경로 계획(NavFn)·추종(DWB) 서버 |
+| `ros-humble-nav2-bringup` | 경로 계획(NavFn)·추종(MPPI, `ros-humble-navigation2` 에 포함된 `nav2-mppi-controller`) 서버 |
 | `python3-opencv` | MobileNet-SSD 사람 인식 (OpenCV DNN) |
 | `python3-matplotlib`, `python3-pytest` | 결과 그림, 단위 시험 |
 
