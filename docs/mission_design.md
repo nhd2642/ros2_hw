@@ -127,6 +127,7 @@ Husky 를 여는 노드를 터미널에서 직접 쓰려면 `mission.launch.py h
 - N1 2 회의 놓친 사람: 세트 4 남쪽 L 자 복도 끝 안쪽 방. a1_1 이 1.0 m 문 근처에서 경로 추종 실패 2 번 → '같은 자리 2 번 → 폐경로로 닫고 물러남'
   → 그 뒤 안쪽 방 쪽 목표가 '폐경로 지남' 으로 버려져 프런티어 0 으로 탐색 끝 (사람까지 2.6 m, 복도 벽 너머). 이 사람은 다른 MPPI 실행 7 번에서는 모두 찾았다.
 - N1 1 회의 보고 12 건 중 1 건은 세트 3 북쪽 사람의 중복 보고 (정답에서 1.5 m, 묶는 거리 1.0 m 밖).
+- 통신 0/1 확인 (`results/20261121_185500_set0_commcheck`, 세트 1, 탐색 80 s 뒤 0, 60 s 뒤 1): PASS. 0 에서 두 A1 모두 1.1 s 뒤 RETURNING, 1 에서 STOPPING → NORMAL 로 탐색 재개 (`docs/experiments/Merge_검토_통신시험_기준.txt`).
 - 2D 배속 영상: `results/20261120_184028_set0_finaln1_1/mission_x20.mp4` (`tools/mission_anim.py`, 20 배속, 96 s).
   세트 4 3D 장면 클립: `results/20261120_224610_set3_clip/set4_x8.mp4` (최종 설정, 세트 4 부분 시험 PASS, 8 배속, 39 s). WSL 소프트웨어 렌더링에서는 Gazebo GUI 가 ogre2 로 죽고
   Fortress 녹화 플러그인은 서비스로 못 켜서, GUI(ogre1)의 `/gui/screenshot` 을 시뮬 0.5 s 마다 불러 이었다.

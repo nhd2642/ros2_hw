@@ -1,0 +1,13 @@
+main 합치기 전 검토 (2026-11-21): 최종 설정(MPPI) 으로 통신 0/1 동작 확인. 이번 실험들(11-19~20)은 통신 조작 없이 돌렸고,
+마지막 통신 시험은 DWB 시절 e878b38 확인 실행이었다.
+실행: SETS=1 COMM_OFF_AT=80 COMM_OFF_FOR=60 run_mission.sh 0 (세트 1, 탐색 시작 80 s 뒤 통신 0, 60 s 뒤 1) -> *_set0_commcheck
+판정 (실행 전에 고정):
+  1. RESULT PASS (사람 2/2, 홈 실패 0, 넘어짐 0)
+  2. 통신 0 뒤 두 A1 모두 RETURNING (지나온 길 되짚기), Husky 정지
+  3. 통신 1 뒤 STOPPING -> NORMAL, 탐색 재개 후 세트 완료
+  4. mission.log 에 Traceback 0
+
+결과 (20261121_185500_set0_commcheck): RESULT PASS — 사람 2/2, 홈 실패 0, 넘어짐 0, 탐색 246 s, Traceback 0.
+  통신 0: 두 A1 모두 하트비트 1.1 s 뒤 NORMAL -> RETURNING, 실행기 PAUSED, Husky 정지 로그. a1_2 는 탐색 시작 위치 도착 -> HOLD.
+  통신 1: a1_1 RETURNING -> STOPPING -> NORMAL, a1_2 HOLD -> STOPPING -> NORMAL, 실행기 PAUSED -> IDLE, 탐색 재개 후 둘 다 복귀로 세트 완료.
+판정: 기준 1~4 모두 충족 -> main 합치기 진행.
