@@ -1,5 +1,47 @@
 # 인수인계
 
+## ★ 2026-11-21 인계 (지금 상태 — 이 절부터 읽는다)
+
+### 지금 상태
+- 임무: Husky 가 도로를 따라 세트 4 곳 + 공동 건물을 돌고, A1 두 대가 따라가 건물마다 탐색·사람 찾기·복귀 (사람 11 명).
+  세트 4 (x 40~48) 는 배치 규칙을 **일부러 어기는** 어려운 장면 (폭 1.2 m L 자 복도, 1.0~1.2 m 틈의 기둥·상자 방, 라이다 아래 낮은 잔해).
+- 최종 설정 = 기준선 + **국소 컨트롤러 DWB → MPPI** (`a1_exploration/launch/nav2_controllers.launch.py`, 앞 0~0.2 m/s, 후진·옆걸음 없음).
+- 결과: 어려운 장면 벤치마크에서 멈춤 397 → 56 s, 홈 실패 1 → 0. MPPI 전체 임무 4 회 PASS 2 (FAIL 둘 다 사람 1 명 놓침), 홈 실패·넘어짐 0.
+- 자세한 결과·원인·한계: `docs/mission_design.md` 5 절 (같은 내용 `docs_site/ko|en/results/`).
+  실험마다 실행 전에 적은 판정 기준과 결과: `docs/experiments/*_기준.txt` (N1 채택, N2·N3 기각, G2 채택했다가 되돌림, S1 중단, Final = 전체 임무).
+
+### 남은 과제 (우선순위 순, 근거는 mission_design.md '남은 한계')
+1. **폐경로가 유일한 길을 닫음** — 같은 자리 추종 실패 2 번이면 `nav_executor` 가 그 자리를 폐경로로 닫는데, 세트 4 남쪽처럼 안쪽 방으로 가는 유일한 복도면 방을 포기한다
+   (`docs/experiments/Final_기준.txt` N1 2 회). 후보: 닫은 자리를 일정 시간 뒤 다시 열기, 또는 프런티어가 그 너머에만 남으면 한 번 더 시도.
+2. **카메라 시야 밖 사람 놓침** — 사람 인식은 카메라 ±52° 안이어야 한다. 탐색 끝은 라이다 지도 기준이라 '카메라로 본 곳' 을 안 센다.
+   후보: 세트 끝내기 전에 사람 후보 쪽(방 구석 등)으로 한 바퀴 돌기, 또는 카메라 시야 커버리지 지도.
+3. **SLAM 오프라인 재생이 재현 안 됨** — `comm_relay/tools/slam_replay.py` 로 같은 bag·같은 설정 8 번 → 최대 오차 0.97~4.03 m. 원인을 찾아야 SLAM 파라미터 실험(S1·S2) 가능.
+   후보: 재생마다 받은/처리한 스캔 수, `tf_static` 받은 시각, 정렬 시점을 찍어 어디서 갈리는지.
+4. **MPPI 계산 부하** — controller 주기(10 Hz, 벽시계) 놓침 경고가 실행당 수천 번. 결과는 노트북 CPU (Core Ultra 5 226V, WSL2 7.5 GB, 카메라 소프트웨어 렌더링) 기준이라 더 빠른 PC 에서 다시 확인 필요.
+5. **통과율** — 전체 임무 PASS 2/4. 몇 번에 한 번 통과하는지 말하려면 더 돌려야 한다 (한 번 약 1.6 시간).
+
+### 하지 말 것 (이미 해 보고 기각)
+- DWB 후진 허용 (N2): 앞뒤 진동·odom 흐름 → 홈 실패 3.
+- Smac 2D 플래너 (N3): 이득 없음.
+- MPPI 옆걸음 (G2, Omni vy 0.1): 이동의 45~50 % 를 몸이 비스듬히 걸어 카메라가 길을 안 봐 사람을 놓침.
+
+### 작업 규칙 (이번에 쓴 것)
+- 한 묶음 = 동작 변경 하나. 판정 기준을 실행 **전에** `results/<실험>_기준.txt` 에 적고, 바꾼 동작의 작동 횟수를 먼저 센다.
+- 벤치마크: `SETS=1 BAG=1 bash src/comm_relay/tools/run_mission.sh <k>` 를 k = 1 (세트 2), 3 (세트 4), 4 (공동 건물) × 2 회. 세트 하나 약 25 분, 한 번에 시뮬 하나만.
+- 기동 불량(Nav2·TF 안 뜸)으로 망가진 실행은 폴더에 `ABORTED.txt` 를 두고 다시 돌린다.
+- 멈춤 원인은 `motion.csv` + `stuck_report.py` (summary 에 '원인 보행 / Nav'). 발표 영상은 `tools/mission_anim.py <결과 폴더> --speed=20`.
+
+### 받아서 실행
+```bash
+git clone -b claude/project-code-review-structure-c9b240 https://github.com/nhd2642/ros2_hw.git ~/ros2_hw   # WSL 홈에 (/mnt/c 아래 말 것)
+cd ~/ros2_hw/ws && source /opt/ros/humble/setup.bash && colcon build --symlink-install && source install/setup.bash
+bash src/comm_relay/tools/run_mission.sh            # 전체 임무 (실제 약 1.6 시간), 결과 ~/ros2_hw/results/
+SETS=1 bash src/comm_relay/tools/run_mission.sh 3   # 세트 4 만
+```
+apt 패키지는 `README.md`. 실험 결과 폴더(`results/`, 36 GB)와 발표 영상은 용량 때문에 저장소에 없다.
+
+---
+
 > **2026-11-12 방향 전환 (임무 v2)**: 건물 1채·Husky 고정 구조에서, Husky 가 도로를 따라 세트 3개와 공동 건물을 차례로 도는 구조로 바뀌었다.
 > 지금 구조·실행법·시험 결과는 `docs/mission_design.md`. 아래 본문은 그 전(fix19)까지의 기록이며, 6 절 문제 분석과 7 절 실수 목록은 지금도 참고한다.
 > 작업 위치는 `code/ros2_hw_gz_src` (빌드 `ws/`), 원본 `~/ros2_hw_gz` 는 건드리지 않았다. 묶음(zip)·apply.sh 방식은 더 쓰지 않는다.
