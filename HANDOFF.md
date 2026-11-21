@@ -33,7 +33,7 @@
 
 ### 받아서 실행
 ```bash
-git clone -b claude/project-code-review-structure-c9b240 https://github.com/nhd2642/ros2_hw.git ~/ros2_hw   # WSL 홈에 (/mnt/c 아래 말 것)
+git clone https://github.com/nhd2642/ros2_hw.git ~/ros2_hw   # main 에 최종본이 합쳐져 있음. WSL 홈에 (/mnt/c 아래 말 것)
 cd ~/ros2_hw/ws && source /opt/ros/humble/setup.bash && colcon build --symlink-install && source install/setup.bash
 bash src/comm_relay/tools/run_mission.sh            # 전체 임무 (실제 약 1.6 시간), 결과 ~/ros2_hw/results/
 SETS=1 bash src/comm_relay/tools/run_mission.sh 3   # 세트 4 만
