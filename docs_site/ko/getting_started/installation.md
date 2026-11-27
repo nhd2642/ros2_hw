@@ -47,7 +47,7 @@ sudo apt update && sudo apt install -y ros-humble-desktop ros-humble-ros-gz ros-
 | `ros-humble-robot-localization` | A1 의 EKF (odom) |
 | `ros-humble-slam-toolbox` | 로봇별 2D SLAM |
 | `ros-humble-nav2-bringup` | 경로 계획(NavFn)·추종(MPPI, `ros-humble-navigation2` 에 포함된 `nav2-mppi-controller`) 서버 |
-| `python3-opencv` | MobileNet-SSD 사람 인식 (OpenCV DNN) |
+| `python3-opencv` | YOLOv4-tiny 사람 인식 (OpenCV DNN) |
 | `python3-matplotlib`, `python3-pytest` | 결과 그림, 단위 시험 |
 
 ## 3. 저장소 받기
@@ -93,12 +93,14 @@ echo "source ~/ros2_hw/ws/install/setup.bash" >> ~/.bashrc
 
 ## 5. 사람 인식 모델 확인
 
-MobileNet-SSD 모델 파일은 저장소에 들어 있습니다. 없으면 `survivor_detector` 가 경고만 내고 사람 인식을 건너뜁니다(탐색은 계속).
+YOLOv4-tiny 모델 파일은 저장소에 들어 있습니다. 없으면 `survivor_detector` 가 경고만 내고 사람 인식을 건너뜁니다(탐색은 계속).
 
 ```bash
-ls ~/ros2_hw/ws/person_ai_models/MobileNet-SSD/
-# deploy.prototxt  mobilenet_iter_73000.caffemodel
+ls ~/ros2_hw/ws/person_ai_models/yolov4-tiny/
+# README.md  yolov4-tiny.cfg  yolov4-tiny.weights
 ```
+
+빠졌으면 그 폴더 `README.md` 의 주소(AlexeyAB/darknet 공개 가중치)에서 두 파일을 받습니다.
 
 ## 6. 설치 확인
 

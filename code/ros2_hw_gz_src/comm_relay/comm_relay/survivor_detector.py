@@ -1,11 +1,10 @@
 """사람(마네킹) 발견 노드 (record15). 로봇마다: 카메라 사람 인식 -> 라이다로 거리 -> 자기 map 좌표 -> 지도 표시·1 초 정지·Husky 알림.
 
-인식은 팀원 detect_human/src/mannequin_test/scripts/a1_person_camera_ai.py 와 같은 방식:
-  OpenCV DNN MobileNet-SSD (Caffe, PASCAL VOC person = 15, CPU, 300x300, scale 0.007843, mean 127.5), 로봇마다 period s(기본 1 s, record17) 에 1 장.
-  2026-11-10: 전체 장 + 가로로 겹친 3 조각(폭 1/2, 1/4 씩 이동)을 따로 추론해 원래 좌표로 모은 뒤 가로 구간 IoU 0.5 NMS
-  (SAHI 방식, Akyon et al. 2022). 640x480 을 300x300 으로 줄이면 멀리 작게 보이거나 다리만 보이는 사람을 놓침 (SSD 는 작은 물체에 약함,
-  Liu et al. 2016) -> 클라우드 점검에서 사람이 보이는 11 장 중 conf 0.4 넘는 장 1 -> 5, 사람 없는 장 421 개에서 오탐 0 (전과 같음).
-  모델 파일 model_dir (기본 <작업 공간>/person_ai_models/MobileNet-SSD: deploy.prototxt, mobilenet_iter_73000.caffemodel).
+인식: OpenCV DNN YOLOv4-tiny (Darknet, COCO 사람 = 클래스 0, CPU, 416x416 한 장, 약 30 ms), 로봇마다 period s(기본 1 s, record17) 에 1 장.
+  2026-11-26: MobileNet-SSD(팀원 detect_human 방식, PASCAL VOC) + 가로 3 조각 추론에서 바꿈. SSD 는 옆모습 사람을 못 봤음 —
+  세트 4 북쪽 사람(옆으로 섬)을 2~6.6 m 에서 몸 전체가 시야 안에 있어도 26 장 중 21 장이 0.00, 그래서 전체 임무에서 놓침.
+  같은 원본 프레임에서 YOLOv4-tiny 는 옆모습 0.53~0.94, 정면 0.85~1.00, 사람 없는 212 장 오탐 0 (results/D1_기준.txt).
+  모델 파일 model_dir (기본 <작업 공간>/person_ai_models/yolov4-tiny: yolov4-tiny.cfg, yolov4-tiny.weights — AlexeyAB/darknet 공개 가중치).
   모델이나 cv2 가 없으면 경고만 내고 아무것도 안 함 (탐색은 그대로).
 입력 (로봇별): /<ns>/front_camera/image_raw, /<ns>/front_camera/camera_info, /<ns>/scan, /<ns>/tf(+_static), /<ns>/comm_status
 출력 (로봇별):
@@ -15,17 +14,17 @@
   /<ns>/person_score      std_msgs/Float32 — 추론한 장마다 가장 높은 사람 점수 (0 = 없음; 기준 conf 미만도) — record16 진단
   환경 변수 SURVIVOR_FRAMES_DIR 가 있으면 추론한 장을 절반 크기 jpg 로 저장 (로봇당 최대 600 장, 상자·점수 표시) — record16 진단
   /<ns>/cmd_vel_hold      geometry_msgs/Twist 0 을 hold s(시뮬 시간) 동안 20 Hz — cmd_vel_arbiter 에서 return 보다 우선 -> 1 초 정지
-  /husky/survivor_report  std_msgs/String JSON {robot,id,x,y,score,delay} — 통신 될 때만. 끊겨 있으면 모았다가 복구되면 보냄
-  conf 0.4 -> 0.5 (2026-11-12): 임무 v2 실행에서 사람 9 명의 발견 점수는 0.89~1.00, 오탐 1 건(기둥 옆)은 0.41.
+  /husky/survivor_report  mission_interfaces/SurvivorReport (robot, id, position, score, delay) — 통신 될 때만. 끊겨 있으면 모았다가 복구되면 보냄
+  conf 0.4 -> 0.5 (2026-11-12, SSD 때): 임무 v2 실행에서 사람 9 명의 발견 점수는 0.89~1.00, 오탐 1 건(기둥 옆)은 0.41. YOLO 로 바꾼 뒤에도 0.5.
     (통신 = Husky 스위치 하트비트 /<ns>/comm_status 가 comm_timeout s 안에 옴; return_relay 와 같은 기준)
 """
-import json
 import math
 import os
 
 import numpy as np
 import rclpy
-from geometry_msgs.msg import PointStamped, Twist
+from geometry_msgs.msg import Point, PointStamped, Twist
+from mission_interfaces.msg import SurvivorReport
 from rclpy.duration import Duration
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
@@ -36,7 +35,7 @@ from std_msgs.msg import Bool, Float32, String
 from tf2_msgs.msg import TFMessage
 from visualization_msgs.msg import Marker, MarkerArray
 
-from comm_relay.survivor_logic import SurvivorBook, apply_tf, bearing_span, locate, nms_1d, size_range
+from comm_relay.survivor_logic import SurvivorBook, apply_tf, bearing_span, locate, nms_1d, size_range, yolo_people
 
 def sim_now(node):
     """노드 시계(초). use_sim_time 이면 시뮬 시간 — 2026-11-10 벽시계(time.monotonic) 대신 (RTF 0.1~0.3 에서 한도가 시뮬 기준 3~7 배 엄격했음)"""
@@ -44,19 +43,13 @@ def sim_now(node):
 
 
 LATCHED = QoSProfile(depth=1, reliability=ReliabilityPolicy.RELIABLE, durability=DurabilityPolicy.TRANSIENT_LOCAL)
-PERSON = 15
 
 
 def detect_people(net, cv2, frame):
-    """전체 장 + 겹친 3 조각에서 사람 상자 (점수, x1, y1, x2, y2, 픽셀) — NMS 전. 조각 = 폭 w/2, x 시작 0, w/4, w/2."""
+    """YOLOv4-tiny 한 장 추론 -> 사람 상자 (점수, x1, y1, x2, y2, 픽셀) — NMS 전 (두 출력 층의 겹친 상자 포함)."""
     h, w = frame.shape[:2]
-    out = []
-    for x0, ww in ((0, w), (0, w // 2), (w // 4, w // 2), (w // 2, w // 2)):
-        net.setInput(cv2.dnn.blobFromImage(frame[:, x0:x0 + ww], 0.007843, (300, 300), 127.5))
-        for d in net.forward()[0, 0]:
-            if int(d[1]) == PERSON:
-                out.append((float(d[2]), x0 + d[3] * ww, d[4] * h, x0 + d[5] * ww, d[6] * h))
-    return out
+    net.setInput(cv2.dnn.blobFromImage(frame, 1 / 255.0, (416, 416), swapRB=True, crop=False))
+    return [b for out in net.forward(net.getUnconnectedOutLayersNames()) for b in yolo_people(out, w, h)]
 
 
 def decode_bgr(msg, cv2):
@@ -197,8 +190,10 @@ class RobotEye:
                 self.hold_until = None
         for s in self.book.deliver(self.link_ok()):
             delay = sim_now(self.node) - s['t']
-            n.pub_report.publish(String(data=json.dumps(dict(robot=self.ns, id=s['id'], x=round(s['x'], 2), y=round(s['y'], 2),
-                                                             score=round(s['score'], 2), delay=round(delay, 1)))))
+            r = SurvivorReport(robot=self.ns, id=int(s['id']), position=Point(x=float(s['x']), y=float(s['y'])),
+                               score=float(s['score']), delay=float(delay))
+            r.header.stamp, r.header.frame_id = n.get_clock().now().to_msg(), 'map'      # 그 로봇 map (원점 = 스폰)
+            n.pub_report.publish(r)
             txt = f"전달 #{s['id']} {s['x']:.2f} {s['y']:.2f} 지연 {delay:.1f} s"
             n.get_logger().warn(f'[SURVIVOR] [{self.ns}] Husky 에 {txt}')
             self.pub_event.publish(String(data=txt))
@@ -214,23 +209,23 @@ class SurvivorDetector(Node):
     def __init__(self):
         super().__init__('survivor_detector')
         robots = list(self.declare_parameter('robots', ['a1_1', 'a1_2']).value)
-        defaults = dict(model_dir=os.path.join(_ws(), 'person_ai_models', 'MobileNet-SSD'), conf=0.5, period=1.0,
+        defaults = dict(model_dir=os.path.join(_ws(), 'person_ai_models', 'yolov4-tiny'), conf=0.5, period=1.0,
                         hfov=1.8, cam_dx=0.29, max_range=7.0, merge_dist=1.0, hold=1.0, comm_timeout=1.0)
         self.p = {k: type(v)(self.declare_parameter(k, v).value) for k, v in defaults.items()}
         self.cv2 = self.net = None
-        proto = os.path.join(self.p['model_dir'], 'deploy.prototxt')
-        weights = os.path.join(self.p['model_dir'], 'mobilenet_iter_73000.caffemodel')
+        cfg = os.path.join(self.p['model_dir'], 'yolov4-tiny.cfg')
+        weights = os.path.join(self.p['model_dir'], 'yolov4-tiny.weights')
         try:
             import cv2
             cv2.setNumThreads(1)
             self.cv2 = cv2
-            self.net = cv2.dnn.readNetFromCaffe(proto, weights)
+            self.net = cv2.dnn.readNetFromDarknet(cfg, weights)
             self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
             self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
         except Exception as e:
             self.net = None
             self.get_logger().error(f'사람 인식 꺼짐 (cv2 또는 모델 {weights} 없음): {e!r}')
-        self.pub_report = self.create_publisher(String, '/husky/survivor_report', 10)
+        self.pub_report = self.create_publisher(SurvivorReport, '/husky/survivor_report', 10)
         self.frames_dir = os.environ.get('SURVIVOR_FRAMES_DIR', '')
         if self.frames_dir:
             os.makedirs(self.frames_dir, exist_ok=True)

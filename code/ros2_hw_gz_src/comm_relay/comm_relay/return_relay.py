@@ -7,7 +7,6 @@
        /<ns>/return_events   String — 상태 전이·장애물 정지/재개 등 사건 (로그와 같은 문장, 시험·모니터용)
 시간은 벽시계(monotonic) 기준: los_checker 와 같게 둬서 시뮬 실시간 비율과 무관하게 timeout 이 일정.
 """
-import json
 import math
 
 import rclpy
@@ -18,6 +17,7 @@ from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
+from mission_interfaces.msg import MissionState
 from std_msgs.msg import Bool, String
 
 from comm_relay.return_logic import RETURNING, ReturnLogic, path_hits, scan_points
@@ -133,12 +133,12 @@ class ReturnRelayNode(Node):
                             ignore_self=True)
         obs = {k: type(v)(self.declare_parameter(k, v).value) for k, v in obs_defaults.items()}
         self.robots = [Robot(self, ns, p, obs if obs['obstacle_check'] else None) for ns in robots]
-        self.create_subscription(String, '/mission/state', self.on_mission, LATCHED)
+        self.create_subscription(MissionState, '/mission/state', self.on_mission, LATCHED)
         self.create_timer(0.1, self.tick)
         self.get_logger().info(f'return_relay: robots={robots}, params={p}, obstacle={obs}')
 
     def on_mission(self, msg):
-        explore = json.loads(msg.data).get('phase') in ('EXPLORE', 'REGROUP')
+        explore = msg.phase in ('EXPLORE', 'REGROUP')
         for r in self.robots:
             r.logic.record = explore
 

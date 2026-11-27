@@ -41,15 +41,16 @@ TRANSIT 이 끝나 EXPLORE 로 넘어가고 2 초 뒤, 각 A1 의 그때 위치�
 - 목표 배정은 두 목표가 3 m 보다 가까우면 벌점을 줘 서로 떨어진 프런티어를 고릅니다.
 - 출발 자리가 문에서 4 m 떨어져 문 너머 지도가 듬성듬성하면 목표가 안 나옵니다. 그때는 프런티어에 가장 가까운 '닿을 수 있는 칸'으로 먼저 다가갑니다(접근 목표, 로봇이 구역 밖일 때만).
 
-## 사용자 명령
+## 사용자 요청
 
-`husky_mission` 을 띄운 터미널에 입력하거나 `/husky/cmd` (std_msgs/String) 로 보냅니다.
+액션·서비스로 보냅니다 (형식과 예는 {doc}`../reference/interfaces`). `husky_mission` 을 띄운 터미널에 `start` / `0` / `1` 을 쳐도 같습니다.
 
-| 명령 | 효과 |
+| 요청 | 효과 |
 | --- | --- |
-| `start` | 임무 시작 (IDLE → TRANSIT 0) |
-| `0` | 통신 끔: 하트비트 중지. A1 은 이번 세트 홈으로 복귀(이동 단계면 그 자리에 섬), Husky 는 정지 |
-| `1` | 통신 켬 (기본): 하던 단계를 이어 감. 끊긴 동안 찾은 사람은 이때 보고 |
+| action `/husky/run_mission` (`num_sets`) | 임무 시작 (IDLE → TRANSIT). `num_sets` 개 세트를 마치면 DONE, 결과로 생존자 목록. 취소하면 그 자리에서 DONE |
+| service `/husky/set_comm` `enabled: false` | 통신 끔: 하트비트 중지. A1 은 이번 세트 홈으로 복귀(이동 단계면 그 자리에 섬), Husky 는 정지 |
+| service `/husky/set_comm` `enabled: true` | 통신 켬 (기본): 하던 단계를 이어 감. 끊긴 동안 찾은 사람은 이때 보고 |
+| service `/husky/get_survivors` | 지금까지 확인한 생존자 (전체 또는 세트별) |
 
 ## 통신 하트비트
 
@@ -57,18 +58,23 @@ TRANSIT 이 끝나 EXPLORE 로 넘어가고 2 초 뒤, 각 A1 의 그때 위치�
 
 ## /mission/state
 
-1 Hz 로 나가는 JSON 문자열(`std_msgs/String`)입니다. 다른 노드는 이것만 보고 단계를 압니다.
+1 Hz 로 나가는 `mission_interfaces/msg/MissionState` (latched) 입니다. 다른 노드는 이것만 보고 단계를 압니다.
 
-```json
-{"phase": "EXPLORE", "set": 1, "name": "set2",
- "zones": {"a1_2": [16.0, 24.0, 1.5, 6.5], "a1_1": [16.0, 24.0, -6.5, -1.5]}, "comm": 1}
+```text
+phase: EXPLORE
+set_index: 1
+set_name: set2
+zones:
+- {robot: a1_2, x_min: 16.0, x_max: 24.0, y_min: 1.5, y_max: 6.5}
+- {robot: a1_1, x_min: 16.0, x_max: 24.0, y_min: -6.5, y_max: -1.5}
+comm: true
 ```
 
 | 칸 | 뜻 |
 | --- | --- |
 | `phase` | `IDLE` `TRANSIT` `EXPLORE` `REGROUP` `DONE` |
-| `set`, `name` | 세트 번호(0 부터)와 이름 |
-| `zones` | 로봇별 구역 `[x_min, x_max, y_min, y_max]` (월드 m). EXPLORE·REGROUP 일 때만 채워지고 그 밖에는 `{}` |
-| `comm` | 통신 켬 1 / 끔 0 |
+| `set_index`, `set_name` | 세트 번호(0 부터)와 이름 |
+| `zones` | 로봇별 구역 (월드 m). EXPLORE·REGROUP 일 때만 채워지고 그 밖에는 빈 배열 |
+| `comm` | 통신 켬 true / 끔 false |
 
 같은 주기에 TRANSIT 이면 `/husky/goal`(주차점, `world`), EXPLORE·REGROUP 이면 `/<ns>/home_shared`(홈, `shared_map`)도 함께 냅니다. 홈은 EXPLORE 로 넘어가고 2 초 뒤의 A1 위치입니다.

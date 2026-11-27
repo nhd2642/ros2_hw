@@ -28,11 +28,11 @@ This page collects **where the commonly changed values live** and how to change 
 | --- | --- | --- |
 | Husky drive max | `husky_driver` `v_max` | 0.25 m/s |
 | A1 follow max | `a1_follower` `v_max` | 0.35 m/s |
-| A1 exploration (Nav2 MPPI) | `nav2_controllers.launch.py` `vx_max` | 0.2 m/s |
+| A1 exploration (Nav2 MPPI) | `nav2_controllers.launch.py` `vx_max` | 0.35 m/s |
 | Direct return drive | `return_relay` `vx` | 0.15 m/s |
 | CHAMP limit | `gait.yaml` `max_linear_velocity_x` | 0.5 m/s |
 
-Before raising a speed, check its response and tilt with {doc}`measure_gait`. Exploration speeds above 0.2 m/s were not tested (DWB or MPPI).
+Before raising a speed, check its response and tilt with {doc}`measure_gait`. Exploration was tested only at 0.2 m/s (DWB and MPPI) and 0.35 m/s (MPPI).
 
 ## Exploration executor (nav_executor)
 
@@ -65,7 +65,7 @@ Before raising a speed, check its response and tilt with {doc}`measure_gait`. Ex
 | --- | --- | --- |
 | `conf` | 0.5 | person score threshold. Real people scored 0.89-1.00, a false positive (next to a pillar) 0.41 |
 | `period` | 1.0 s | inference interval per robot |
-| `model_dir` | `<ws>/person_ai_models/MobileNet-SSD` | model file folder |
+| `model_dir` | `<ws>/person_ai_models/yolov4-tiny` | model file folder |
 
 ## Nav2 costmaps
 

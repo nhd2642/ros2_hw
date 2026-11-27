@@ -1,4 +1,3 @@
-import json
 from collections import deque
 import math
 
@@ -13,8 +12,8 @@ from rclpy.qos import (
 )
 
 from nav_msgs.msg import OccupancyGrid
-from std_msgs.msg import String
-from geometry_msgs.msg import Point, Pose, PoseArray
+from mission_interfaces.msg import MissionState
+from geometry_msgs.msg import Point, Pose, PoseArray, PoseStamped
 from visualization_msgs.msg import Marker, MarkerArray
 
 
@@ -93,6 +92,9 @@ class FrontierDetector(Node):
         )
 
         self.map_msg = None
+        # 프런티어 묶음 최소 칸 수 (0.05 m 칸). 5 -> 10 (0.25 -> 약 0.5 m, 2026-11-26): 물체·사람 뒤 작은 그림자 프런티어는 도착해도
+        # 안 지워져 같은 곳을 맴돌게 했음 (a1_1 세트 2·3 에서 걸은 거리의 약 50 % 가 이미 지나간 칸)
+        self.min_cells = int(self.declare_parameter('min_frontier_cells', 10).value)
 
         self.create_subscription(
             OccupancyGrid,
@@ -116,17 +118,30 @@ class FrontierDetector(Node):
         # 지금 탐색 구역 (husky_mission 의 /mission/state, 월드 사각형 [x0, x1, y0, y1]). 구역 안에서만 프런티어를 찾는다:
         # 도로·다른 세트의 프런티어가 큰 묶음 상위 15 개를 차지해 건물 안 후보가 빠졌음 (2026-11-12 세트 1: 묶음 73 개 중 구역 안 8 개만 통과)
         self.zones = []
-        self.create_subscription(
-            String, '/mission/state',
-            lambda m: setattr(self, 'zones', list(json.loads(m.data).get('zones', {}).values())),
-            qos
-        )
+        self.create_subscription(MissionState, '/mission/state', self.on_mission, qos)
+        # 도착한 탐색 목표 (nav_executor 의 /exploration_visited, 공유 지도 좌표): 그 visited_radius 안 칸은 세트가 바뀔 때까지 프런티어로
+        # 안 셈 (2026-11-26). 도착해서 둘러봤는데도 남는 프런티어(물체 뒤 그림자 등)를 블랙리스트가 풀릴 때마다(60~120 s) 다시 찾아가
+        # 같은 곳을 맴돌았음 (a1_1 세트 2·3 에서 걸은 거리의 약 50 % 가 이미 지나간 칸). 묶음 대표점이 아니라 칸 단위로 빼므로
+        # 긴 프런티어는 도착지에서 먼 쪽이 남아 새 대표점이 생긴다.
+        self.visited_radius = float(self.declare_parameter('visited_radius', 1.0).value)
+        self.set_index, self.visited = None, []
+        self.create_subscription(PoseStamped, '/exploration_visited', self.on_visited, 10)
 
         self.create_timer(2.0, self.detect)
 
         self.get_logger().info(
             'Frontier Detector Started'
         )
+
+    def on_mission(self, m):
+        self.zones = [[z.x_min, z.x_max, z.y_min, z.y_max] for z in m.zones]
+        if m.set_index != self.set_index:
+            self.set_index, self.visited = m.set_index, []
+
+    def on_visited(self, msg):
+        self.visited.append((msg.pose.position.x, msg.pose.position.y))
+        self.get_logger().info(f'도착한 목표 ({self.visited[-1][0]:.2f}, {self.visited[-1][1]:.2f}) 둘레 '
+                               f'{self.visited_radius} m 는 이번 세트에 프런티어로 안 셈')
 
     def map_callback(self, msg):
         self.map_msg = msg
@@ -211,8 +226,15 @@ class FrontierDetector(Node):
             r0, r1 = max(0, int((y0 - oy) / res)), max(0, int((y1 - oy) / res) + 1)
             inside[r0:r1, c0:c1] = True
         grid = np.where(inside, grid, 100)
+        if self.visited:                       # 도착한 목표 둘레도 같은 방식으로 (칸 중심 기준, shared_map 은 축 정렬)
+            xs = ox + (np.arange(width) + 0.5) * res
+            ys = oy + (np.arange(height) + 0.5) * res
+            near = np.zeros(grid.shape, dtype=bool)
+            for vx, vy in self.visited:
+                near |= (xs[None, :] - vx) ** 2 + (ys[:, None] - vy) ** 2 <= self.visited_radius ** 2
+            grid = np.where(near, 100, grid)
 
-        clusters = get_frontiers(grid)
+        clusters = get_frontiers(grid, self.min_cells)
 
         # 모든 Frontier 셀 표시
         frontier_marker = self.make_marker(

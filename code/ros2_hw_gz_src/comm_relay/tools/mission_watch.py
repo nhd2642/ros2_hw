@@ -12,7 +12,6 @@ PASS = 끝까지 감 + 넘어짐 0 + 탐색 시간 한도(REGROUP) 0 + 맡은 �
   그래서 실제 도착은 여기서 따로 본다 (2026-11-19: 홈 실패가 있던 실행 3 개가 전에는 PASS 로 찍혔음).
 """
 import csv
-import json
 import math
 import os
 import sys
@@ -21,6 +20,8 @@ import rclpy
 import yaml
 from ament_index_python.packages import get_package_share_directory
 from geometry_msgs.msg import PoseStamped, Twist
+from mission_interfaces.msg import MissionState, SurvivorList
+from mission_interfaces.srv import SetComm
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
@@ -82,9 +83,10 @@ class Watch(Node):
             self.create_subscription(Odometry, f'/{ns}/odom', lambda m, n=ns: self.od.__setitem__(
                 n, (m.pose.pose.position.x, m.pose.pose.position.y, yaw_of(m.pose.pose.orientation))), 10)
         self.create_subscription(String, '/husky/driver_state', lambda m: self.st.__setitem__('husky', m.data), LATCHED)
-        self.create_subscription(String, '/mission/state', self.on_mission, LATCHED)
-        self.create_subscription(String, '/husky/survivors', lambda m: setattr(self, 'people', json.loads(m.data)), LATCHED)
-        self.pub_cmd = self.create_publisher(String, '/husky/cmd', 10)
+        self.create_subscription(MissionState, '/mission/state', self.on_mission, LATCHED)
+        self.create_subscription(SurvivorList, '/husky/survivors', lambda m: setattr(
+            self, 'people', [[round(p.x, 2), round(p.y, 2)] for p in m.people]), LATCHED)
+        self.comm_cli, self.comm_call = self.create_client(SetComm, '/husky/set_comm'), None     # 통신 시험 (COMM_OFF_AT)
         self.csv = csv.writer(open(os.path.join(out, 'timeline.csv'), 'w', newline=''))
         self.csv.writerow(['t', 'phase', 'set', 'comm', 'husky_x', 'husky_y', 'a1_1_x', 'a1_1_y', 'a1_2_x', 'a1_2_y',
                            'husky', 'a1_1', 'a1_2', 'a1_1_comm', 'a1_2_comm', 'people', 'a1_1_slam_err', 'a1_2_slam_err'])
@@ -132,7 +134,7 @@ class Watch(Node):
                 print(f"!! {ns} 홈 실패 t={self.t():.0f} s (세트 {self.mission['set']})", flush=True)
 
     def on_mission(self, m):
-        d = json.loads(m.data)
+        d = dict(phase=m.phase, set=m.set_index, name=m.set_name, comm=int(m.comm))
         prev = self.mission
         self.mission = d
         if prev is None or (prev['phase'], prev['set']) != (d['phase'], d['set']):
@@ -157,8 +159,9 @@ class Watch(Node):
         if off_at > 0 and self.t_explore is not None:
             e = self.now() - self.t_explore
             want = '0' if off_at <= e < off_at + off_for else '1'
-            if want != str(d['comm']):
-                self.pub_cmd.publish(String(data=want))
+            busy = self.comm_call is not None and not self.comm_call[0].done() and self.now() - self.comm_call[1] < 5.0   # 답 없는 요청은 5 s 뒤 버리고 다시
+            if want != str(d['comm']) and not busy and self.comm_cli.service_is_ready():
+                self.comm_call = (self.comm_cli.call_async(SetComm.Request(enabled=want == '1')), self.now())
         err = {ns: math.dist(P[ns], self.slam[ns]) if ns in self.slam else float('nan') for ns in NAMES[1:]}   # SLAM 공유 자세 - 정답
         for ns, e in err.items():
             self.max_slam[ns] = max(self.max_slam[ns], e if e == e else 0.0)

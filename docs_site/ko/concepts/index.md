@@ -44,7 +44,7 @@ IDLE → TRANSIT → EXPLORE → REGROUP → DONE, 세트 완료와 통신 규�
 :::{grid-item-card} 사람 인식
 :link: survivor_detection
 :link-type: doc
-MobileNet-SSD + 조각 추론, 상자 높이와 라이다로 위치 잡기.
+YOLOv4-tiny 인식, 상자 높이와 라이다로 위치 잡기.
 :::
 
 :::{grid-item-card} 통신·복귀·명령 중재

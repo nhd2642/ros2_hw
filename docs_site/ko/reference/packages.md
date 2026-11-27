@@ -8,7 +8,7 @@
 
 | 경로 | 내용 |
 | --- | --- |
-| `comm_relay/husky_mission.py` | 임무 단계, 사용자 명령, 하트비트, 사람 집계 |
+| `comm_relay/husky_mission.py` | 임무 단계, 사용자 요청(액션·서비스), 하트비트, 사람 집계 |
 | `comm_relay/husky_driver.py` | Husky 주행·위치 추정 |
 | `comm_relay/a1_follower.py` | A1 추종, Husky 기준 자세 보정 |
 | `comm_relay/nav_executor.py` | Nav2 계획·추종·실패 처리·완료·홈 복귀 |
@@ -21,6 +21,17 @@
 | `launch/mission.launch.py` | 임무 계층 전체 |
 | `tools/` | `run_mission.sh`, `mission_watch.py`, 진단 도구들 |
 | `test/` | 단위 시험 |
+
+## mission_interfaces (ament_cmake)
+
+직접 정의한 임무 인터페이스. 자세한 형식은 {doc}`interfaces`.
+
+| 파일 | 내용 |
+| --- | --- |
+| `action/RunMission.action` | 임무 요청 (목표 세트 수 → 피드백 단계·찾은 수 → 결과 생존자 목록) |
+| `srv/SetComm.srv`, `srv/GetSurvivors.srv` | 통신 켜기/끄기, 생존자 조회 |
+| `msg/MissionState.msg`, `msg/Zone.msg` | 임무 단계·세트·로봇별 구역·통신 |
+| `msg/SurvivorReport.msg`, `msg/SurvivorList.msg` | 생존자 발견 보고, 확인한 생존자 목록 |
 
 ## a1_exploration (ament_cmake)
 

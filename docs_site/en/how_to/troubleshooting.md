@@ -24,7 +24,7 @@ Every lidar value is 0.15 m (range_min)
 ## Mission progress
 
 The Husky doesn't leave
-: `start` may not have arrived. Check the phase with `ros2 topic echo /mission/state`. If it is `IDLE`, send it again. Make sure `ROS_DOMAIN_ID` matches the script.
+: the mission request may not have arrived. Check the phase with `ros2 topic echo /mission/state` and the result folder's `action.log`. If it is `IDLE`, send the `RunMission` goal again ({doc}`../reference/interfaces`). Make sure `ROS_DOMAIN_ID` matches the script.
 
 The Husky stays in HOLD
 : A following A1 is more than 2.5 m behind. Check `/<ns>/slot_error`. The A1 may have fallen (`FALLEN`) or be blocked.
@@ -52,7 +52,7 @@ An A1 walks in place and its SLAM position drifts
 ## Person detection
 
 No people found at all
-: Look for a model warning in `mission.log`. `ws/person_ai_models/MobileNet-SSD/` must contain both files and `python3 -c "import cv2"` must work.
+: Look for a model warning in `mission.log`. `ws/person_ai_models/yolov4-tiny/` must contain `yolov4-tiny.cfg` and `yolov4-tiny.weights` and `python3 -c "import cv2"` must work.
 
 More reports than people
 : Positions more than 1 m off, or low-score false positives. Raising `conf` reduces them but may miss people ({doc}`tune_parameters`).

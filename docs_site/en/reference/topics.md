@@ -6,16 +6,17 @@
 
 | Topic | Type | Publisher | Subscribers | Notes |
 | --- | --- | --- | --- | --- |
-| `/husky/cmd` | `String` | user | husky_mission | `start` / `0` / `1` |
-| `/mission/state` | `String` (JSON) | husky_mission | a1_follower, nav_executor, return_relay, frontier_comm_filter, frontier_detector, goal_assigner, terrain_node | 1 Hz |
+| `/mission/state` | `MissionState` | husky_mission | a1_follower, nav_executor, return_relay, frontier_comm_filter, frontier_detector, goal_assigner, terrain_node | 1 Hz |
 | `/husky/goal` | `PoseStamped` (world) | husky_mission | husky_driver | parking spot |
 | `/husky/go` | `Bool` | husky_mission | husky_driver | False = hold |
 | `/husky/pose` | `PoseStamped` (world) | husky_driver | husky_mission, a1_follower, scan_ready_relay, terrain_node | the coordinate reference |
 | `/husky/driver_state` | `String` | husky_driver | husky_mission | latched |
 | `/husky/cmd_vel` | `Twist` | husky_driver | Gazebo (bridge) | |
 | `/husky/odom`, `/husky/imu`, `/husky/scan` | | Gazebo (bridge) | husky_driver | |
-| `/husky/survivor_report` | `String` (JSON) | survivor_detector | husky_mission | robot, id, x, y, score, delay |
-| `/husky/survivors` | `String` (JSON) | husky_mission | (monitors) | people list, latched |
+| `/husky/survivor_report` | `SurvivorReport` | survivor_detector | husky_mission | robot, id, position, score, delay |
+| `/husky/survivors` | `SurvivorList` | husky_mission | mission_watch | people list, latched |
+
+Mission requests, comm 0/1 and survivor queries are not topics but the action `/husky/run_mission` and the services `/husky/set_comm` and `/husky/get_survivors` ({doc}`interfaces`).
 
 ## Per-robot mission topics
 

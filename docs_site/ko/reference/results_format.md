@@ -20,6 +20,10 @@
 | `people` | 건 | Husky 가 받은 사람 보고 수 |
 | `a1_1_slam_err`, `a1_2_slam_err` | m | `/<ns>/pose_shared` 와 정답의 거리 |
 
+## action.log
+
+`run_mission.sh` 가 임무를 요청한 `ros2 action send_goal --feedback /husky/run_mission ...` 의 출력. 1 s 마다 피드백(단계·세트·찾은 수), 끝에 결과(`success`, 생존자 목록, `found`, `expected`, `duration`)와 `Goal finished with status: SUCCEEDED`.
+
 ## summary.txt
 
 `mission_watch.py` 의 표준 출력 전체. 상태 줄(공백 구분, timeline 과 같은 칸), 단계가 바뀔 때의 줄(`--- t=   371 s  EXPLORE set2 (세트 1), 사람 2`), 끝의 `=== 요약` 블록:

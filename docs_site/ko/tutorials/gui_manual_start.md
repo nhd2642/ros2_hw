@@ -19,14 +19,14 @@ GUI=1 START=0 bash src/comm_relay/tools/run_mission.sh
 ```bash
 source ~/ros2_hw/ws/install/setup.bash
 export ROS_DOMAIN_ID=<스크립트가 출력한 값>
-ros2 topic pub --once /husky/cmd std_msgs/msg/String "{data: start}"
+ros2 action send_goal --feedback /husky/run_mission mission_interfaces/action/RunMission "{num_sets: 0}"
 ```
 
-같은 토픽에 `0`, `1` 을 보내면 통신을 끄고 켭니다.
+통신은 서비스로 끄고 켭니다 (형식은 {doc}`../reference/interfaces`).
 
 ```bash
-ros2 topic pub --once /husky/cmd std_msgs/msg/String "{data: '0'}"   # 통신 끔
-ros2 topic pub --once /husky/cmd std_msgs/msg/String "{data: '1'}"   # 통신 켬
+ros2 service call /husky/set_comm mission_interfaces/srv/SetComm "{enabled: false}"   # 통신 끔
+ros2 service call /husky/set_comm mission_interfaces/srv/SetComm "{enabled: true}"    # 통신 켬
 ```
 
 ## 방법 B: 터미널 6 개로 직접 실행

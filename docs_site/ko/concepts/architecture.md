@@ -35,11 +35,11 @@
 
 ## 주요 토픽 흐름
 
-**임무 상태 방송** — `husky_mission` 이 1 Hz 로 `/mission/state` (JSON 문자열)를 냅니다. 여기에 단계, 세트 번호, 로봇별 구역 사각형, 통신 상태가 들어 있고 `a1_follower`, `nav_executor`, `return_relay`, `frontier_comm_filter`, `terrain_node` 가 이것을 보고 동작을 바꿉니다.
+**임무 상태 방송** — `husky_mission` 이 1 Hz 로 `/mission/state` (`MissionState`, {doc}`../reference/interfaces`)를 냅니다. 여기에 단계, 세트 번호, 로봇별 구역 사각형, 통신 상태가 들어 있고 `a1_follower`, `nav_executor`, `return_relay`, `frontier_detector`, `frontier_comm_filter`, `goal_assigner`, `terrain_node` 가 이것을 보고 동작을 바꿉니다. 사용자는 action `/husky/run_mission` 으로 임무를 요청하고 service `/husky/set_comm`·`/husky/get_survivors` 로 통신을 끄고 켜거나 생존자를 조회합니다.
 
 **탐색 목표** — SLAM 지도 → `nav_goal_bridge`(공유 지도) → `frontier_detector` → `frontier_comm_filter` → `goal_assigner` → `nav_goal_bridge`(로봇 map 좌표로) → `nav_executor` → Nav2. 자세한 내용은 {doc}`exploration`.
 
-**사람 보고** — `survivor_detector` → `/husky/survivor_report` → `husky_mission` 이 같은 사람을 묶어 `/husky/survivors` 로 집계.
+**사람 보고** — `survivor_detector` → `/husky/survivor_report` (`SurvivorReport`) → `husky_mission` 이 같은 사람을 묶어 `/husky/survivors` (`SurvivorList`) 로 집계.
 
 **세트 완료** — `nav_executor` 가 홈에 도착하면 `/<ns>/set_done` (latched) → `husky_mission`.
 

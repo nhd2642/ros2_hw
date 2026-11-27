@@ -10,6 +10,9 @@
     그 로봇에게만 근처 프런티어를 안 줌 — assigner_setup.sh). 이전엔 공용으로 보내 다른 로봇 몫까지 지웠음.
   - 목표가 통신 구역 밖(+여유), 도착했는데 같은 목표 반복 -> 공용 /exploration_blacklist (frontier_comm_filter 가
     둘 다에서 뺌).
+  - 탐색 목표에 도착하면 그 목표(공유 지도 좌표)를 /exploration_visited 로 보낸다 -> frontier_detector 가 이번 세트 동안
+    그 둘레 프런티어 칸을 빼서 다시 안 감 (2026-11-26: 도착해도 안 지워지는 작은 프런티어를 블랙리스트가 풀릴 때마다 다시 찾아가
+    a1_1 세트 2·3 에서 걸은 거리의 약 50 % 가 이미 지나간 칸).
 통신 끊김:  /<ns>/comm_mode 가 NORMAL 이 아니면 탐색 목표를 취소하고 PAUSED. 복귀 주행은 return_relay 가 직접 한다.
 먼저 돌기: 계획한 경로의 앞쪽(turn_sample 0.5 m)이 몸 방향과 turn_first(45°) 넘게 다르면 FollowPath 전에
   제자리 회전(turn_speed 0.5 rad/s, /<ns>/cmd_vel_nav_test)으로 turn_done(20°) 안까지 돌린다 (TURNING).
@@ -57,7 +60,6 @@
 사건 /<ns>/nav_executor/events: '도착 x y' (FollowPath 성공), '실패 이유' (블랙리스트할 때). 시험·모니터용.
 상태 하트비트 /<ns>/nav_executor/state 는 FollowPath 서버가 준비됐을 때만 보낸다.
 """
-import json
 import math
 
 import numpy as np
@@ -74,9 +76,10 @@ from rclpy.action import ActionClient
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy, qos_profile_sensor_data
 from sensor_msgs.msg import Imu
+from mission_interfaces.msg import MissionState
 from std_msgs.msg import Int32, String
 
-from comm_relay.mission_logic import DoneWatch, in_rect, path_enters_rect, refine_goal
+from comm_relay.mission_logic import DoneWatch, in_rect, path_enters_rect, refine_goal, zone_dict
 from comm_relay.nudge_logic import PlanFailStreak, ZeroCmdWatch, body_cmd, cell_cost, free_heading
 
 def sim_now(node):
@@ -142,6 +145,7 @@ class Executor:
         self.pub_path = node.create_publisher(Path, f'/{ns}/nav_executor/path', LATCHED)
         self.pub_bl = node.create_publisher(PoseStamped, '/exploration_blacklist', 10)          # 공용 (둘 다 제외)
         self.pub_bl_robot = node.create_publisher(PoseStamped, f'/{ns}/exploration_blacklist', 10)  # 이 로봇만
+        self.pub_visited = node.create_publisher(PoseStamped, '/exploration_visited', 10)          # 도착한 탐색 목표 (공용)
         self.pub_done = node.create_publisher(Int32, f'/{ns}/set_done', LATCHED)                 # 끝낸 세트 번호 (탐색 시작 위치 도착)
         node.create_subscription(Int32, f'/{ns}/frontier_options',
                                  lambda m: self.done_watch.update(sim_now(self.node), m.data), 10)
@@ -645,6 +649,8 @@ class Executor:
                 self.pub_event.publish(String(data=f'도착 {p.x:.2f} {p.y:.2f}'))
                 self.reached.append((p.x, p.y, sim_now(self.node)))
                 self.visits.append((p.x, p.y))
+                if self.goal[1] is not None:
+                    self.pub_visited.publish(self.goal[1])
         elif status != GoalStatus.STATUS_CANCELED:
             self.blacklist(f'경로 추종 실패 (status {status})')
             if self.note_fail_spot():
@@ -826,15 +832,15 @@ class NavExecutorNode(Node):
         self.create_subscription(PoseArray, '/frontier_candidates_comm', lambda m: setattr(
             self, 'frontiers', ([(q.position.x, q.position.y) for q in m.poses], sim_now(self))), 5)
         self.execs = [Executor(self, ns, p) for ns in robots]
-        self.create_subscription(String, '/mission/state', self.on_mission, LATCHED)
+        self.create_subscription(MissionState, '/mission/state', self.on_mission, LATCHED)
         self.create_timer(0.5, lambda: [e.tick() for e in self.execs])
         self.create_timer(0.1, lambda: [(e.turn_step(), e.escape_step()) for e in self.execs])
         self.get_logger().info(f'nav_executor: robots={robots}, params={p}')
 
     def on_mission(self, msg):
-        d = json.loads(msg.data)
+        zones = zone_dict(msg.zones)
         for e in self.execs:
-            e.on_mission(d['phase'], d['set'], d.get('zones', {}))
+            e.on_mission(msg.phase, msg.set_index, zones)
 
 
 def main(args=None):

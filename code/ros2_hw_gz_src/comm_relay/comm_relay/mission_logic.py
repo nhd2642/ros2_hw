@@ -41,6 +41,11 @@ def start_poses(cfg, k):
     return {'husky': [px, py, 0.0], **{ns: [px + dx, py + dy, 0.0] for ns, (dx, dy) in cfg['slots'].items()}}
 
 
+def zone_dict(zones):
+    """MissionState.zones (Zone[]) -> {로봇: [x0, x1, y0, y1]} (월드 m)."""
+    return {z.robot: [z.x_min, z.x_max, z.y_min, z.y_max] for z in zones}
+
+
 def in_rect(rect, x, y, grow=0.0):
     """rect = [x0, x1, y0, y1] (월드 m). grow > 0 이면 키우고 < 0 이면 줄여서 판정."""
     return rect[0] - grow <= x <= rect[1] + grow and rect[2] - grow <= y <= rect[3] + grow

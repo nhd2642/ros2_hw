@@ -10,9 +10,10 @@ The limitations known today, written down plainly. Use this as a starting point 
 
 ## Position
 
-- **SLAM drift within a set.** An A1 map can drift even within one set (DWB era `a1_1`: up to 0.97 m in set 1, 0.99 m in the common building; 4 MPPI full missions: max 0.23-0.72 m).
+- **SLAM drift within a set.** An A1 map can drift even within one set (DWB era `a1_1`: up to 0.97 m in set 1, 0.99 m in the common building; 4 MPPI full missions: max 0.23-0.72 m; 2 after S3: 0.28-0.50 m).
 - **SLAM offline replay is not reproducible.** Replaying the same bag with the same settings 8 times through `slam_replay.py` gave max errors of 0.97-4.03 m, so it could not be used to compare SLAM parameters. The cause was not found. It is re-aligned to the Husky on every set arrival, but drift that builds up inside a set stays, so zone rectangles and reported person positions can be off by that much.
 - **HOLD position offset.** The spot where a robot stops after a comm loss is odom based and can be away from the explore start (latest run 0.85 m).
+- **Slip when turning in place on a slope.** One turn in place on the slope slides the body about 0.5 m (0.1 m on the flat). Leg odom does not see it; SLAM corrects it with a scan every 0.5 s (S3). The slip itself was not reduced.
 - **Drift while walking in place.** When an A1 is blocked and walks in place, leg odom keeps advancing and the SLAM position drifts. The cause is not fixed; it is avoided by removing trap features from the layout and re-aligning to the Husky every set.
 
 ## Following & exploration
@@ -39,8 +40,8 @@ The limitations known today, written down plainly. Use this as a starting point 
 
 ## Operations
 
-- Sometimes Nav2 doesn't come up because it gets TF late (about 5 in 30 starts). `run_mission.sh` restarts once.
-- Runs with the GUI on, and typing directly into the `husky_mission` terminal, were not tested (commands were tested only via the `/husky/cmd` topic).
+- Sometimes Nav2 doesn't come up because it gets TF late (about 5 in 30 starts; 3 of 5 after S3; it also happened before S3, cause not checked). `run_mission.sh` restarts only Nav2 up to twice, then the whole stack once (startup test: 10 of 10 came up on the first try).
+- Runs with the GUI on, and typing directly into the `husky_mission` terminal, were not tested (mission requests were tested only via the `RunMission` action, comm 0/1 only via the `SetComm` service).
 
 ## Manhattan-world assumptions
 

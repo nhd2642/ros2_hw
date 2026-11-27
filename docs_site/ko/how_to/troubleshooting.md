@@ -24,7 +24,7 @@ RTF 가 0.2 보다 낮음
 ## 임무 진행
 
 Husky 가 출발하지 않음
-: `start` 가 안 갔을 수 있습니다. `ros2 topic echo /mission/state` 로 단계를 보세요. `IDLE` 이면 다시 보냅니다. `ROS_DOMAIN_ID` 가 스크립트와 같은지 확인하세요.
+: 임무 요청이 안 갔을 수 있습니다. `ros2 topic echo /mission/state` 로 단계를, 결과 폴더의 `action.log` 로 요청 결과를 보세요. `IDLE` 이면 `RunMission` 목표를 다시 보냅니다 ({doc}`../reference/interfaces`). `ROS_DOMAIN_ID` 가 스크립트와 같은지 확인하세요.
 
 Husky 가 계속 HOLD
 : 뒤따르는 A1 이 2.5 m 넘게 처졌습니다. `/<ns>/slot_error` 를 보세요. A1 이 넘어졌거나(`FALLEN`), 장애물에 막혔을 수 있습니다.
@@ -52,7 +52,7 @@ A1 이 제자리걸음하며 SLAM 위치가 흐름
 ## 사람 인식
 
 사람을 하나도 못 찾음
-: `mission.log` 에 모델 경고가 있는지 보세요. `ws/person_ai_models/MobileNet-SSD/` 에 두 파일이 있어야 하고 `python3 -c "import cv2"` 가 되어야 합니다.
+: `mission.log` 에 모델 경고가 있는지 보세요. `ws/person_ai_models/yolov4-tiny/` 에 `yolov4-tiny.cfg`, `yolov4-tiny.weights` 가 있어야 하고 `python3 -c "import cv2"` 가 되어야 합니다.
 
 보고 건수가 사람 수보다 많음
 : 위치가 1 m 넘게 어긋났거나 점수가 낮은 오탐입니다. `conf` 를 올리면 줄지만 놓칠 수 있습니다 ({doc}`tune_parameters`).

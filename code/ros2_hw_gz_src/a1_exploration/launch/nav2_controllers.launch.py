@@ -47,18 +47,18 @@ def generate_launch_description():
             },
 
             # 2026-11-19 N1: DWB -> MPPI (nav2_mppi_controller 1.1.20). 기준선 멈춤의 99 % 가 Nav (DWB 0 명령·진동·제자리 회전).
-            # 속도 한도는 DWB 와 같게 (앞 0~0.2 m/s, 후진 없음: N2 에서 후진이 앞뒤 진동·odom 흐름을 키워 기각), 컨트롤러만 바꿈.
+            # 속도 한도는 처음엔 DWB 와 같게 (앞 0~0.2 m/s), 2026-11-26 앞 최대 0.35 로 올림. 후진 없음: N2 에서 후진이 앞뒤 진동·odom 흐름을 키워 기각.
             # 비평가 값은 Nav2 기본 설정 그대로, 목표 방향(GoalAngle)·전진 선호(PreferForward)는 뺌 (도착 방향 무관, 후진 없음).
             'FollowPath': {
                 'plugin': 'nav2_mppi_controller::MPPIController',
-                'time_steps': 40,          # model_dt 0.1 x 40 = 4 s 앞 (0.2 m/s 면 0.8 m, 국소 지도 3x3 m 안)
+                'time_steps': 40,          # model_dt 0.1 x 40 = 4 s 앞 (0.35 m/s 면 1.4 m, 국소 지도 3x3 m 의 반 폭 1.5 m 안)
                 'model_dt': 0.1,           # = 1 / controller_frequency
                 'batch_size': 1000,        # 기본 2000 의 절반: 시뮬과 로봇 둘이 CPU 를 같이 씀
                 'iteration_count': 1,
                 'vx_std': 0.2,
                 'vy_std': 0.0,
                 'wz_std': 0.4,
-                'vx_max': 0.2,
+                'vx_max': 0.35,            # 0.2 -> 0.35 (2026-11-26, 보행이 느려 보임): 평지 측정 0.1~0.5 m/s 모두 명령의 95~108 %, 기울기 5.5° 이하. 추종(a1_follower) 최대와 같음
                 'vx_min': 0.0,
                 'vy_max': 0.0,
                 'wz_max': 0.5,

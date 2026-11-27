@@ -28,11 +28,11 @@
 | --- | --- | --- |
 | Husky 주행 최대 | `husky_driver` `v_max` | 0.25 m/s |
 | A1 추종 최대 | `a1_follower` `v_max` | 0.35 m/s |
-| A1 탐색 (Nav2 MPPI) | `nav2_controllers.launch.py` `vx_max` | 0.2 m/s |
+| A1 탐색 (Nav2 MPPI) | `nav2_controllers.launch.py` `vx_max` | 0.35 m/s |
 | 복귀 직접 주행 | `return_relay` `vx` | 0.15 m/s |
 | CHAMP 상한 | `gait.yaml` `max_linear_velocity_x` | 0.5 m/s |
 
-속도를 올리기 전에 {doc}`measure_gait` 로 그 속도의 응답과 기울기를 확인하세요. 탐색 0.2 m/s 보다 높은 값은 시험하지 않았습니다 (DWB·MPPI 모두).
+속도를 올리기 전에 {doc}`measure_gait` 로 그 속도의 응답과 기울기를 확인하세요. 탐색은 0.2 m/s(DWB·MPPI)와 0.35 m/s(MPPI)만 시험했습니다.
 
 ## 탐색 실행기 (nav_executor)
 
@@ -65,7 +65,7 @@
 | --- | --- | --- |
 | `conf` | 0.5 | 사람 점수 기준. 실제 사람은 0.89~1.00, 오탐(기둥 옆)은 0.41 였음 |
 | `period` | 1.0 s | 로봇마다 추론 간격 |
-| `model_dir` | `<ws>/person_ai_models/MobileNet-SSD` | 모델 파일 폴더 |
+| `model_dir` | `<ws>/person_ai_models/yolov4-tiny` | 모델 파일 폴더 |
 
 ## Nav2 비용지도
 

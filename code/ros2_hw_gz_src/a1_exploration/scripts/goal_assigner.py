@@ -1,5 +1,4 @@
 from collections import deque
-import json
 import math
 
 import numpy as np
@@ -8,7 +7,8 @@ from geometry_msgs.msg import PoseArray, PoseStamped
 from nav_msgs.msg import OccupancyGrid, Path
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy
-from std_msgs.msg import Int32, String
+from mission_interfaces.msg import MissionState
+from std_msgs.msg import Int32
 from visualization_msgs.msg import Marker, MarkerArray
 
 ROBOTS = ('a1_1', 'a1_2')
@@ -114,7 +114,7 @@ class GoalAssigner(Node):
                 lambda m, n=n: self.robot_bl[n].append((m.pose.position.x, m.pose.position.y, self.get_clock().now().nanoseconds * 1e-9)), 10
             )
         self.create_subscription(
-            String, '/mission/state', self.on_mission,
+            MissionState, '/mission/state', self.on_mission,
             QoSProfile(depth=1, reliability=ReliabilityPolicy.RELIABLE, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         )
         # 로봇별 '갈 수 있는 자기 구역 프런티어 수' (record14): nav_executor 가 0 이 30 s 이어지면 탐색 완료 -> 원위치 복귀.
@@ -130,9 +130,8 @@ class GoalAssigner(Node):
         return any(math.hypot(x - bx, y - by) <= self.robot_bl_radius for bx, by, _ in self.robot_bl[ns])
 
     def on_mission(self, msg):
-        d = json.loads(msg.data)
-        self.active = d.get('phase') == 'EXPLORE'
-        self.rects = d.get('zones', {})
+        self.active = msg.phase == 'EXPLORE'
+        self.rects = {z.robot: [z.x_min, z.x_max, z.y_min, z.y_max] for z in msg.zones}
 
     def in_zone(self, ns, x, y, margin=0.0):
         r = self.rects.get(ns)

@@ -31,6 +31,7 @@ bash comm_relay/tools/run_mission.sh [start_set | clean]
 | --- | --- | --- |
 | `gui` | true | false = 서버만 |
 | `start_set` | 0 | 1 이상이면 그 앞 세트 주차점·추종 자리에 놓음 |
+| `a1_1_pose` | (비움) | `x,y,yaw` (월드 m·rad) 이면 `a1_1` 만 그 자리에 놓음 (경사로 시험장용) |
 
 ### disaster_sim/world.launch.py
 
@@ -49,7 +50,7 @@ bash comm_relay/tools/run_mission.sh [start_set | clean]
 | --- | --- |
 | `dual_slam.launch.py` | 두 로봇 slam_toolbox + scan_ready_relay |
 | `nav2_planners.launch.py` | 두 로봇 planner_server + 전역 비용지도 + lifecycle_manager |
-| `nav2_controllers.launch.py` | 두 로봇 controller_server (MPPI, 앞 0~0.2 m/s) + 국소 비용지도 |
+| `nav2_controllers.launch.py` | 두 로봇 controller_server (MPPI, 앞 0~0.35 m/s) + 국소 비용지도 |
 
 ### terrain_perception/terrain.launch.py
 
@@ -79,6 +80,7 @@ bash comm_relay/tools/run_mission.sh [start_set | clean]
 | `mission_watch.py` | 관찰 기록·판정 (`<폴더> <start_set> <세트 수> <한도> [통신 끔 시각] [끈 시간]`) |
 | `gait_sweep.sh` | 보행 속도 응답 (전진·옆걸음·제자리 회전·선회) |
 | `walk_check.sh`/`.py` | 보행·odom 점검 |
+| `ramp_check.sh`/`.py` | 경사로 시험장: 시뮬 + SLAM 만 띄워 `a1_1` 을 세트 1 남쪽 경사로에서 걷고 돌게 하고 미끄러짐·SLAM 오차·처리 스캔 수를 잼 (`LOOPS=2 TAG=..`) |
 | `lowspeed_check.sh`/`.py` | 저속 명령 추종 |
 | `slam_diag.sh`/`.py` | SLAM 지도 진단 |
 | `nav_probe.sh`/`.py` | Nav2 계획 실패 진단 |

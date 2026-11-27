@@ -2,7 +2,7 @@
 # 임무 전체를 순서대로 띄우고 지켜본다 (시뮬 -> SLAM -> Nav2 -> 지형 -> 임무 계층 -> start).
 #   bash run_mission.sh [start_set]      start_set: 0 = 처음부터, k = 세트 k 부터 (부분 시험)
 # 환경 변수: GUI=1 (Gazebo 화면), SETS=n (n 세트만 하고 끝, 기본 전부), DUR=시뮬 초 한도 (기본 6000),
-#           START=0 (start 를 자동으로 보내지 않음 -> 사용자가 husky_mission 터미널이나 /husky/cmd 로),
+#           START=0 (임무 요청을 자동으로 보내지 않음 -> 사용자가 액션 /husky/run_mission 이나 husky_mission 터미널 start 로),
 #           COMM_OFF_AT / COMM_OFF_FOR = 탐색 시작 뒤 시뮬 초에 통신 0, 그 뒤 몇 초 뒤 1 (통신 시험)
 #           BAG=1 (SLAM 오프라인 재생용 rosbag: 스캔·odom·TF·IMU·정답, 시뮬 시간 -> $OUT/bag, slam_replay.sh 가 씀)
 # 결과: $OUT (기본 <저장소>/results/<시각>_set<k>) 에 로그와 timeline.csv, motion.csv, stuck.txt, summary.txt
@@ -23,11 +23,11 @@ kill_all() {   # $1 신호, $2 무늬. 이 스크립트의 조상(부른 셸)은
   done
 }
 cleanup() {
-  kill_all -INT "sim.launch.py|mission.launch.py|dual_slam.launch|nav2_(planners|controllers).launch|terrain.launch|ros2 bag record"
+  kill_all -INT "sim.launch.py|mission.launch.py|dual_slam.launch|nav2_(planners|controllers).launch|terrain.launch|ros2 bag record|ros2 action send_goal.*/husky/run_mission"
   sleep 2
   kill_all -9 "ign gazebo|ruby.*ign |quadruped_controller_node|state_estimation_node|ekf_node|robot_state_publisher|parameter_bridge"
   kill_all -9 "planner_server|controller_server|lifecycle_manager|async_slam_toolbox|scan_ready_relay|terrain_hazards"
-  kill_all -9 "lib/comm_relay/|a1_exploration/scripts/|tools/mission_watch.py"
+  kill_all -9 "lib/comm_relay/|a1_exploration/scripts/|tools/mission_watch.py|ros2 action send_goal.*/husky/run_mission"   # send_goal 은 서버가 없으면 INT 로 안 끝남
   rm -f /dev/shm/fastrtps_* /dev/shm/sem.fastrtps_* 2>/dev/null
   ros2 daemon stop >/dev/null 2>&1
 }
@@ -44,18 +44,38 @@ mkdir -p "$OUT"
 trap cleanup EXIT
 cleanup
 echo "=== 임무 실행: start_set $K, ROS_DOMAIN_ID $ROS_DOMAIN_ID, 결과 $OUT"
+NFAIL=0
+nav2_up() {
+  ros2 launch a1_exploration nav2_planners.launch.py > "$OUT/planner.log" 2>&1 &
+  ros2 launch a1_exploration nav2_controllers.launch.py > "$OUT/controller.log" 2>&1 &
+}
+# Nav2 가 안 켜지는 기동 불량이 가끔 있다 (약 30 번 중 5 번, 2026-11-27 5 번 중 3 번): lifecycle change_state 응답 시간 초과
+# ('failed to send response ... (timeout)', Fast-DDS). 시뮬·SLAM 은 둔 채 Nav2 만 2 번까지 다시 띄운다. 실패한 로그는 *.failN.log 로 남김
+nav2_wait() {
+  local try
+  for try in 1 2 3; do
+    wait_log "$OUT/planner.log $OUT/controller.log" 'Managed nodes are active' 4 60 "Nav2 서버 4 개 active" && return 0
+    NFAIL=$((NFAIL + 1))
+    mv "$OUT/planner.log" "$OUT/planner.fail$NFAIL.log"; mv "$OUT/controller.log" "$OUT/controller.fail$NFAIL.log"
+    [ "$try" = 3 ] && return 1
+    echo "-> Nav2 만 다시 띄움 ($try)"
+    kill_all -INT "nav2_(planners|controllers).launch"
+    sleep 2
+    kill_all -9 "planner_server|controller_server|lifecycle_manager"
+    nav2_up
+  done
+}
 bringup() {   # 시뮬 -> SLAM -> Nav2 -> 지형
   ros2 launch disaster_sim sim.launch.py gui:=$([ "${GUI:-0}" = 1 ] && echo true || echo false) start_set:=$K > "$OUT/sim.log" 2>&1 &
   wait_log "$OUT/sim.log" 'activated.*joint_group_effort_controller' 2 180 "두 A1 컨트롤러 활성" || return 1
   sleep 8                                   # soft start 3 s + 기립 안정
   ros2 launch a1_exploration dual_slam.launch.py > "$OUT/slam.log" 2>&1 &
   sleep 5
-  ros2 launch a1_exploration nav2_planners.launch.py > "$OUT/planner.log" 2>&1 &
-  ros2 launch a1_exploration nav2_controllers.launch.py > "$OUT/controller.log" 2>&1 &
+  nav2_up
   ros2 launch terrain_perception terrain.launch.py > "$OUT/terrain.log" 2>&1 &
-  wait_log "$OUT/planner.log $OUT/controller.log" 'Managed nodes are active' 4 120 "Nav2 서버 4 개 active"
+  nav2_wait
 }
-# Nav2 가 TF 를 못 받아 안 켜지는 기동 불량이 가끔 있다 (2026-11-12 1/4 회, 이전 기록 약 2/25 회) -> 정리하고 한 번 다시
+# 그래도 안 되면 정리하고 전체를 한 번 다시
 bringup || { echo "-> 정리하고 기동 다시 (1 회)"; cleanup; bringup || exit 1; }
 # nav2 launch 는 terrain_perception 을 못 불러오면 print 한 줄만 남기고 지형 층 없이 뜬다 -> 그런 실행은 결과를 못 믿으므로 멈춤
 if grep -q 'terrain_patch\] terrain_perception 없음' "$OUT/planner.log" "$OUT/controller.log"; then
@@ -71,7 +91,8 @@ fi
 ros2 launch comm_relay mission.launch.py start_set:=$K > "$OUT/mission.log" 2>&1 &
 sleep 10
 if [ "${START:-1}" = 1 ]; then
-  for i in 1 2 3; do ros2 topic pub --once /husky/cmd std_msgs/msg/String "{data: start}" > /dev/null 2>&1; done
+  # 임무 요청 = 액션 (mission_interfaces/action/RunMission). 결과(생존자 목록)·피드백은 action.log
+  ros2 action send_goal --feedback /husky/run_mission mission_interfaces/action/RunMission "{num_sets: ${SETS:-0}}" > "$OUT/action.log" 2>&1 &
   echo "start 보냄"
 fi
 python3 -u "$T/mission_watch.py" "$OUT" "$K" "${SETS:-99}" "${DUR:-6000}" "${COMM_OFF_AT:-0}" "${COMM_OFF_FOR:-60}" 2>&1 | tee "$OUT/summary.txt"

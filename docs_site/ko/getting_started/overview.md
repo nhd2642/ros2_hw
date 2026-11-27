@@ -14,7 +14,7 @@ Gazebo 에서 위에서 내려다본 전체 월드: 도로, 세트 1·2·3 건�
 | 미들웨어 | ROS 2 Humble |
 | 로봇 | Husky A200 1 대 (바퀴, 2D 라이다·IMU), Unitree A1 2 대 (사족, CHAMP 보행) |
 | A1 센서 | 360° 평면 라이다 (10 Hz, 10 m), 전방 RGB 카메라 (2 Hz), 지형용 깊이 센서 (5 Hz), IMU (100 Hz) |
-| 주요 스택 | slam_toolbox (로봇별 SLAM), Nav2 (planner/controller server), OpenCV DNN MobileNet-SSD (사람 인식) |
+| 주요 스택 | slam_toolbox (로봇별 SLAM), Nav2 (planner/controller server), OpenCV DNN YOLOv4-tiny (사람 인식) |
 | 임무 | 세트 3개 (도로 양옆 건물 한 쌍씩) + 공동 건물 1채, 사람(마네킹) 합 9명 |
 | 판정 | 끝까지 감 + 넘어짐 0 + 탐색 시간 한도 초과 0 + 사람을 전부 정답 1 m 안으로 보고 → PASS |
 
@@ -63,7 +63,7 @@ disaster_develop/
 │   ├── a1_rl/                # (실험) 강화학습 보행
 │   ├── champ/, champ_teleop/ # CHAMP 보행 제어기, 키보드 조종
 ├── ws/                       # colcon 작업 공간 (build/install 은 git 에 없음)
-│   └── person_ai_models/     # MobileNet-SSD 모델 파일
+│   └── person_ai_models/     # YOLOv4-tiny 모델 파일
 ├── results/                  # run_mission.sh 결과 (통과 실행 2 개만 저장소에)
 ├── docs/                     # 설계 문서 원문 (mission_design.md 등)
 ├── docs_site/                # 이 문서 사이트 (Sphinx)

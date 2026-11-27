@@ -13,31 +13,31 @@ Detection box and score over an A1 front camera image, plus the survivor_markers
 
 | Item | Value |
 | --- | --- |
-| model | MobileNet-SSD (Caffe, PASCAL VOC, person = class 15) |
-| runtime | OpenCV DNN, CPU, 300 × 300 input, scale 0.007843, mean 127.5 |
+| model | YOLOv4-tiny (Darknet, COCO, person = class 0). MobileNet-SSD before 2026-11-26 |
+| runtime | OpenCV DNN, CPU, one 416 × 416 input, about 30 ms |
 | rate | one frame per robot per 1 s (`period`) |
 | threshold | 0.5 (`conf`) |
-| model files | `ws/person_ai_models/MobileNet-SSD/` (`deploy.prototxt`, `mobilenet_iter_73000.caffemodel`) |
+| model files | `ws/person_ai_models/yolov4-tiny/` (`yolov4-tiny.cfg`, `yolov4-tiny.weights`; source in that folder's `README.md`) |
 
 Without the model or `cv2` it only logs a warning and does nothing (exploration continues).
 
-### Slice inference (SAHI style)
+### Why MobileNet-SSD was replaced (2026-11-26)
 
-Shrinking a 640 × 480 image to 300 × 300 misses people who are small and far, or only partly visible (SSD is weak on small objects). So it runs **the full frame + 3 horizontally overlapping slices** (half width, shifted by a quarter) separately, maps results back to the original coordinates and removes duplicates with horizontal-interval IoU 0.5.
-
-Check: of 11 frames with a person visible, frames scoring above 0.4 went from 1 to 5, with 0 false positives in 421 frames without people (same as before).
+SSD could not see **people from the side**. The north person of set 4 (standing sideways) scored 0.00 in 21 of 26 frames even with the whole body in view at 2-6.6 m, so it was missed in a full mission. Extra slices (the SAHI-style full frame + 3 horizontal slices used before), horizontal flips and OpenCV HOG also scored 0 on the side view.
+On the same raw frames YOLOv4-tiny scored 0.53-0.94 on the side view, 0.85-1.00 frontal, with 0 false positives in 212 frames without people, so it replaced SSD. It runs on one image, so slice inference was dropped; overlapping boxes are merged with horizontal-interval IoU 0.5.
 
 ### Threshold 0.5
 
-In mission v2 runs the 9 people scored 0.89-1.00 and the one false positive (next to a pillar) scored 0.41. So the threshold went from 0.4 to 0.5.
+With SSD the 9 people scored 0.89-1.00 and the one false positive (next to a pillar) scored 0.41, so the threshold went from 0.4 to 0.5. It stays at 0.5 with YOLO (lowest side-view score above 0.53, highest no-person frame 0.00).
 
 ## 2. Locating
 
 A camera alone gives no range. At first the position was "the nearest lidar point in that direction": 7 of 14 reports matched (it picked pillars and walls in front). Now:
 
 1. Box left/right extent → **bearing range**.
-2. Box height and person height (1.75 m) → **range estimate**.
-3. Cluster lidar points within that bearing range at 0.25 m spacing and pick **the cluster nearest the estimated range** (40 % tolerance). Range limit 7 m.
+2. Box height and reference height (2.0 m: YOLO boxes are taller than the body, measured against ground-truth poses; 1.75 m with SSD) → **depth estimate** along the camera axis.
+3. Among lidar points in that bearing range, pick **the point whose depth is nearest the estimate** (40 % tolerance) and cluster 0.25 m around it. Range limit 7 m.
+   (Before 2026-11-27 the depth estimate was compared with the straight-line lidar range, so people near the edge of the view looked 1/cos farther and were dropped — why the north person of set 3 was missed after being detected three times at 0.87-0.99.)
 4. Transform the cluster mean into the robot map frame with TF.
 
 ## 3. Merging and reporting
@@ -46,9 +46,9 @@ A camera alone gives no range. At first the position was "the nearest lidar poin
 - For a new person:
   - **1 s zero command** on `/<ns>/cmd_vel_hold` (arbiter priority 3).
   - Marker on its own map via `/<ns>/survivor_markers`.
-  - JSON report on `/husky/survivor_report`: `{"robot": "a1_1", "id": 1, "x": 10.4, "y": -5.45, "score": 0.97, "delay": 0.0}` (`delay` = sim seconds from detection to delivery; grows while the link is down).
+  - `SurvivorReport` on `/husky/survivor_report`: `robot: a1_1, id: 1, position: {x: 10.4, y: -5.45}, score: 0.97, delay: 0.0` (`delay` = sim seconds from detection to delivery; grows while the link is down). Type: {doc}`../reference/interfaces`.
 - **While the link is down** reports are queued and sent when `comm_status` returns.
-- `husky_mission` merges received reports again with a 1 m radius and publishes the list on `/husky/survivors` (world).
+- `husky_mission` merges received reports again with a 1.5 m radius and publishes the list on `/husky/survivors` (`SurvivorList`, world).
 
 ## Results
 

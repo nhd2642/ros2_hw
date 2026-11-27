@@ -16,6 +16,7 @@
   <depend>action_msgs</depend>
   <depend>visualization_msgs</depend>
   <depend>tf2_msgs</depend>
+  <depend>mission_interfaces</depend>
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>python3-opencv</exec_depend>
   <exec_depend>python3-yaml</exec_depend>

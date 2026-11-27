@@ -7,8 +7,10 @@
      ros2 launch a1_exploration nav2_controllers.launch.py
   4) ros2 launch terrain_perception terrain.launch.py
   5) ros2 launch comm_relay mission.launch.py husky:=false       # A1 쪽 + Husky 주행
-  6) ros2 run comm_relay husky_mission                           # Husky 를 여는 노드: 이 터미널에 start / 0 / 1 입력
-(husky:=true 면 5 가 husky_mission 도 띄움 -> 명령은 ros2 topic pub --once /husky/cmd std_msgs/msg/String "{data: start}")
+  6) ros2 run comm_relay husky_mission                           # Husky 를 여는 노드: 이 터미널에 start / 0 / 1 입력도 됨
+(husky:=true 면 5 가 husky_mission 도 띄움 -> 임무 요청은 액션:
+   ros2 action send_goal --feedback /husky/run_mission mission_interfaces/action/RunMission "{num_sets: 0}"
+ 통신 시험: ros2 service call /husky/set_comm mission_interfaces/srv/SetComm "{enabled: false}")
 start_set:=k 는 sim.launch.py 와 같은 값으로 (세트 k 부터 시작하는 부분 시험).
 """
 import os

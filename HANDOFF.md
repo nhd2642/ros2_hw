@@ -1,5 +1,123 @@
 # 인수인계
 
+## ★★ 2026-11-27 인계 (가장 최신 — 이 절부터 읽는다. 아래 11-21 절은 그 전 상태)
+
+### 0. 먼저 알 것 (중요)
+- **main 은 11-21 발표 영상 버전 (`ccb992e`) 그대로.** 11-26 ~ 27 작업은 브랜치 `claude/project-code-review-structure-c9b240` 에 커밋·push 됨 (main 에 안 합침).
+  로컬 작업 폴더는 git 워크트리 `~/disaster_develop/.claude/worktrees/project-code-review-structure-c9b240`. `~/disaster_develop` (main 체크아웃) 을 열면 이 변경이 **안 보인다.**
+  다른 PC: `git clone -b claude/project-code-review-structure-c9b240 https://github.com/nhd2642/ros2_hw.git ~/ros2_hw` (WSL 홈에) 후 `cd ~/ros2_hw/ws && colcon build --symlink-install`.
+- 새 세션은 위 워크트리 폴더를 작업 폴더로 연다 (아래 '연결할 폴더'). 커밋은 사용자가 요청할 때만, 커밋 메시지에 Claude Co-Authored-By 줄 넣지 않음.
+- 빌드: `ws/src -> ../code/ros2_hw_gz_src` 심볼릭 링크. `cd ws && colcon build --symlink-install`. 파이썬 스크립트는 symlink 라 고치면 바로 반영
+  (scan_ready_relay.py 는 dual_slam.launch.py 가 `ws/src/.../scripts` 에서 직접 실행).
+- 사람 인식 모델: `ws/person_ai_models/yolov4-tiny/` (24 MB, 저장소에 넣음). MobileNet-SSD 파일은 지움.
+
+### 1. 연결할 폴더 (새 세션)
+| 폴더 | 왜 |
+|---|---|
+| `/home/nhd2642/disaster_develop/.claude/worktrees/project-code-review-structure-c9b240` (**필수, 작업 폴더**) | 코드 `code/ros2_hw_gz_src`, 빌드 `ws/`, 문서 `docs/`·`docs_site/`, 실험 결과 `results/` (git 밖), 이 문서 |
+| `/home/nhd2642/disaster_develop` (선택) | main 체크아웃. Claude 메모리(`~/.claude/projects/-home-nhd2642-disaster-develop/memory/`)가 이 경로 기준이라 같은 프로젝트로 묶임 |
+| `C:\Users\fllno\ros2_hw_ppt_materials` = `/mnt/c/Users/fllno/ros2_hw_ppt_materials` (발표 자료 만들 때만) | 11-21 에 모은 발표 자료 (rqt_graph 3 장, mission_design, 실험 기준, 배치도, 영상). **주의: 그 안 `3_interfaces/README_인터페이스_설계.md` 는 'custom msg 없음, JSON' 기준이라 지금은 틀림** -> `docs_site/ko/reference/interfaces.md` 로 바꿔야 함 |
+- 영상: Google Drive 폴더 'ros2_hw 발표 영상 (2026-11-21)' (`set4_x8.mp4`, `mission_x20.mp4`). 11-21 버전 영상이다 (지금 코드 아님).
+- 다른 워크트리 `.claude/worktrees/moveit-documentation-8088ed` 는 예전 문서 사이트 작업, 이번 일과 무관.
+
+### 2. 사용자 규칙 (메모리에도 있음)
+- 답은 한국어. 계획에 없던 변경이 필요하면 **먼저 보고하고 확인** 받기. 커밋은 요청 때만, Claude 공동 저자 줄 없음.
+- docs_site 는 로컬 빌드로만 확인, 배포하지 않음 (결과 확정 뒤).
+- 시뮬은 한 번에 하나. 실험 규칙: 한 묶음 = 동작 변경 하나, 판정 기준을 실행 **전에** `results/<실험>_기준.txt` 에 적고, 바꾼 동작이 몇 번 작동했는지 먼저 센다.
+  망가진 실행(기동 실패 등)은 폴더에 `ABORTED.txt` 를 두고 다시 돌린다. 개인정보(이메일 등)는 외부 서비스에 보내지 않음.
+
+### 3. 이 세션 전체 흐름 (2026-11-18 ~ 11-27)
+11-18 ~ 11-21 (자세히는 아래 11-21 절, `docs/experiments/*_기준.txt`):
+- 코드·구조 검토 -> Nav2 복귀 경로 삭제(직접 복귀만) -> 정량 지표 도구(summary, stuck_report, motion.csv) 정리.
+- 사용자 방향 (11-18): **장애물이 복잡할수록 강건성 어필** -> 장면은 그대로 두고 보행·Nav·SLAM 쪽을 고친다. 어려운 세트 4 (x 40~48) 추가.
+- 실험: N2 DWB 후진 기각, **N1 MPPI 채택**, N3 Smac 기각, G2 옆걸음 채택했다가 되돌림 (카메라가 길을 안 봄), S1 SLAM 재생 실험 중단 (재생이 재현 안 됨).
+- 발표용 2D 애니 `tools/mission_anim.py`, slam_replay 버그 수정. 사양 확인: Core Ultra 5 226V, WSL2 7.5 GB, RTF 0.2~0.3.
+- 11-21: main 에 합침 (ccb992e), HANDOFF 갱신, 영상 2 개 Drive 업로드, 발표 자료 폴더, 평가표용 인터페이스는 'JSON 설명으로 대체' 로 일단 결정.
+
+11-26 사용자 요청 **'수정 사항 두 개'** (이 버전 = 발표 영상 버전 ccb992e 가 기준선):
+1. 평가표에 맞게 custom msg 로 변경 + 코드 전체 검토.
+2. A1 이 실내에서 탐색한 곳을 재탐색·또 재탐색 (빙글빙글) 하는 문제 + 보행이 너무 느려 보임 -> 한 번에 잘 탐색 + 보행 속도 높이기.
+
+그 뒤 한 실험 (순서대로, 판정 전부 `docs/experiments/` 와 `results/` 의 `*_기준.txt`):
+- **E1 (채택)**: 세 변경을 묶어서 (사용자 결정).
+  - `mission_interfaces` 패키지 신설: msg MissionState·Zone·SurvivorReport·SurvivorList, srv SetComm·GetSurvivors, action RunMission
+    (`/husky/run_mission`, `/husky/set_comm`, `/husky/get_survivors`). JSON 문자열 토픽 3 개와 `/husky/cmd` 문자열 명령을 대체. 노드 7 개 + 도구 수정.
+    문서 `docs_site/ko|en/reference/interfaces.md` 신설.
+  - 재탐색 방지: 탐색 목표 도착 시 nav_executor -> `/exploration_visited`, frontier_detector 가 그 세트 동안 그 1.0 m 안 칸을 프런티어로 안 셈 (칸 단위).
+    프런티어 최소 5 -> 10 칸.
+  - MPPI vx_max 0.2 -> 0.35 m/s (`nav2_controllers.launch.py`). CHAMP 보행 자체(걸음 주기 등)는 안 바꿈. 회전 wz 0.5 그대로.
+  - 벤치마크 6/6 PASS, 탐색 합 2061 -> 1281 s (-38 %), 재방문 17.6 -> 14.0 %. 전체 임무 PASS 1/2 (FAIL = set4 북쪽 사람을 라이다 거리 확인에서 버림).
+- **D1 (인식, 부분 통과)**: MobileNet-SSD -> YOLOv4-tiny (OpenCV DNN 416). 옆모습 사람 인식 0/21 -> 21/21.
+  같은 D1 안에서 `survivor_logic.locate` 를 직선거리 대신 깊이와 비교 (시야 40° 에서 1.3 배 차 버그), 기준 키 1.75 -> 2.0.
+  전체 2 회: 1 회 FAIL (경사로 SLAM 4.3 m 어긋남 — 인식과 무관), 1 회 PASS 11/11 (1094 s).
+- **경사로 시험장** (`comm_relay/tools/ramp_check.sh/.py`, `sim.launch.py a1_1_pose:=x,y,yaw`): 세트 1 남쪽 경사로에서 정해진 걷기·회전 순서, 미끄러짐·SLAM 오차 측정 (한 번 약 6 분).
+  원인 발견: slam_toolbox Humble 은 odom **이동 거리로만** 스캔을 거름 -> 제자리 회전 중 처리 스캔 0~1 -> 경사 위 0.8~1.0 m 미끄러짐을 못 봄. 속도는 원인 아님.
+- **S3 (채택)**: `slam_params.yaml minimum_travel_distance 0.2 -> 0.0`. 시험장 회전 중 처리 스캔 0~1 -> 30~33, 최대 오차 1.12~1.26 -> 0.07~0.16 m.
+  전체 2 회 PASS 2/2 (11/11, 홈 실패 0, 979 / 1046 s, SLAM 최대 0.50/0.44, 0.37/0.28 m).
+- **검토 + 계획** (`~/.claude/plans/joyful-churning-knuth.md`, 승인): S3 뒤 나빠 보인 두 가지
+  - Nav2 기동 실패: S3 탓 아님 (S3 전에도 있음, Fast-DDS lifecycle 응답 시간 초과). `run_mission.sh` 에 'Nav2 만 다시 띄우기' (2 번까지, 실패 로그 `planner.failN.log` 보관),
+    cleanup 무늬 `send_goal.*/husky/run_mission` (+ -9) 수정, `mission_watch.py` SetComm 재시도, `sim.launch.py` a1_1_pose 검사, ramp_check MODE=arc 삭제.
+    기동 시험 `DUR=30` x 10: 10/10 첫 시도 성공 (`results/20261127_boot_test`).
+  - 공동 건물 SLAM 오차 (0.43/0.34 m, 이전 MPPI 중앙값 0.22) -> S4.
+- **S4 (기각)**: SLAM 에 스캔을 필요할 때만 넣기 (`a1_exploration/scripts/scan_ready_relay.py`, `/<ns>/scan_ready` 는 slam_toolbox 만 씀).
+  - 첫 안 (odom 이동 0.18 m / 회전 20° 마다): s4_1..3 무효 (서 있으면 0 개라 SLAM 시작 못 함 -> gate_period 5 s 추가),
+    s4b_1..3 기준 통과했지만 **회전 중 최대 오차 0.35~0.48 m** (S3 0.06~0.16). 원인: 경사 위 회전이 멈추고 몸이 0.4 m 미끄러지는 4.5 s 동안 odom 은 0.03 m 만 봐서 스캔 0 개.
+    이 기준으로 돌던 전체 임무 s4full_1/2 는 중단·무효.
+  - 지금 안 **S4c**: `/<ns>/cmd_vel` (CHAMP 입력) 이 0 이 아니었던 때부터 `gate_hold` 1 s 안이면 다 보냄, 명령 0 으로 서 있으면 `gate_period` 5 s 마다 하나.
+    시험장 3 회는 통과했지만 전체 임무 2 회 **FAIL / FAIL** -> **S4 기각, S3 유지, 코드 되돌림** (아래 6 절, `docs/experiments/S4_기준.txt`).
+
+### 4. 발표 영상 버전(ccb992e) 대비 지금 (2026-11-27 판단)
+| | 영상 버전 (N1 MPPI, 전체 2 회) | 지금 (E1+D1+S3 = 커밋된 최종, 전체 2 회 s3full) |
+|---|---|---|
+| 전체 임무 PASS | 1/2 (놓친 사람 1) | **2/2 (11/11)** |
+| 전체 시간 (시뮬) | 1910 / 1582 s | **979 / 1046 s (약 -40 %)** |
+| 세트별 탐색 s | 228/405/400/348/324, 169/262/221/304/397 | 115/135/136/175/211, 136/109/143/170/257 |
+| 재방문 비율 | 25.4 / 18.7 % | 15.2 / 12.7 % (E1 전체 기준, S3 실행은 안 셈) |
+| 추종 평균 속도 | 0.15~0.19 m/s | 0.22~0.29 m/s |
+| 사람 인식 | SSD, 옆모습 놓침 | YOLOv4-tiny, 옆모습 인식 |
+| 경사로 SLAM | 회전 중 못 봄 (시험장 최대 1.2 m) | 0.07~0.16 m |
+| SLAM 최대 (전체) | 0.72/0.48, 0.25/0.23 m | 0.50/0.44, 0.37/0.28 m (같은 범위) |
+| 평가표 인터페이스 | JSON 문자열 + /husky/cmd | custom msg·srv·action |
+| 넘어짐 / 홈 실패 | 0 / 0 | 0 / 0 |
+- 나빠진 것은 없음. Nav2 기동 실패는 예전부터 있던 것이고 이제 자동으로 다시 띄움. 단 실행 수가 적다 (각 2 회).
+- 요청 대비: 1 번 (custom msg) 완료. '코드 전체 검토' 는 인터페이스·탐색 경로 위주였고 (E1 보고에 명시), 그 뒤 /code-review 2 번 (11-27) 으로 작업 트리 전체를 봄.
+  2 번 재탐색은 완료 (재방문 줄고 탐색 시간 -38~45 %). '보행 속도' 는 Nav 최대 속도를 올린 것이고 CHAMP 걸음새 자체는 그대로.
+- D1·S3·S4 는 요청 2 개를 확인하다 나온 실패(사람 놓침, 경사로 SLAM)를 사용자가 골라 고친 것. **S4 는 요청 범위 밖의 다듬기**:
+  S3 로 이미 PASS 2/2 이고 SLAM 최대 오차도 영상 버전 범위 안이라, S4 를 안 해도 요청은 충족. S4 는 전체 임무 0/2 로 기각 -> 최종은 S3.
+
+### 5. 열린 과제
+1. (S4 는 끝남, 기각) 공동 건물 SLAM 오차를 더 줄이려면 다른 방법을 찾아야 함. S4c 에서 '갈 목표 없음 90 s'·폐경로가 늘어난 원인은 확인 안 함 (서 있을 때 SLAM 갱신이 멈추는 것으로 추정).
+2. 문서·커밋은 끝남 (S4 기각까지 반영, 브랜치에 커밋·push). main 에 합칠지는 사용자 결정.
+3. 놓친 사람이 남는 곳: set4 남쪽 L 자 복도 안쪽 방 (46.6, -1.9) — S4c 2 회 모두 a1_1 이 1.1 m 까지 가고도 놓침 (S3 2 회는 찾음). 라이다 거리 확인 '무시' 가 실행당 6~54 번.
+4. 발표 자료 폴더의 인터페이스 설명 갱신 (custom 인터페이스로), 새 영상이 필요하면 `tools/mission_anim.py <결과 폴더> --speed=20` (s3full_1b 추천).
+5. 코드 리뷰 남은 것 (11-27): Nav2 대기 60 s 로 줄임 (nit), `survivor_logic.locate` 가 깊이로 기준을 잡고 묶음은 직선거리로 함 (nit, 인식 동작이 바뀌므로 따로 결정).
+6. 예전부터 남은 것 (11-21 절): 폐경로가 유일한 길을 닫음, 카메라 시야 밖 사람, slam_replay 재현 안 됨, MPPI 계산 부하, 통과율 표본 수.
+
+### 6. S4c 시험장 결과
+S4c 시험장 결과 (20261127_180051/_180700/_181402_ramp_s4c_1..3): 모두 통과
+   a. turn360 처리 스캔 31~34 (평균 32) ✓   b. stand 0, stand_flat 2 (S3 10) ✓
+   c. turn360 중 최대 오차 0.13~0.21, 평균 0.17 m ✓ (S3 0.06~0.16 보다 약간 큼, s4b 0.35~0.48 보다 작음)
+   d. 회전 직후 0.02 m, stand_flat 끝 0.00~0.02 m ✓   e. 넘어짐 0 ✓
+   -> 전체 임무 2 회 (*_set0_s4cfull_1,2) 로.
+전체 임무 2 회: 20261127_182034_set0_s4cfull_1 FAIL (10/11, 1352 s, SLAM 최대 1.03/0.70 m), 20261127_194212_set0_s4cfull_2 FAIL (8/11, 1160 s, 0.24/0.24 m). 홈 실패 0.
+  S3·E1·D1 전체 5 회에는 0 이던 '갈 수 있는 목표 없이 90 s' 4/6 번, 폐경로 줄 39/58 개 -> S4 기각, S3 유지, scan_ready_relay.py 를 커밋 ccb992e 상태(= S3 동작)로 되돌림.
+
+### 7. 자주 쓰는 명령
+```bash
+cd ~/disaster_develop/.claude/worktrees/project-code-review-structure-c9b240
+source /opt/ros/humble/setup.bash && source ws/install/setup.bash
+bash code/ros2_hw_gz_src/comm_relay/tools/run_mission.sh clean        # 남은 프로세스 정리
+TAG=base bash code/ros2_hw_gz_src/comm_relay/tools/ramp_check.sh      # 경사로 시험장 (results/<시각>_ramp_<TAG>/ramp.txt)
+OUT=$PWD/results/$(date +%Y%m%d_%H%M%S)_set0_<이름>_1 bash code/ros2_hw_gz_src/comm_relay/tools/run_mission.sh   # 전체 임무, summary.txt 에 RESULT
+DUR=30 bash code/ros2_hw_gz_src/comm_relay/tools/run_mission.sh       # 기동만 확인
+cd code/ros2_hw_gz_src/comm_relay && PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -p no:cacheprovider   # 단위 시험 (67 통과, terrain_perception 18)
+```
+- 결과 읽기: `summary.txt` (RESULT, 사람, SLAM 공유 자세 최대 오차, 멈춤), `mission_events.txt`, `timeline.csv`, `motion.csv`, `stuck.txt`, `action.log`.
+- scratch 분석 스크립트 (`/tmp/claude-1001/.../scratchpad/`) 는 재부팅 때 지워질 수 있음 — 필요한 것은 위 도구로 다시 만든다.
+
+---
+
+
 ## ★ 2026-11-21 인계 (지금 상태 — 이 절부터 읽는다)
 
 ### 지금 상태

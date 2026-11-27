@@ -25,7 +25,6 @@
 라이다 억제: /<ns>/<lidar_topic> (기본 scan_ready = relay 가 기울 때 바닥 빔을 지운 스캔) 이 맞힌 칸 lidar_clear(0.25 m)
   안 위험은 내보내지 않음 (벽 밑동 = 라이다 몫, grid.RollingState 설명). lidar_clear 0 이면 끔.
 """
-import json
 import math
 import time
 from collections import deque
@@ -39,7 +38,7 @@ from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy, qos_profile_sensor_data
 from rclpy.time import Time
 from sensor_msgs.msg import Imu, LaserScan, PointCloud2, PointField
-from std_msgs.msg import String
+from mission_interfaces.msg import MissionState
 from tf2_msgs.msg import TFMessage
 from tf2_ros import Buffer
 
@@ -261,8 +260,8 @@ class TerrainNode(Node):
         self.p = {k: type(v)(self.declare_parameter(k, v).value) for k, v in defaults.items()}
         self.active = False                    # 임무가 탐색 단계인가
         self.world = {}                        # 이름 -> 월드 (x, y): husky, a1_1, a1_2
-        self.create_subscription(String, '/mission/state', lambda m: setattr(
-            self, 'active', json.loads(m.data).get('phase') in ('EXPLORE', 'REGROUP')), QoSProfile(
+        self.create_subscription(MissionState, '/mission/state', lambda m: setattr(
+            self, 'active', m.phase in ('EXPLORE', 'REGROUP')), QoSProfile(
                 depth=1, reliability=ReliabilityPolicy.RELIABLE, durability=DurabilityPolicy.TRANSIENT_LOCAL))
         for name, topic in [('husky', '/husky/pose')] + [(ns, f'/{ns}/pose_shared') for ns in robots]:
             self.create_subscription(PoseStamped, topic, lambda m, n=name: self.world.__setitem__(

@@ -2,6 +2,7 @@
 
   ros2 launch disaster_sim sim.launch.py [gui:=false] [start_set:=0]
 start_set:=k (1 이상) 이면 세트 k-1 까지 끝난 것처럼 그 주차점에 Husky, 추종 자리에 A1 을 놓는다 (부분 시험용).
+a1_1_pose:=x,y,yaw 이면 a1_1 만 그 자리에 놓는다 (경사로 시험 ramp_check.sh 용, 월드 m·rad).
 """
 import os
 
@@ -27,6 +28,10 @@ def _setup(context):
     a1_launch = os.path.join(get_package_share_directory('a1_champ'), 'launch', 'a1.launch.py')
     with open(os.path.join(sim_share, 'config', 'mission.yaml')) as f:
         pose = start_poses(yaml.safe_load(f), int(LaunchConfiguration('start_set').perform(context)))
+    if LaunchConfiguration('a1_1_pose').perform(context):
+        pose['a1_1'] = [float(v) for v in LaunchConfiguration('a1_1_pose').perform(context).split(',')]
+        if len(pose['a1_1']) != 3:
+            raise ValueError(f"a1_1_pose 는 x,y,yaw 세 값이어야 함: {LaunchConfiguration('a1_1_pose').perform(context)!r}")
 
     world = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(sim_share, 'launch', 'world.launch.py')),
@@ -51,5 +56,6 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('gui', default_value='true'),
         DeclareLaunchArgument('start_set', default_value='0'),
+        DeclareLaunchArgument('a1_1_pose', default_value=''),
         OpaqueFunction(function=_setup),
     ])

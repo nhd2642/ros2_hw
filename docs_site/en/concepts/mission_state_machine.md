@@ -41,15 +41,16 @@ In the common building (`common`) both A1s get **the same rectangle** (x 40-54, 
 - Goal assignment penalizes two goals closer than 3 m, so the robots pick frontiers far apart.
 - When the start position is 4 m from the door, the map beyond the door is sparse and no goal appears. Then the robot first approaches the "reachable cell nearest the frontier" (approach goal, only while the robot is outside its zone).
 
-## User commands
+## User requests
 
-Type into the terminal running `husky_mission`, or publish to `/husky/cmd` (std_msgs/String).
+Sent as an action or services (types and examples in {doc}`../reference/interfaces`). Typing `start` / `0` / `1` into the `husky_mission` terminal does the same.
 
-| Command | Effect |
+| Request | Effect |
 | --- | --- |
-| `start` | start the mission (IDLE → TRANSIT 0) |
-| `0` | comm off: stop the heartbeat. A1s return to this set's home (in TRANSIT they just stop), the Husky stops |
-| `1` | comm on (default): resume the current phase. People found while cut off are reported now |
+| action `/husky/run_mission` (`num_sets`) | start the mission (IDLE → TRANSIT). DONE after `num_sets` sets, result = survivor list. Cancelling ends it on the spot (DONE) |
+| service `/husky/set_comm` `enabled: false` | comm off: stop the heartbeat. A1s return to this set's home (in TRANSIT they just stop), the Husky stops |
+| service `/husky/set_comm` `enabled: true` | comm on (default): resume the current phase. People found while cut off are reported now |
+| service `/husky/get_survivors` | survivors confirmed so far (all or per set) |
 
 ## Comm heartbeat
 
@@ -57,18 +58,23 @@ While comm is on, `husky_mission` keeps publishing `/<ns>/comm_status` (Bool) fo
 
 ## /mission/state
 
-A JSON string (`std_msgs/String`) published at 1 Hz. Other nodes learn the phase only from this.
+A `mission_interfaces/msg/MissionState` (latched) published at 1 Hz. Other nodes learn the phase only from this.
 
-```json
-{"phase": "EXPLORE", "set": 1, "name": "set2",
- "zones": {"a1_2": [16.0, 24.0, 1.5, 6.5], "a1_1": [16.0, 24.0, -6.5, -1.5]}, "comm": 1}
+```text
+phase: EXPLORE
+set_index: 1
+set_name: set2
+zones:
+- {robot: a1_2, x_min: 16.0, x_max: 24.0, y_min: 1.5, y_max: 6.5}
+- {robot: a1_1, x_min: 16.0, x_max: 24.0, y_min: -6.5, y_max: -1.5}
+comm: true
 ```
 
 | Field | Meaning |
 | --- | --- |
 | `phase` | `IDLE` `TRANSIT` `EXPLORE` `REGROUP` `DONE` |
-| `set`, `name` | set number (from 0) and name |
-| `zones` | per-robot zone `[x_min, x_max, y_min, y_max]` (world m). Filled only in EXPLORE and REGROUP, otherwise `{}` |
-| `comm` | comm on 1 / off 0 |
+| `set_index`, `set_name` | set number (from 0) and name |
+| `zones` | per-robot zone (world m). Filled only in EXPLORE and REGROUP, otherwise an empty array |
+| `comm` | comm on true / off false |
 
 In the same cycle it also publishes `/husky/goal` (parking spot, `world`) during TRANSIT, and `/<ns>/home_shared` (home, `shared_map`) during EXPLORE and REGROUP. Home is the A1 position 2 s after EXPLORE begins.

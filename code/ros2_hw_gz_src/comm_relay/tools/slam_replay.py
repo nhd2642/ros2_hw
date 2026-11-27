@@ -89,6 +89,7 @@ def main():
     from nav_msgs.msg import Odometry
     from rclpy.node import Node
     from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
+    from mission_interfaces.msg import MissionState
     from std_msgs.msg import String
     from tf2_msgs.msg import TFMessage
 
@@ -136,13 +137,21 @@ def main():
             per_set.setdefault(st['set'], Errors()).add(gt, est)
 
     def on_state(m):
-        d = json.loads(m.data)
-        st['phase'], st['set'] = d['phase'], d['set']
+        if isinstance(m, String):                     # 2026-11-26 전 bag: /mission/state 가 JSON 문자열
+            d = json.loads(m.data)
+            st['phase'], st['set'] = d['phase'], d['set']
+        else:
+            st['phase'], st['set'] = m.phase, m.set_index
+
+    with open(os.path.join(bag, 'metadata.yaml')) as f:   # bag 에 기록된 /mission/state 형식을 따라 구독
+        types = {t['topic_metadata']['name']: t['topic_metadata']['type']
+                 for t in yaml.safe_load(f)['rosbag2_bagfile_information']['topics_with_message_count']}
+    state_type = String if types.get('/mission/state') == 'std_msgs/msg/String' else MissionState
 
     node.create_subscription(TFMessage, f'/{ns}/tf_raw', on_raw, 100)
     node.create_subscription(TFMessage, f'/{ns}/tf', on_tf, 100)
     node.create_subscription(Odometry, f'/{ns}/odom/ground_truth', on_gt, 10)
-    node.create_subscription(String, '/mission/state', on_state, QoSProfile(
+    node.create_subscription(state_type, '/mission/state', on_state, QoSProfile(
         depth=1, reliability=ReliabilityPolicy.RELIABLE, durability=DurabilityPolicy.TRANSIENT_LOCAL))
     time.sleep(3.0)                                   # slam_toolbox 뜰 때까지
     topics = ['/mission/state'] + [f'/{ns}/{t}' for t in ('scan_ready', 'odom', 'tf', 'tf_static', 'imu/data', 'odom/ground_truth')]

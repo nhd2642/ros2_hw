@@ -14,7 +14,7 @@ Top-down Gazebo view of the whole world: the road, the building pairs of sets 1-
 | Middleware | ROS 2 Humble |
 | Robots | 1 Husky A200 (wheeled, 2D lidar + IMU), 2 Unitree A1 (quadruped, CHAMP gait) |
 | A1 sensors | 360° planar lidar (10 Hz, 10 m), front RGB camera (2 Hz), terrain depth sensor (5 Hz), IMU (100 Hz) |
-| Main stack | slam_toolbox (per-robot SLAM), Nav2 (planner/controller servers), OpenCV DNN MobileNet-SSD (person detection) |
+| Main stack | slam_toolbox (per-robot SLAM), Nav2 (planner/controller servers), OpenCV DNN YOLOv4-tiny (person detection) |
 | Mission | 3 sets (a pair of buildings either side of the road) + 1 common building, 9 people (mannequins) |
 | Verdict | reached the end + 0 falls + 0 exploration timeouts + every person reported within 1 m of truth → PASS |
 
@@ -63,7 +63,7 @@ disaster_develop/
 │   ├── a1_rl/                # (experimental) RL locomotion
 │   ├── champ/, champ_teleop/ # CHAMP gait controller, keyboard teleop
 ├── ws/                       # colcon workspace (build/install are not in git)
-│   └── person_ai_models/     # MobileNet-SSD model files
+│   └── person_ai_models/     # YOLOv4-tiny model files
 ├── results/                  # run_mission.sh results (only two passing runs are committed)
 ├── docs/                     # original design notes (mission_design.md etc.)
 ├── docs_site/                # this documentation site (Sphinx)

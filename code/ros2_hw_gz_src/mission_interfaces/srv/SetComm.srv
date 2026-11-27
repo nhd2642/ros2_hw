@@ -1,0 +1,5 @@
+# /husky/set_comm: Husky-A1 통신 켜기/끄기 (통신 끊김 시험용). 끄면 A1 은 이번 세트 탐색 시작 위치로 복귀하고 Husky 는 멈춘다.
+bool enabled
+---
+bool success
+string message

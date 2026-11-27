@@ -19,14 +19,14 @@ With `START=0` it only starts things up and waits. In another terminal, match th
 ```bash
 source ~/ros2_hw/ws/install/setup.bash
 export ROS_DOMAIN_ID=<value printed by the script>
-ros2 topic pub --once /husky/cmd std_msgs/msg/String "{data: start}"
+ros2 action send_goal --feedback /husky/run_mission mission_interfaces/action/RunMission "{num_sets: 0}"
 ```
 
-Sending `0` or `1` to the same topic turns the link off and on.
+The link is turned off and on with a service (types in {doc}`../reference/interfaces`).
 
 ```bash
-ros2 topic pub --once /husky/cmd std_msgs/msg/String "{data: '0'}"   # comm off
-ros2 topic pub --once /husky/cmd std_msgs/msg/String "{data: '1'}"   # comm on
+ros2 service call /husky/set_comm mission_interfaces/srv/SetComm "{enabled: false}"   # comm off
+ros2 service call /husky/set_comm mission_interfaces/srv/SetComm "{enabled: true}"    # comm on
 ```
 
 ## Way B: six terminals

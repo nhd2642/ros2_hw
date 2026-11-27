@@ -35,11 +35,11 @@ The same A1 is driven by different nodes depending on the mission phase.
 
 ## Main topic flows
 
-**Mission state broadcast** — `husky_mission` publishes `/mission/state` (a JSON string) at 1 Hz with the phase, set number, per-robot zone rectangles and comm state. `a1_follower`, `nav_executor`, `return_relay`, `frontier_comm_filter` and `terrain_node` change behavior based on it.
+**Mission state broadcast** — `husky_mission` publishes `/mission/state` (`MissionState`, {doc}`../reference/interfaces`) at 1 Hz with the phase, set number, per-robot zone rectangles and comm state. `a1_follower`, `nav_executor`, `return_relay`, `frontier_detector`, `frontier_comm_filter`, `goal_assigner` and `terrain_node` change behavior based on it. The user requests the mission with the action `/husky/run_mission` and toggles the link or queries survivors with the services `/husky/set_comm` and `/husky/get_survivors`.
 
 **Exploration goals** — SLAM map → `nav_goal_bridge` (shared map) → `frontier_detector` → `frontier_comm_filter` → `goal_assigner` → `nav_goal_bridge` (to robot map coordinates) → `nav_executor` → Nav2. Details in {doc}`exploration`.
 
-**Person reports** — `survivor_detector` → `/husky/survivor_report` → `husky_mission` merges the same person and tallies on `/husky/survivors`.
+**Person reports** — `survivor_detector` → `/husky/survivor_report` (`SurvivorReport`) → `husky_mission` merges the same person and tallies on `/husky/survivors` (`SurvivorList`).
 
 **Set completion** — when `nav_executor` reaches home, `/<ns>/set_done` (latched) → `husky_mission`.
 

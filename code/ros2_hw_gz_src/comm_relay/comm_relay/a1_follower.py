@@ -10,7 +10,6 @@ Husky 위치는 통신으로 받은 자세로 어림잡고, 그 근처 라이다
 출력 : /<ns>/cmd_vel_follow -> cmd_vel_arbiter (우선순위 최하: 조종·사람 발견 정지·통신 복귀가 먼저)
 Husky 자세가 1 s 넘게 안 오거나 자기 자세·스캔이 끊기면 선다.
 """
-import json
 import math
 
 import rclpy
@@ -19,7 +18,8 @@ from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy, qos_profile_sensor_data
 from sensor_msgs.msg import LaserScan
-from std_msgs.msg import Float32, String
+from mission_interfaces.msg import MissionState
+from std_msgs.msg import Float32
 
 from comm_relay.drive_logic import Steer, find_body, scan_xy
 
@@ -96,7 +96,7 @@ class A1Follower(Node):
         v_max = float(self.declare_parameter('v_max', 0.35).value)   # gait_sweep: 평지 직진 0.5 m/s 까지 명령의 95~108 %, 기울기 6° 아래
         slots = {ns: list(self.declare_parameter(f'slot.{ns}', [-1.6, 0.8 * (1 if i else -1)]).value) for i, ns in enumerate(robots)}
         self.active, self.husky, self.husky_t = False, None, -9.0
-        self.create_subscription(String, '/mission/state', self.on_state, LATCHED)
+        self.create_subscription(MissionState, '/mission/state', self.on_state, LATCHED)
         self.create_subscription(PoseStamped, '/husky/pose', self.on_husky, 10)
         self.followers = [Follower(self, ns, slots[ns], v_max) for ns in robots]
         self.create_timer(0.1, self.tick)
@@ -105,7 +105,7 @@ class A1Follower(Node):
         return self.get_clock().now().nanoseconds * 1e-9
 
     def on_state(self, m):
-        phase = json.loads(m.data).get('phase')
+        phase = m.phase
         if self.active and phase == 'EXPLORE':
             for f in self.followers:
                 f.send_fix()

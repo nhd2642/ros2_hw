@@ -107,6 +107,30 @@ def test_locate_with_camera_range_skips_door_post_and_keeps_far_person():
 
 def test_size_range():
     fy = 254.0
-    assert abs(size_range(180, 291, fy, 480) - fy * 1.75 / 111) < 1e-9     # 약 4 m
+    assert abs(size_range(180, 291, fy, 480) - fy * 2.0 / 111) < 1e-9      # 약 4.6 m (YOLO 상자 기준 키 2.0)
     assert size_range(0, 300, fy, 480) is None                             # 위가 잘림 = 가까움
     assert size_range(200, 479, fy, 480) is None
+
+
+def test_yolo_people_scales_boxes_and_keeps_person_class():
+    from comm_relay.survivor_logic import yolo_people
+    rows = [[0.5, 0.5, 0.1, 0.5, 0.9, 0.85, 0.0],      # 사람 0.85, 가운데 64x240 px
+            [0.2, 0.5, 0.1, 0.2, 0.9, 0.05, 0.9],      # 다른 클래스 (사람 칸 0.05) -> 버림
+            [0.8, 0.4, 0.05, 0.3, 0.3, 0.12, 0.0]]
+    out = yolo_people(rows, 640, 480)
+    assert len(out) == 2
+    s, x1, y1, x2, y2 = out[0]
+    assert s == 0.85 and (x1, y1, x2, y2) == (288.0, 120.0, 352.0, 360.0)
+    assert yolo_people(rows, 640, 480, min_score=0.5) == [out[0]]
+
+
+def test_locate_matches_expected_depth_off_axis():
+    # 방위 50° 의 사람: 카메라 직선거리 5.3 m, 깊이(축 방향) 약 3.41 m. 상자 높이는 깊이를 주므로 expect = 3.41.
+    import math as m
+    a = m.radians(50)
+    px, py = 0.14 + 5.3 * m.cos(a), 5.3 * m.sin(a)
+    ranges, amin, inc = scan_with([(px, py, 0.12)])
+    u1, u2 = box_of(px, py)
+    p = locate(ranges, amin, inc, bearing_span(u1, u2, FX, CX), rmax=7.0, expect=5.3 * m.cos(a))
+    assert p is not None and m.hypot(p[0] - px, p[1] - py) < 0.3     # 전에는 직선거리 5.3 과 3.41 을 비교해 (55 %) 버림
+    assert locate(ranges, amin, inc, bearing_span(u1, u2, FX, CX), rmax=7.0, expect=1.5) is None   # 깊이 1.5 근처엔 없음

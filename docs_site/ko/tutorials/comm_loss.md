@@ -31,9 +31,9 @@ COMM_OFF_AT=80 COMM_OFF_FOR=60 SETS=1 bash src/comm_relay/tools/run_mission.sh
 {doc}`gui_manual_start` 의 방법대로 띄운 뒤, A1 이 건물 안에 들어갔을 때 보냅니다.
 
 ```bash
-ros2 topic pub --once /husky/cmd std_msgs/msg/String "{data: '0'}"
+ros2 service call /husky/set_comm mission_interfaces/srv/SetComm "{enabled: false}"
 # ... 30~60 초 지켜본 뒤
-ros2 topic pub --once /husky/cmd std_msgs/msg/String "{data: '1'}"
+ros2 service call /husky/set_comm mission_interfaces/srv/SetComm "{enabled: true}"
 ```
 
 ## 확인하는 법

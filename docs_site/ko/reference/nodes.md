@@ -4,19 +4,20 @@
 
 ## husky_mission
 
-임무 단계, 사용자 명령, 구역·홈 지정, 통신 하트비트, 사람 집계. 터미널 입력(`start`/`0`/`1`)도 받습니다.
+임무 단계, 사용자 요청, 구역·홈 지정, 통신 하트비트, 사람 집계. 터미널 입력(`start`/`0`/`1`)도 받습니다. 인터페이스 형식은 {doc}`interfaces`.
 
 | 방향 | 토픽 | 형식 |
 | --- | --- | --- |
-| 구독 | `/husky/cmd` | `std_msgs/String` |
+| 액션 서버 | `/husky/run_mission` | `mission_interfaces/action/RunMission` |
+| 서비스 | `/husky/set_comm`, `/husky/get_survivors` | `SetComm`, `GetSurvivors` |
 | 구독 | `/husky/driver_state`, `/husky/pose` | `String`, `PoseStamped` |
-| 구독 | `/husky/survivor_report` | `String` (JSON) |
+| 구독 | `/husky/survivor_report` | `SurvivorReport` |
 | 구독 | `/<ns>/pose_shared`, `/<ns>/pose_fix`, `/<ns>/set_done` | `PoseStamped`, `PointStamped`, `Int32` |
-| 발행 | `/mission/state` | `String` (JSON, 1 Hz) |
+| 발행 | `/mission/state` | `MissionState` (1 Hz, latched) |
 | 발행 | `/husky/goal`, `/husky/go` | `PoseStamped`, `Bool` |
 | 발행 | `/<ns>/comm_status` | `Bool` (하트비트) |
 | 발행 | `/<ns>/home_shared` | `PoseStamped` |
-| 발행 | `/husky/survivors` | `String` (JSON, latched) |
+| 발행 | `/husky/survivors` | `SurvivorList` (latched) |
 
 | 파라미터 | 기본 |
 | --- | --- |
@@ -65,7 +66,7 @@ EXPLORE·REGROUP 때 Nav2 계획·추종, 실패 처리, 완료 판정, 홈 복�
 | 방향 | 토픽 |
 | --- | --- |
 | 구독 | `/mission/state`, `/frontier_candidates_comm`, `/<ns>/nav_goal_local`, `/<ns>/home_local`, `/<ns>/frontier_options`, `/<ns>/comm_mode`, `/<ns>/imu/data`, `/<ns>/odom`, `/<ns>/local_costmap/costmap` |
-| 발행 | `/<ns>/cmd_vel_nav_test` (회전·벗어나기), `/<ns>/nav_executor/state`, `/<ns>/nav_executor/events`, `/<ns>/nav_executor/path`, `/<ns>/set_done`, `/<ns>/exploration_blacklist`, `/exploration_blacklist` |
+| 발행 | `/<ns>/cmd_vel_nav_test` (회전·벗어나기), `/<ns>/nav_executor/state`, `/<ns>/nav_executor/events`, `/<ns>/nav_executor/path`, `/<ns>/set_done`, `/<ns>/exploration_blacklist`, `/exploration_blacklist`, `/exploration_visited` (도착한 탐색 목표) |
 | 액션 | `/<ns>/compute_path_to_pose`, `/<ns>/follow_path` (클라이언트) |
 
 | 파라미터 | 기본 | 파라미터 | 기본 |
@@ -143,7 +144,7 @@ EXPLORE·REGROUP 때 Nav2 계획·추종, 실패 처리, 완료 판정, 홈 복�
 
 | 파라미터 | 기본 |
 | --- | --- |
-| `model_dir` | `<ws>/person_ai_models/MobileNet-SSD` |
+| `model_dir` | `<ws>/person_ai_models/yolov4-tiny` |
 | `conf` | 0.5 |
 | `period` | 1.0 |
 | `hfov` | 1.8 |
@@ -162,7 +163,7 @@ EXPLORE·REGROUP 때 Nav2 계획·추종, 실패 처리, 완료 판정, 홈 복�
 | 노드 | 주요 입출력 | 파라미터 |
 | --- | --- | --- |
 | `nav_goal_bridge` | 입 `/<ns>/map`, `/<ns>/tf`, `/<ns>/exploration_goal`, `/<ns>/home_shared`, `/<ns>/pose_fix` / 출 `/shared_map`, `/<ns>/pose_shared` (10 Hz), `/<ns>/nav_goal_local`, `/<ns>/home_local`, `/robot_position_markers` | `spawn.<ns>` (launch 가 넣음) |
-| `frontier_detector` | 입 `/shared_map`, `/mission/state` / 출 `/frontier_candidates`, `/frontier_markers` | |
+| `frontier_detector` | 입 `/shared_map`, `/mission/state`, `/exploration_visited` / 출 `/frontier_candidates`, `/frontier_markers` | `min_frontier_cells` 10, `visited_radius` 1.0 |
 | `goal_assigner` | 입 `/shared_map`, `/frontier_candidates`(→ `_comm` 으로 리맵), `/mission/state`, `/<ns>/pose_shared`, `/<ns>/exploration_blacklist` / 출 `/<ns>/exploration_goal`, `/<ns>/frontier_options`, `/<ns>/candidate_path`, `/assigned_goal_markers` | `obstacle_clearance` 0.15, `robot_blacklist_radius` 0.9, `robot_blacklist_ttl` 60.0, `zone_goal_margin` 0.3, `goal_spread` 3.0, `goal_clearance` 0.40, `min_reach_area` 3.0 |
 | `scan_ready_relay` | 입 `/<ns>/scan`, `/<ns>/imu/data`, `/husky/pose`, `/<상대>/pose_shared` / 출 `/<ns>/scan_ready` | `lidar_height` 0.28 |
 

@@ -26,7 +26,7 @@ Actual/commanded ratio and maximum tilt per commanded speed (flat ground, 8 s ea
 | max tilt | 2.3° | 2.3° | 3.7° | 4.6° | 5.5° |
 
 - Turning while walking (0.25 m/s, ±0.3 rad/s): distance matches the expected arc chord (1.56 and 1.53 m, expected 1.55 m), rotation is 107-112 % of command, symmetric left/right, tilt under 4°.
-- From these numbers the **follow maximum is 0.35 m/s and the Husky 0.25 m/s**. Nav2 (MPPI) exploration speed stays at 0.2 m/s.
+- From these numbers the **follow maximum is 0.35 m/s and the Husky 0.25 m/s**. Nav2 (MPPI) exploration speed was raised from 0.2 to 0.35 m/s on 2026-11-26 (inside the measured range).
 
 ## Calibrating the odom scale
 

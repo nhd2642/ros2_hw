@@ -31,9 +31,9 @@ This sends `0` 80 s into set 1 exploration, `1` 60 s later, and stops after set 
 Start things as in {doc}`gui_manual_start`, then send these once the A1s are inside their buildings.
 
 ```bash
-ros2 topic pub --once /husky/cmd std_msgs/msg/String "{data: '0'}"
+ros2 service call /husky/set_comm mission_interfaces/srv/SetComm "{enabled: false}"
 # ... watch for 30-60 s
-ros2 topic pub --once /husky/cmd std_msgs/msg/String "{data: '1'}"
+ros2 service call /husky/set_comm mission_interfaces/srv/SetComm "{enabled: true}"
 ```
 
 ## How to check it

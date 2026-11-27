@@ -1,6 +1,6 @@
 import pytest
 
-from comm_relay.mission_logic import DoneWatch, SurvivorTally, in_rect, path_enters_rect, start_poses
+from comm_relay.mission_logic import DoneWatch, SurvivorTally, in_rect, path_enters_rect, start_poses, zone_dict
 
 
 def test_done_after_hold_of_zeros():
@@ -69,3 +69,13 @@ def test_refine_goal_moves_out_of_inflation_or_drops():
     c[:, 17:20] = 200
     assert refine_goal(c, 0.05, 0.0, 0.0, 0.3, 1.0) == (0.3, 1.0, 0.0)
     assert refine_goal(c, 0.05, 0.0, 0.0, 9.0, 9.0) == (9.0, 9.0, 0.0)  # 비용지도 밖은 판단 안 함
+
+
+def test_zone_dict_from_mission_state():
+    from mission_interfaces.msg import MissionState, Zone
+    m = MissionState(phase='EXPLORE', zones=[Zone(robot='a1_1', x_min=16.0, x_max=24.0, y_min=-6.5, y_max=-1.5),
+                                             Zone(robot='a1_2', x_min=16.0, x_max=24.0, y_min=1.5, y_max=6.5)])
+    z = zone_dict(m.zones)
+    assert z == {'a1_1': [16.0, 24.0, -6.5, -1.5], 'a1_2': [16.0, 24.0, 1.5, 6.5]}
+    assert in_rect(z['a1_2'], 20.0, 3.0) and not in_rect(z['a1_1'], 20.0, 3.0)
+    assert zone_dict(MissionState().zones) == {}

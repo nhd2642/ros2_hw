@@ -44,7 +44,7 @@ Finding steps and slopes with a depth sensor and feeding them to the costmap.
 :::{grid-item-card} Person detection
 :link: survivor_detection
 :link-type: doc
-MobileNet-SSD + slice inference, locating with box height and lidar.
+YOLOv4-tiny detection, locating with box height and lidar.
 :::
 
 :::{grid-item-card} Comm, return & arbitration

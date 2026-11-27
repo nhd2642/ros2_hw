@@ -8,7 +8,7 @@ The mission layer. Most of the code written in this project.
 
 | Path | Content |
 | --- | --- |
-| `comm_relay/husky_mission.py` | mission phases, user commands, heartbeat, people tally |
+| `comm_relay/husky_mission.py` | mission phases, user requests (action, services), heartbeat, people tally |
 | `comm_relay/husky_driver.py` | Husky driving and pose estimation |
 | `comm_relay/a1_follower.py` | A1 following, Husky-referenced pose correction |
 | `comm_relay/nav_executor.py` | Nav2 plan, follow, failure handling, done, return home |
@@ -21,6 +21,17 @@ The mission layer. Most of the code written in this project.
 | `launch/mission.launch.py` | the whole mission layer |
 | `tools/` | `run_mission.sh`, `mission_watch.py`, diagnostic tools |
 | `test/` | unit tests |
+
+## mission_interfaces (ament_cmake)
+
+Team-defined mission interfaces. Full types in {doc}`interfaces`.
+
+| File | Content |
+| --- | --- |
+| `action/RunMission.action` | mission request (goal: number of sets → feedback: phase, found → result: survivor list) |
+| `srv/SetComm.srv`, `srv/GetSurvivors.srv` | link on/off, survivor query |
+| `msg/MissionState.msg`, `msg/Zone.msg` | mission phase, set, per-robot zones, comm |
+| `msg/SurvivorReport.msg`, `msg/SurvivorList.msg` | survivor found report, confirmed survivor list |
 
 ## a1_exploration (ament_cmake)
 

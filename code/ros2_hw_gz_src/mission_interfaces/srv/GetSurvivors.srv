@@ -1,0 +1,7 @@
+# /husky/get_survivors: 지금까지 확인한 생존자 조회
+string set_name                 # 빈 문자열 = 전체, 세트 이름(set1 ...) = 그 세트 구역 안만
+---
+bool success                    # 세트 이름을 모르면 false
+string message
+mission_interfaces/SurvivorList survivors
+uint32 expected                 # 그 범위의 설정상 생존자 수

@@ -31,6 +31,7 @@ World + Husky + two A1s. Husky spawns at 4 s, `a1_1` at 6 s, `a1_2` at 20 s.
 | --- | --- | --- |
 | `gui` | true | false = server only |
 | `start_set` | 0 | 1+ places the robots at the previous set's parking spot and slots |
+| `a1_1_pose` | (empty) | `x,y,yaw` (world m, rad) places only `a1_1` there (for the ramp bench) |
 
 ### disaster_sim/world.launch.py
 
@@ -49,7 +50,7 @@ World + Husky + two A1s. Husky spawns at 4 s, `a1_1` at 6 s, `a1_2` at 20 s.
 | --- | --- |
 | `dual_slam.launch.py` | slam_toolbox + scan_ready_relay for both robots |
 | `nav2_planners.launch.py` | planner_server + global costmap + lifecycle_manager for both robots |
-| `nav2_controllers.launch.py` | controller_server (MPPI, forward 0-0.2 m/s) + local costmap for both robots |
+| `nav2_controllers.launch.py` | controller_server (MPPI, forward 0-0.35 m/s) + local costmap for both robots |
 
 ### terrain_perception/terrain.launch.py
 
@@ -79,6 +80,7 @@ Starts: `husky_driver`, `a1_follower`, `return_relay`, `cmd_vel_arbiter`, `front
 | `mission_watch.py` | observation log and verdict (`<folder> <start_set> <sets> <limit> [comm off at] [off for]`) |
 | `gait_sweep.sh` | gait speed response (forward, sideways, turning in place, arcs) |
 | `walk_check.sh`/`.py` | walking and odom check |
+| `ramp_check.sh`/`.py` | ramp bench: starts only sim + SLAM, walks and turns `a1_1` on the south ramp of set 1, measures slip, SLAM error and scans processed (`LOOPS=2 TAG=..`) |
 | `lowspeed_check.sh`/`.py` | slow command following |
 | `slam_diag.sh`/`.py` | SLAM map diagnosis |
 | `nav_probe.sh`/`.py` | Nav2 planning failure diagnosis |

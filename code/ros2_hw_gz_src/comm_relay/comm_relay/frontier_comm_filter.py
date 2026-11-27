@@ -4,7 +4,6 @@
 구역 = /mission/state 의 zones (로봇별 사각형). 구역 가장자리 margin 안쪽만 남겨서 문 밖(도로) 프런티어를 뺀다.
 탐색 단계가 아니면(zones 없음) 전부 뺀다. 실패 목표는 /exploration_blacklist (nav_executor 가 발행).
 """
-import json
 import math
 
 import rclpy
@@ -12,9 +11,9 @@ from rclpy.executors import ExternalShutdownException
 from geometry_msgs.msg import PoseArray, PoseStamped
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
-from std_msgs.msg import String
+from mission_interfaces.msg import MissionState
 
-from comm_relay.mission_logic import in_rect
+from comm_relay.mission_logic import in_rect, zone_dict
 
 
 def sim_now(node):
@@ -29,8 +28,8 @@ class FrontierCommFilter(Node):
         self.bl_radius = float(self.declare_parameter('blacklist_radius', 0.9).value)
         self.bl_ttl = float(self.declare_parameter('blacklist_ttl', 120.0).value)
         self.zones = []              # 지금 탐색 구역 사각형들
-        self.create_subscription(String, '/mission/state', lambda m: setattr(
-            self, 'zones', list(json.loads(m.data).get('zones', {}).values())), QoSProfile(
+        self.create_subscription(MissionState, '/mission/state', lambda m: setattr(
+            self, 'zones', list(zone_dict(m.zones).values())), QoSProfile(
                 depth=1, reliability=ReliabilityPolicy.RELIABLE, durability=DurabilityPolicy.TRANSIENT_LOCAL))
         self.blacklist = []          # (x, y, 등록 시각)
         self.create_subscription(PoseArray, '/frontier_candidates', self.on_candidates, 10)

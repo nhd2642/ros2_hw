@@ -37,7 +37,8 @@ The two robots' maps are shifted **by their known spawn poses** and merged into 
 ## 4. Frontier extraction — frontier_detector
 
 - A free cell (value 0-20) with an unknown (−1) 4-neighbor is a frontier.
-- Frontier cells are grouped with 8-connectivity; groups under 5 cells are dropped. The largest groups go out first on `/frontier_candidates`.
+- Frontier cells are grouped with 8-connectivity; groups under 10 cells (about 0.5 m) are dropped. The largest groups go out first on `/frontier_candidates`. (Before 2026-11-26 the limit was 5 cells: small shadows behind objects and people did not clear on arrival and kept the robots circling.)
+- **Reached places are not revisited**: when an exploration goal is reached, `nav_executor` sends it on `/exploration_visited`, and cells within 1.0 m of it are not counted as frontier until the set changes. Cells are removed individually, not by cluster centre, so the far part of a long frontier stays as a new candidate. (Before, the 'already reached' blacklist expired after 60-120 s and the robot went back; about 50 % of `a1_1`'s walking in sets 2 and 3 was over cells it had already crossed.)
 - It searches **only inside the zone**. At first the top 15 were all on the road side and there were no candidates inside the buildings.
 
 ## 5. Zone and failure filter — frontier_comm_filter
@@ -112,7 +113,7 @@ On arrival it goes `DONE` and publishes `/<ns>/set_done = k` (latched).
 | local costmap | 3 × 3 m rolling window, 5 Hz, lidar obstacle layer + terrain layer + inflation 0.35 m |
 | footprint | 0.60 × 0.32 m rectangle (it used to be a 0.23 m radius circle → could not pass the 0.5 m gap beside the Husky) |
 | controller | MPPI (`nav2_mppi_controller`, DiffDrive): rolls out 1000 noisy (vx, wz) trajectories 4 s ahead (40 × 0.1 s) and takes their cost-weighted average (footprint collision, path following, goal). No reverse, no sideways steps. Replaced DWB on 2026-11-19 ({doc}`../results/test_results`) |
-| speed | max 0.2 m/s, 0.5 rad/s |
+| speed | max 0.35 m/s (0.2 before 2026-11-26), 0.5 rad/s |
 | goal | xy 0.20 m, any heading |
 | progress check | fail if less than 0.3 m in 10 s |
 

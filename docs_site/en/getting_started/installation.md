@@ -47,7 +47,7 @@ What each one is for:
 | `ros-humble-robot-localization` | A1 EKF (odom) |
 | `ros-humble-slam-toolbox` | per-robot 2D SLAM |
 | `ros-humble-nav2-bringup` | planning (NavFn) and following (MPPI, `nav2-mppi-controller` from `ros-humble-navigation2`) servers |
-| `python3-opencv` | MobileNet-SSD person detection (OpenCV DNN) |
+| `python3-opencv` | YOLOv4-tiny person detection (OpenCV DNN) |
 | `python3-matplotlib`, `python3-pytest` | result plots, unit tests |
 
 ## 3. Get the repository
@@ -93,12 +93,14 @@ echo "source ~/ros2_hw/ws/install/setup.bash" >> ~/.bashrc
 
 ## 5. Check the person detection model
 
-The MobileNet-SSD model files are in the repository. Without them `survivor_detector` only logs a warning and skips detection (exploration continues).
+The YOLOv4-tiny model files are in the repository. Without them `survivor_detector` only logs a warning and skips detection (exploration continues).
 
 ```bash
-ls ~/ros2_hw/ws/person_ai_models/MobileNet-SSD/
-# deploy.prototxt  mobilenet_iter_73000.caffemodel
+ls ~/ros2_hw/ws/person_ai_models/yolov4-tiny/
+# README.md  yolov4-tiny.cfg  yolov4-tiny.weights
 ```
+
+If they are missing, download both files from the addresses in that folder's `README.md` (AlexeyAB/darknet public weights).
 
 ## 6. Verify the install
 

@@ -6,16 +6,17 @@
 
 | 토픽 | 형식 | 발행 | 구독 | 비고 |
 | --- | --- | --- | --- | --- |
-| `/husky/cmd` | `String` | 사용자 | husky_mission | `start` / `0` / `1` |
-| `/mission/state` | `String` (JSON) | husky_mission | a1_follower, nav_executor, return_relay, frontier_comm_filter, frontier_detector, goal_assigner, terrain_node | 1 Hz |
+| `/mission/state` | `MissionState` | husky_mission | a1_follower, nav_executor, return_relay, frontier_comm_filter, frontier_detector, goal_assigner, terrain_node | 1 Hz |
 | `/husky/goal` | `PoseStamped` (world) | husky_mission | husky_driver | 주차점 |
 | `/husky/go` | `Bool` | husky_mission | husky_driver | False = 정지 유지 |
 | `/husky/pose` | `PoseStamped` (world) | husky_driver | husky_mission, a1_follower, scan_ready_relay, terrain_node | 좌표 기준 |
 | `/husky/driver_state` | `String` | husky_driver | husky_mission | latched |
 | `/husky/cmd_vel` | `Twist` | husky_driver | Gazebo (bridge) | |
 | `/husky/odom`, `/husky/imu`, `/husky/scan` | | Gazebo (bridge) | husky_driver | |
-| `/husky/survivor_report` | `String` (JSON) | survivor_detector | husky_mission | 로봇·id·x·y·score·delay |
-| `/husky/survivors` | `String` (JSON) | husky_mission | (모니터) | 사람 목록, latched |
+| `/husky/survivor_report` | `SurvivorReport` | survivor_detector | husky_mission | 로봇·id·위치·score·delay |
+| `/husky/survivors` | `SurvivorList` | husky_mission | mission_watch | 사람 목록, latched |
+
+임무 요청·통신 0/1·생존자 조회는 토픽이 아니라 action `/husky/run_mission`, service `/husky/set_comm`·`/husky/get_survivors` 입니다 ({doc}`interfaces`).
 
 ## 로봇별 임무 토픽
 

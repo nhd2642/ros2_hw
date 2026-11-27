@@ -1,0 +1,14 @@
+# /husky/run_mission: 재난 현장 생존자 탐색 임무. 세트마다 Husky 이동 -> A1 두 대 구역 탐색 -> 탐색 시작 위치 복귀를 되풀이하고
+# 찾은 생존자 위치를 돌려준다. 취소하면 그 자리에서 임무를 끝낸다 (phase DONE).
+uint32 num_sets                 # 할 세트 수 (0 = 시작 세트부터 끝까지). 시작 세트는 시뮬을 띄울 때 정함 (start_set)
+---
+bool success                    # 요청한 세트를 모두 마침 (취소·중단이면 false)
+string message
+mission_interfaces/SurvivorList survivors
+uint32 found                    # 찾은 생존자 수
+uint32 expected                 # 마친 세트들의 설정상 생존자 수
+float32 duration                # 임무에 걸린 시뮬 초
+---
+mission_interfaces/MissionState state
+uint32 found
+uint32 expected                 # 지금까지 시작한 세트들의 설정상 생존자 수

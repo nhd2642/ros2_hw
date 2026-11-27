@@ -5,6 +5,7 @@
 | 문서 | 내용 |
 | --- | --- |
 | {doc}`packages` | 패키지별 역할과 주요 파일 |
+| {doc}`interfaces` | 직접 정의한 임무 인터페이스 (action·service·msg) 와 쓰는 법 |
 | {doc}`nodes` | 노드별 입출력 토픽과 파라미터 기본값 |
 | {doc}`topics` | 토픽 전체 목록 (형식, 발행, 구독) |
 | {doc}`launch_and_scripts` | launch 인자, `run_mission.sh` 환경 변수, 도구 스크립트 |
@@ -16,6 +17,7 @@
 :maxdepth: 1
 
 packages
+interfaces
 nodes
 topics
 launch_and_scripts

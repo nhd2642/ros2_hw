@@ -20,6 +20,10 @@ Written by `mission_watch.py`, one row every 10 s of sim time. Positions are Gaz
 | `people` | count | person reports received by the Husky |
 | `a1_1_slam_err`, `a1_2_slam_err` | m | distance between `/<ns>/pose_shared` and truth |
 
+## action.log
+
+Output of the `ros2 action send_goal --feedback /husky/run_mission ...` that `run_mission.sh` uses to request the mission: feedback every second (phase, set, found), then the result (`success`, survivor list, `found`, `expected`, `duration`) and `Goal finished with status: SUCCEEDED`.
+
 ## summary.txt
 
 The full standard output of `mission_watch.py` (in Korean): status lines (space separated, same columns as the timeline), a line on each phase change (`--- t=   371 s  EXPLORE set2 (세트 1), 사람 2` = set 1, 2 people), and the final `=== 요약` (summary) block:
