@@ -26,7 +26,7 @@ Top-down Gazebo view of the whole world: the road, the building pairs of sets 1-
 1. **IDLE → TRANSIT**: when the user sends `start`, the Husky leaves for the set 1 parking spot. The two A1s walk in slots 1.6 m behind and 0.8 m to each side.
 2. **TRANSIT → EXPLORE**: once the Husky has arrived and both A1s stand in their slots, those positions are recorded as the "explore start (home)" and each A1 receives its exploration zone (a rectangle).
 3. **EXPLORE**: inside its building each A1 picks frontiers (the edge between known and unknown space), drives there with Nav2 and fills in the map. When it sees a person it stops for 1 s and reports to the Husky.
-4. **Set done**: when there has been no reachable frontier for 30 s, the A1 returns home and publishes `/<ns>/set_done`. When both are back, the team moves to the next set.
+4. **Set done**: when there has been no reachable frontier for 10 s, the A1 returns home and publishes `/<ns>/set_done`. When both are back, the team moves to the next set.
 5. **DONE**: after the common building (both A1s share one zone) the mission ends.
 
 If exploration takes too long (1,500 s), the Husky calls the A1s back with **REGROUP**. At any time the user can send `0` (comm off) / `1` (comm on) to simulate a link outage.

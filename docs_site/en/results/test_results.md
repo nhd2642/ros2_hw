@@ -56,6 +56,7 @@ Complex obstacles are what shows robustness, so the layout was kept (a rule-brea
 | **E1** (11-26) | **custom interfaces + frontiers within 1 m of reached goals removed, frontiers under 0.5 m ignored + exploration max 0.35 m/s** (tested together) | **PASS 6/6, 0 home failures, exploration total 1281 s (−38 % vs N1), revisit ratio 17.6 → 14.0 %, mean follow speed 0.22-0.29 m/s** | **adopted** |
 | **S3** (11-27) | **slam_toolbox `minimum_travel_distance` 0.2 → 0** (scans processed while turning in place on a slope) | **ramp bench ×3: scans processed during the turn 0-1 → 30-33, max error 1.12-1.26 → 0.07-0.16 m. Full missions 2/2 PASS** (below) | **adopted** |
 | S4 (11-27) | gate which scans go to SLAM (`scan_ready_relay`: first by odom motion, then by walk/turn command) | bench passed but full missions 0/2 PASS (people 10/11, 8/11). "no reachable goal for 90 s" 0 → 4-6, closed paths 0 → 39-58 lines | rejected (keep S3) |
+| **W1** (11-27) | **end-of-set wait `done_after` 30 → 10 s** ("walking looks slow" check: both robots stood 30 s at every set end) | **full missions 2/2 PASS (11/11), idle wait while exploring −99 / −105 s per robot, total 996 s (S3 1012 s, −1.6 %), sets ended early 0** (below) | **adopted** |
 
 - **Why G2 was reverted**: while following, the body heading differed from the direction of travel by more than 20° in 45-50 % of samples (N1: 1-2 %). Walking at a slant half the time, the camera did not look where the robot was going, and in a full mission a person was missed at 0.63 m because they were outside the field of view. The stall reduction was also 0 s under N3 (DiffDrive), so it was taken as run-to-run noise.
 - **Cost of MPPI**: thousands of "control loop missed its desired rate" warnings per run (10 Hz wall clock; DWB 0). See {doc}`limitations`.
@@ -111,6 +112,27 @@ Complex obstacles are what shows robustness, so the layout was kept (a rule-brea
 - Second version S4c (forward everything within 1 s of a walk/turn command, one scan every 5 s when the command is zero): bench ×3 passed (31-34 scans in the turn, mean max error 0.17 m, 2 scans while standing).
 - Full missions ×2: FAIL / FAIL (people 10/11, 8/11, home failures 0). "no reachable goal for 90 s" appeared 4 / 6 times and closed-path lines 39 / 58, none of which appeared in the 5 S3/E1/D1 full missions.
   This looks related to map and pose updates stopping while standing, but was not checked. → keep S3, code reverted. Record in `docs/experiments/S4_기준.txt`.
+
+## W1 (11-27): end-of-set wait 30 → 10 s, comm 0/1 with the new interface
+- Why: "walking looks slow" was broken down from the logs (S3 full missions ×2, motion.csv). The gait was not the cause: on flat ground it follows 95-108 % of 0.1-0.5 m/s commands.
+  25-40 % of exploration time was standing still, and all 20 set ends were the "0 reachable frontiers for 30 s" check, so both robots stood 30 s at every set end.
+  Much of what looks slow on screen is RTF 0.3 (0.35 m/s in sim looks like about 0.1 m/s).
+- Change: `nav_executor` `done_after` 30 → 10 s. Criteria written before running: `docs/experiments/W1_기준.txt`.
+
+| Run | Result | People | Home fail / falls | Total sim time | Exploration (set 1 / 2 / 3 / 4 / common) | Idle wait while exploring (a1_1, a1_2) | SLAM max (a1_1, a1_2) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `20261127_212737_set0_w1full_1` | PASS | 11/11 | 0 / 0 | 1006 s | 129 / 173 / 125 / 148 / 221 s | 102, 60 s | 0.35, 0.68 m |
+| `20261127_223034_set0_w1full_2` | PASS | 11/11 | 0 / 0 | 987 s | 94 / 93 / 126 / 136 / 332 s | 60, 56 s | 0.25, 0.96 m |
+| (S3) `s3full_2`, `s3full_1b` | PASS, PASS | 11/11 | 0 / 0 | 979, 1046 s | 114/135/137/175/211, 136/110/144/171/256 s | 185/160, 176/166 s | 0.50/0.44, 0.37/0.28 m |
+
+- All 20 set ends used the new 10 s check. From the `frontier_options` log recorded alongside, a frontier never came back within 30 s after being 0 for over 10 s,
+  so the old rule would have ended at the same points (no area skipped by ending early).
+- The wait dropped by about 100 s per robot but total time only by 16 s: the slower robot decides when a set ends, so the faster robot's saved wait just becomes waiting in DONE.
+  −16 s is inside run-to-run spread (S3 979-1046 s), so two runs do not show it is faster.
+- In `w1full_2`, the a1_2 SLAM max of 0.96 m happened mid-exploration in the common building (t = 810 s), above the earlier MPPI range (0.21-0.72 m). W1 only changes when a robot leaves at the set end, so it does not look like the direct cause, but this was not checked.
+- Comm 0/1 tested for the first time through the new `SetComm` service (`20261127_211326_set0_commcheck2`, set 1, off 80 s into exploration, on 60 s later): PASS. Both A1s went RETURNING after 1.1 s, then STOPPING → NORMAL on 1.
+  `GetSurvivors` answered correctly for all (11 configured) and per set (`set1`, 2 configured), and an unknown set name gives `success: false`.
+  Nothing was detected while disconnected, so "buffer and send on reconnect" was not exercised in sim this time (unit tests only). Record in `docs/experiments/C2_통신시험_기준.txt`.
 
 
 ## Full missions with the final setup (baseline + N1) — 5 sets, 11 people

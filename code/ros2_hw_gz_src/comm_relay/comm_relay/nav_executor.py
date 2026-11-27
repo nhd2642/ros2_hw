@@ -44,7 +44,7 @@
   (계획만 하고 거부·실패한 시도는 세지 않는다: 세면 거부되는 목표를 60 s 마다 다시 받아 끝나지 않았음) (남은 프런티어가 전부 블랙리스트·폐경로·구역 검사에
   걸려 갈 수 있는 목표가 없음) 완료로 보고 탐색 시작 위치로 간다. 2026-11-12: a1_2 가 남은 목표 전부 '폐경로 지남' 거부 -> 프런티어 수는
   0 이 아니라 완료 판정도 안 나고 서 있었음.
-탐색 완료 -> 탐색 시작 위치 (record14): goal_assigner 의 /<ns>/frontier_options(갈 수 있는 자기 구역 프런티어 수)가 done_after(30 s) 동안
+탐색 완료 -> 탐색 시작 위치 (record14): goal_assigner 의 /<ns>/frontier_options(갈 수 있는 자기 구역 프런티어 수)가 done_after(10 s, W1 2026-11-27: 30 -> 10) 동안
   0 이고 실행기가 IDLE 이면 (또는 phase 가 REGROUP 이 되면) 이번 세트 탐색 시작 위치(/<ns>/home_local, map)로 Nav2 계획·추종
   (실패하면 home_retries 번 다시, 시간 제한 home_timeout). 도착하면 DONE (그 뒤 탐색 목표 무시),
   /<ns>/set_done = 세트 번호 (latched) -> husky_mission. 사건 '홈 시작' / '홈 도착' / '홈 실패'.
@@ -825,7 +825,7 @@ class NavExecutorNode(Node):
                         turn_max_tilt=6.0, commit=True, commit_radius=1.0,
                         escape_radius=0.1, escape_speed=0.08, escape_time=10.0,
                         nudge_after=3, nudge_dist=0.3, nudge_cost=128, nudge_time=20.0, zero_cmd_time=8.0,
-                        done_after=30.0, home_timeout=300.0, home_retries=8, path_zone_margin=0.15,
+                        done_after=10.0, home_timeout=300.0, home_retries=8, path_zone_margin=0.15,
                         tilt_guard=25.0, tilt_guard_time=1.0, crumb_spacing=0.2, closed_radius=0.4, back_dist=1.0, idle_done=90.0, fail_area_radius=1.0, fail_area_n=3, fail_area_ttl=900.0, home_crumb_after=3, goal_refine=True, goal_max_cost=127, goal_refine_radius=0.5)
         p = {k: type(v)(self.declare_parameter(k, v).value) for k, v in defaults.items()}
         self.frontiers = None      # ([(x, y)], 받은 시각) 공유 지도 = 월드

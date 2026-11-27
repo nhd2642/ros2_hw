@@ -38,7 +38,7 @@ Before raising a speed, check its response and tilt with {doc}`measure_gait`. Ex
 
 | Parameter | Default | Meaning |
 | --- | --- | --- |
-| `done_after` | 30 s | 0 reachable frontiers for this long → exploration done → home |
+| `done_after` | 10 s (W1, 2026-11-27: 30 → 10) | 0 reachable frontiers for this long → exploration done → home |
 | `idle_done` | 90 s | done if no follow could start for this long during exploration |
 | `goal_timeout` | 90 s | maximum time following one goal |
 | `min_dwell` | 8 s | minimum time on a goal before switching |

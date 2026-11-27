@@ -1,0 +1,23 @@
+C2 통신 0/1 시험 (2026-11-27): 새 custom 인터페이스 (srv SetComm·GetSurvivors) 로 통신 조작 확인. 로봇 동작 변경 없음, 설정 = 커밋 50dc301 (E1+D1+S3).
+이전 통신 시험 (20261121_185500_set0_commcheck) 은 옛 문자열 명령 /husky/cmd 시절이라 새 인터페이스로는 처음.
+실행: ROS_DOMAIN_ID=57 SETS=1 COMM_OFF_AT=80 COMM_OFF_FOR=60 run_mission.sh 0 -> *_set0_commcheck2
+  (mission_watch 가 /husky/set_comm 서비스로 탐색 시작 80 s 뒤 enabled=false, 60 s 뒤 true)
+  옆에서 CLI 로 ros2 service call /husky/get_survivors 를 벽시계 60 s 마다 ("" , "set1", 없는 이름 "setX") -> getsurv.log
+판정 (실행 전에 고정):
+  1. RESULT PASS (사람 2/2, 홈 실패 0, 넘어짐 0)
+  2. mission.log 에 [COMM] 통신 끔 1 번 이상, 그 뒤 켬 1 번 이상 (SetComm 이 받아들여짐)
+  3. 통신 0 뒤 두 A1 모두 RETURNING (이미 탐색 시작 위치면 HOLD), Husky 정지
+  4. 통신 1 뒤 STOPPING -> NORMAL, 탐색 재개 후 세트 완료
+  5. GetSurvivors: success true, "" 의 expected 11, "set1" 의 expected 2, 마지막 응답의 사람 수 = summary 보고 수; "setX" 는 success false
+  6. mission.log 에 Traceback 0
+  7. 모아 보내기: 통신 0 동안 '발견' 이 있었으면 복구 뒤 '전달 ... 지연' > 1 s 로 나와야 함. 통신 0 동안 발견이 없으면 '시뮬에서 확인 못 함' 으로 적는다 (단위 시험만).
+
+결과 (20261127_211326_set0_commcheck2): RESULT PASS — 사람 2/2, 홈 실패 0, 넘어짐 0, 세트 157 s, Traceback 0.
+  1 ✓. 2 ✓ [COMM] 끔 1 번 (탐색 시작 80 s 뒤), 켬 1 번 (60 s 뒤).
+  3 ✓ 두 A1 모두 하트비트 1.1 s 뒤 NORMAL -> RETURNING, 실행기 PAUSED (a1_1 은 이미 DONE = 탐색 시작 위치에 있었음). Husky 는 이미 주차 정지 상태.
+  4 ✓ 통신 1: 두 A1 RETURNING -> STOPPING -> NORMAL (3.2 s), 실행기 PAUSED -> IDLE (a1_1 은 DONE 유지).
+     a1_2 는 남은 프런티어 0 이라 바로 복귀 -> 세트 완료. 단 끊은 때 탐색이 거의 끝나 있어 '탐색 재개 후 새 목표' 는 이번에 안 나옴 (11-21 시험에서는 나옴).
+  5 ✓ GetSurvivors 7 번 조회: "" expected 11, "set1" expected 2, 사람 수 1 -> 2 로 늘어남, 마지막 2 = summary 2 건. "setX" success false + 세트 이름 목록.
+  6 ✓ Traceback 0.
+  7 확인 못 함: 통신 0 동안 발견 0 건 (두 사람 모두 끊기 전에 발견·전달, 지연 0.0~0.1 s). 모아 보내기는 단위 시험(SurvivorBook)만.
+판정: 새 인터페이스(SetComm·GetSurvivors)로 통신 0/1 동작 확인됨.

@@ -17,7 +17,7 @@ Each set has a Husky parking spot (`park`), per-robot exploration zone rectangle
 | --- | --- | --- | --- |
 | **IDLE** | stopped | stopped | user `start` |
 | **TRANSIT k** | drives to set k parking spot. Waits if an A1 lags more than 2.5 m behind its slot and goes again once it is within 1.5 m | follows its slot behind the Husky (1.6 m back, 0.8 m to the side) | Husky arrived + both A1s within 0.6 m of their slots (or 60 s after Husky arrival) |
-| **EXPLORE k** | parked; tallies person reports | explores frontiers in its zone. After 30 s with no reachable frontier returns to the explore start → `set_done` | both A1s report `set_done = k` |
+| **EXPLORE k** | parked; tallies person reports | explores frontiers in its zone. After 10 s with no reachable frontier returns to the explore start → `set_done` | both A1s report `set_done = k` |
 | **REGROUP k** | parked | abandons remaining exploration and returns to the explore start | both back, or 300 s |
 | **DONE** | stopped | stopped | — |
 

@@ -98,7 +98,7 @@ Why nudging is needed: `a1_2`, standing 0.27 m from a wall, once failed 61 plans
 
 Any of these means exploration is done; it then plans and follows to this set's home with Nav2 (retry up to 8 times, 300 s limit).
 
-- `frontier_options` is **0 for 30 s** and the executor is IDLE.
+- `frontier_options` is **0 for 10 s** (W1 2026-11-27, was 30 s) and the executor is IDLE.
 - While exploring it stays IDLE **without starting any follow for 90 s** (all remaining frontiers are blacklisted or fail the zone check). This timer resets every set.
 - The phase becomes REGROUP.
 
