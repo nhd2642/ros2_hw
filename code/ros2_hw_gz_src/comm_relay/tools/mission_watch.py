@@ -70,12 +70,13 @@ class Watch(Node):
         self.max_follow = 0.0
         self.home = {}               # (세트, 로봇) -> '도착' | '실패' (마지막 것)
         self.yaw, self.cmd, self.src, self.od = {}, {}, {}, {}     # motion.csv 용: 정답 yaw, 중재기 출력 (vx, wz), 출처, EKF odom (x, y, yaw)
+        self.sl_yaw = {}                                            # motion.csv 용: SLAM 공유 자세 yaw
         for n in NAMES:
             self.create_subscription(Odometry, f'/{n}/odom/ground_truth', lambda m, n=n: self.on_odom(n, m), 10)
         for ns in NAMES[1:]:
             self.create_subscription(String, f'/{ns}/nav_executor/state', lambda m, n=ns: self.st.__setitem__(n, m.data), 10)
-            self.create_subscription(PoseStamped, f'/{ns}/pose_shared', lambda m, n=ns: self.slam.__setitem__(
-                n, (m.pose.position.x, m.pose.position.y)), 10)
+            self.create_subscription(PoseStamped, f'/{ns}/pose_shared', lambda m, n=ns: (self.slam.__setitem__(
+                n, (m.pose.position.x, m.pose.position.y)), self.sl_yaw.__setitem__(n, yaw_of(m.pose.orientation))), 10)
             self.create_subscription(String, f'/{ns}/comm_mode', lambda m, n=ns: self.st.__setitem__(n + '_comm', m.data), LATCHED)
             self.create_subscription(String, f'/{ns}/nav_executor/events', lambda m, n=ns: self.on_event(n, m.data), 10)
             self.create_subscription(Twist, f'/{ns}/cmd_vel', lambda m, n=ns: self.cmd.__setitem__(n, (m.linear.x, m.angular.z, m.linear.y)), 10)
@@ -109,9 +110,11 @@ class Watch(Node):
         for ns in NAMES[1:]:
             vx, wz, vy = self.cmd.get(ns, (0.0, 0.0, 0.0))
             ox, oy, oyaw = self.od.get(ns, (float('nan'),) * 3)
+            sx, sy = self.slam.get(ns, (float('nan'),) * 2)
             row += [self.st.get(ns, '-'), self.src.get(ns, '-'), f'{vx:.3f}', f'{wz:.3f}',
                     f'{self.pos[ns][0]:.3f}', f'{self.pos[ns][1]:.3f}', f'{self.yaw.get(ns, 0.0):.3f}',
-                    f'{ox:.3f}', f'{oy:.3f}', f'{oyaw:.3f}', f'{vy:.3f}']
+                    f'{ox:.3f}', f'{oy:.3f}', f'{oyaw:.3f}', f'{vy:.3f}',
+                    f'{sx:.3f}', f'{sy:.3f}', f"{self.sl_yaw.get(ns, float('nan')):.4f}"]
         self.motion.writerow(row)
 
     def on_odom(self, n, m):

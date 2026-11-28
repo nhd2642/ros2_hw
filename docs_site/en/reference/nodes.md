@@ -12,7 +12,7 @@ Mission phases, user requests, zone and home assignment, comm heartbeat, people 
 | service | `/husky/set_comm`, `/husky/get_survivors` | `SetComm`, `GetSurvivors` |
 | sub | `/husky/driver_state`, `/husky/pose` | `String`, `PoseStamped` |
 | sub | `/husky/survivor_report` | `SurvivorReport` |
-| sub | `/<ns>/pose_shared`, `/<ns>/pose_fix`, `/<ns>/set_done` | `PoseStamped`, `PointStamped`, `Int32` |
+| sub | `/<ns>/pose_shared`, `/<ns>/map_anchor`, `/<ns>/set_done` | `PoseStamped`, `Pose2D`, `Int32` |
 | pub | `/mission/state` | `MissionState` (1 Hz, latched) |
 | pub | `/husky/goal`, `/husky/go` | `PoseStamped`, `Bool` |
 | pub | `/<ns>/comm_status` | `Bool` (heartbeat) |
@@ -162,7 +162,7 @@ Comm loss → retrace breadcrumbs home.
 
 | Node | Main I/O | Parameters |
 | --- | --- | --- |
-| `nav_goal_bridge` | in `/<ns>/map`, `/<ns>/tf`, `/<ns>/exploration_goal`, `/<ns>/home_shared`, `/<ns>/pose_fix` / out `/shared_map`, `/<ns>/pose_shared` (10 Hz), `/<ns>/nav_goal_local`, `/<ns>/home_local`, `/robot_position_markers` | `spawn.<ns>` (set by launch) |
+| `nav_goal_bridge` | in `/<ns>/map`, `/<ns>/tf`, `/<ns>/exploration_goal`, `/<ns>/home_shared`, `/<ns>/pose_fix`, `/mission/state` / out `/shared_map`, `/<ns>/pose_shared` (10 Hz), `/<ns>/map_anchor`, `/<ns>/nav_goal_local`, `/<ns>/home_local`, `/robot_position_markers` | `spawn.<ns>` (set by launch) |
 | `frontier_detector` | in `/shared_map`, `/mission/state`, `/exploration_visited` / out `/frontier_candidates`, `/frontier_markers` | `min_frontier_cells` 10, `visited_radius` 1.0 |
 | `goal_assigner` | in `/shared_map`, `/frontier_candidates` (remapped to `_comm`), `/mission/state`, `/<ns>/pose_shared`, `/<ns>/exploration_blacklist` / out `/<ns>/exploration_goal`, `/<ns>/frontier_options`, `/<ns>/candidate_path`, `/assigned_goal_markers` | `obstacle_clearance` 0.15, `robot_blacklist_radius` 0.9, `robot_blacklist_ttl` 60.0, `zone_goal_margin` 0.3, `goal_spread` 3.0, `goal_clearance` 0.40, `min_reach_area` 3.0 |
 | `scan_ready_relay` | in `/<ns>/scan`, `/<ns>/imu/data`, `/husky/pose`, `/<other>/pose_shared` / out `/<ns>/scan_ready` | `lidar_height` 0.28 |

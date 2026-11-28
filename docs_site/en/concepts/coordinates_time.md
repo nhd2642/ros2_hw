@@ -19,7 +19,9 @@ Each A1 publishes TF on its own `/<ns>/tf`, `/<ns>/tf_static` (both use the fram
 
 ### map → world alignment
 
-`nav_goal_bridge` places each robot map in the world by **translating it by the spawn pose**. Rotation is 0 — the map starts in the IMU ENU orientation, which already matches the world. On set arrival a `pose_fix` shifts it further.
+`nav_goal_bridge` places each robot map in the world by **translating it by the spawn pose**. The initial rotation is 0 — the map starts in the IMU ENU orientation, which already matches the world. On set arrival a `pose_fix` shifts it further.
+
+The SLAM map slowly rotates relative to the world during a mission (0.5-2.8°), so every time exploration starts the alignment rotation is set to the odom (IMU) heading (R1, 2026-11-28: mean map→odom heading over the last 5 s, about the robot position). The alignment (x, y, θ, `shared = R(θ)·map + (x, y)`) is published on `/<ns>/map_anchor`, and `husky_mission` uses the same values to convert person positions.
 
 This relies on the assumption that **the spawn poses are known**. If start positions change it goes wrong; it does not align maps by scan matching.
 

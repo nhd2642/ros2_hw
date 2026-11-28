@@ -24,6 +24,25 @@ def rotate(x, y, angle):
     c, s = math.cos(angle), math.sin(angle)
     return c * x - s * y, s * x + c * y
 
+
+def anchor_rotated(anchor, local_xy, new_angle):
+    """기준 (ax, ay, angle) 의 회전을 new_angle 로 바꾼다. 중심 = 로봇의 map 위치 local_xy (그 점의 공유 좌표는 그대로)."""
+    ax, ay, angle = anchor
+    ox, oy = rotate(local_xy[0], local_xy[1], angle)
+    nx, ny = rotate(local_xy[0], local_xy[1], new_angle)
+    return ax + ox - nx, ay + oy - ny, new_angle
+
+
+def heading_angle(samples, max_rate=math.radians(5.0), min_n=5):
+    """R1 (2026-11-28): 공유 자세 방향을 odom(IMU, 월드 방향) 에 맞추는 기준 회전 = -(map->odom yaw) 의 원형 평균.
+    samples = [(t, map->odom yaw, odom->base yaw)] 시각 순. 몸이 max_rate (rad/s) 보다 빨리 도는 동안의 표본은 뺀다
+    (G1: 회전 중 SLAM 방향 오차가 커짐). 남은 표본이 min_n 개 미만이면 None."""
+    keep = [mo for (t0, _, b0), (t1, mo, b1) in zip(samples, samples[1:])
+            if t1 > t0 and abs(math.atan2(math.sin(b1 - b0), math.cos(b1 - b0))) / (t1 - t0) < max_rate]
+    if len(keep) < min_n:
+        return None
+    return -math.atan2(sum(math.sin(a) for a in keep), sum(math.cos(a) for a in keep))
+
 class SharedMapMerger(Node):
     def __init__(self):
         super().__init__('shared_map_merger')

@@ -27,7 +27,8 @@ Mission requests, comm 0/1 and survivor queries are not topics but the action `/
 | `/<ns>/home_local` | `PoseStamped` (map) | nav_goal_bridge | nav_executor | |
 | `/<ns>/set_done` | `Int32` | nav_executor | husky_mission | latched, finished set number |
 | `/<ns>/slot_error` | `Float32` | a1_follower | husky_mission | distance to follow slot |
-| `/<ns>/pose_fix` | `PointStamped` (world) | a1_follower | nav_goal_bridge, husky_mission | once on set arrival |
+| `/<ns>/pose_fix` | `PointStamped` (world) | a1_follower | nav_goal_bridge | once on set arrival |
+| `/<ns>/map_anchor` | `Pose2D` (x, y, θ: shared = R(θ)·map + (x, y)) | nav_goal_bridge | husky_mission | latched, on change (R1) |
 | `/<ns>/comm_mode` | `String` | return_relay | nav_executor | transient local |
 | `/<ns>/return_events` | `String` | return_relay | monitors | |
 | `/<ns>/nav_executor/state` | `String` | nav_executor | mission_watch | |

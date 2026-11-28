@@ -27,7 +27,8 @@
 | `/<ns>/home_local` | `PoseStamped` (map) | nav_goal_bridge | nav_executor | |
 | `/<ns>/set_done` | `Int32` | nav_executor | husky_mission | latched, 끝낸 세트 번호 |
 | `/<ns>/slot_error` | `Float32` | a1_follower | husky_mission | 추종 자리까지 거리 |
-| `/<ns>/pose_fix` | `PointStamped` (world) | a1_follower | nav_goal_bridge, husky_mission | 세트 도착 때 한 번 |
+| `/<ns>/pose_fix` | `PointStamped` (world) | a1_follower | nav_goal_bridge | 세트 도착 때 한 번 |
+| `/<ns>/map_anchor` | `Pose2D` (x, y, θ: 공유 = R(θ)·map + (x, y)) | nav_goal_bridge | husky_mission | latched, 바뀔 때 (R1) |
 | `/<ns>/comm_mode` | `String` | return_relay | nav_executor | transient local |
 | `/<ns>/return_events` | `String` | return_relay | 모니터 | |
 | `/<ns>/nav_executor/state` | `String` | nav_executor | mission_watch | |

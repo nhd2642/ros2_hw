@@ -21,7 +21,8 @@ def rows(n, state='FOLLOWING', vx=0.15, gt_step=0.0, od_step=0.0, phase='EXPLORE
     out = []
     for i in range(n):
         r = {'t': f'{0.5 * i:.1f}', 'phase': phase, 'set': '1'}
-        vals = dict(state=state, src='nav', vx=vx, wz=0.0, gt_x=gt_step * i, gt_y=0.0, gt_yaw=0.0, od_x=od_step * i, od_y=0.0, od_yaw=0.0, vy=0.0)
+        vals = dict(state=state, src='nav', vx=vx, wz=0.0, gt_x=gt_step * i, gt_y=0.0, gt_yaw=0.0, od_x=od_step * i, od_y=0.0, od_yaw=0.0, vy=0.0,
+                    sl_x=0.0, sl_y=0.0, sl_yaw=0.0)
         for ns in ROBOTS:
             for k in MOTION_COLS:
                 r[f'{ns}_{k}'] = str(vals[k] if ns == 'a1_1' else ('IDLE' if k == 'state' else 0.0))

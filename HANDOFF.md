@@ -1,6 +1,23 @@
 # 인수인계
 
-## ★★★ 2026-11-27 저녁 추가 (가장 최신 — 이 절 다음에 바로 아래 11-27 절)
+## ★★★★ 2026-11-28 추가 (가장 최신 — 다음에 바로 아래 11-27 저녁 절, 11-27 절 순서)
+- 같은 브랜치·워크트리. 사용자 요청: '개선할 동작을 분명히 하고 SLAM 오차가 왜 커졌는지 분석해 계획' -> 1 단계 진단 (G1), 2 단계 회전 보정 (R1).
+- **G1 진단 (동작 변경 없음)**: `mission_watch` motion.csv 에 공유 자세 열 `sl_x, sl_y, sl_yaw` 추가 (`stuck_report` MOTION_COLS·test_stuck 맞춤).
+  `results/20261127_234156_set0_g1diag_1` PASS. 오차가 작아 (최대 0.28/0.31 m) 회전/눈금 판정은 못 함. 회전 안 할 때 방향 오차 |중앙|
+  SLAM 0.50/0.45°, odom(IMU) 0.11/0.00° -> odom 방향이 4 배 넘게 정확. 기록 `docs/experiments/G1_SLAM진단_기준.txt`.
+- **R1 (채택)**: `nav_goal_bridge` 가 `/mission/state` 의 EXPLORE 진입 (세트마다) 때 기준 회전을 직전 5 s map->odom 방향 원형 평균의 반대로 맞춤
+  (로봇 위치 중심, 5°/s 넘게 도는 표본 뺌, 10° 넘으면 버림). 계산은 `shared_map_merger.py` 의 `anchor_rotated`, `heading_angle` (시험 `comm_relay/test/test_anchor.py`).
+  기준 (x, y, θ) 을 `/<ns>/map_anchor` (Pose2D, latched) 로 내보내고 `husky_mission` 은 `pose_fix` 대신 그것으로 사람 위치를 바꿈.
+  전체 임무 2 회 (`results/20261128_005121_set0_r1full_1`, `..._013855_..._r1full_2`) PASS 2/2 (11/11), 보정 10/10 번, 누적 회전 최대 +2.35° / −2.82°,
+  공동 건물 SLAM 최대 평균 0.22 m (기준선 5 회 0.34 m), 거리 비례 오차 0 경우 (기준선 10 중 3). **효과 확인은 약함** (우연이어도 약 0.24).
+  회전 안 할 때 방향 오차 |중앙| 0.56~0.82° 는 안 줄음 (세트 시작에만 맞춤, 세트 안에서 다시 벌어짐). 기록 `docs/experiments/R1_방향보정_기준.txt`.
+  알려진 근사 (안 고침): `nav_executor` 구역 검사는 평행 이동으로 바꿔 씀 -> 1~2° 이면 5 m 떨어진 경로 점 0.1~0.2 m 어긋남.
+- 그대로 남은 것 (R1 과 무관해 보임, 원인 확인 안 함): 중복 보고 0~1 건/회, A1 끼리 최소 거리 0.32~0.61 m (공동 건물). 다음 대책은 사용자와 상의.
+  그 밖 열린 과제: MPPI 부하, 경사 위 제자리 회전, 폐경로 다시 열기 없음, 카메라 시야, 끊긴 동안 모아 보내기 시뮬 미확인, Nav2 기동 실패 가끔, 표본 수 적음.
+- 문서: mission_design 5 절, docs_site ko/en (results, coordinates_time, topics, nodes) 반영, 로컬 빌드만. 지금 최종 설정 = E1 + D1 + S3 + W1 + R1. main 합치기는 사용자 결정 남음.
+- 보조 도구 (scratchpad, 재부팅 때 지워짐): `g1_analyze.py`, `r1_judge.py` (timeline.csv 로 공동 건물 SLAM 최대·r·기울기, mission.log 보정 줄 셈).
+
+## ★★★ 2026-11-27 저녁 추가 (이 절 다음에 바로 아래 11-27 절)
 - 같은 브랜치·워크트리. 사용자 선택 (점검 후): ① 최종 동작 확인, ② '보행 느려 보임' 은 걸음새도 확인 -> 조사 뒤 W1 선택, ③ main 합치기는 이번 작업 뒤 결정.
 - **C2 통신 시험 (PASS)**: 새 srv `SetComm` 으로 통신 0/1 을 처음 시험 (`results/20261127_211326_set0_commcheck2`, 세트 1, 80 s 뒤 0, 60 s 뒤 1).
   두 A1 1.1 s 뒤 RETURNING, 1 에서 STOPPING -> NORMAL, 세트 완료. `GetSurvivors` CLI 조회 (전체·set1·없는 이름) 모두 맞음.

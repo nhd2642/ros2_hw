@@ -12,7 +12,7 @@
 | 서비스 | `/husky/set_comm`, `/husky/get_survivors` | `SetComm`, `GetSurvivors` |
 | 구독 | `/husky/driver_state`, `/husky/pose` | `String`, `PoseStamped` |
 | 구독 | `/husky/survivor_report` | `SurvivorReport` |
-| 구독 | `/<ns>/pose_shared`, `/<ns>/pose_fix`, `/<ns>/set_done` | `PoseStamped`, `PointStamped`, `Int32` |
+| 구독 | `/<ns>/pose_shared`, `/<ns>/map_anchor`, `/<ns>/set_done` | `PoseStamped`, `Pose2D`, `Int32` |
 | 발행 | `/mission/state` | `MissionState` (1 Hz, latched) |
 | 발행 | `/husky/goal`, `/husky/go` | `PoseStamped`, `Bool` |
 | 발행 | `/<ns>/comm_status` | `Bool` (하트비트) |
@@ -162,7 +162,7 @@ EXPLORE·REGROUP 때 Nav2 계획·추종, 실패 처리, 완료 판정, 홈 복�
 
 | 노드 | 주요 입출력 | 파라미터 |
 | --- | --- | --- |
-| `nav_goal_bridge` | 입 `/<ns>/map`, `/<ns>/tf`, `/<ns>/exploration_goal`, `/<ns>/home_shared`, `/<ns>/pose_fix` / 출 `/shared_map`, `/<ns>/pose_shared` (10 Hz), `/<ns>/nav_goal_local`, `/<ns>/home_local`, `/robot_position_markers` | `spawn.<ns>` (launch 가 넣음) |
+| `nav_goal_bridge` | 입 `/<ns>/map`, `/<ns>/tf`, `/<ns>/exploration_goal`, `/<ns>/home_shared`, `/<ns>/pose_fix`, `/mission/state` / 출 `/shared_map`, `/<ns>/pose_shared` (10 Hz), `/<ns>/map_anchor`, `/<ns>/nav_goal_local`, `/<ns>/home_local`, `/robot_position_markers` | `spawn.<ns>` (launch 가 넣음) |
 | `frontier_detector` | 입 `/shared_map`, `/mission/state`, `/exploration_visited` / 출 `/frontier_candidates`, `/frontier_markers` | `min_frontier_cells` 10, `visited_radius` 1.0 |
 | `goal_assigner` | 입 `/shared_map`, `/frontier_candidates`(→ `_comm` 으로 리맵), `/mission/state`, `/<ns>/pose_shared`, `/<ns>/exploration_blacklist` / 출 `/<ns>/exploration_goal`, `/<ns>/frontier_options`, `/<ns>/candidate_path`, `/assigned_goal_markers` | `obstacle_clearance` 0.15, `robot_blacklist_radius` 0.9, `robot_blacklist_ttl` 60.0, `zone_goal_margin` 0.3, `goal_spread` 3.0, `goal_clearance` 0.40, `min_reach_area` 3.0 |
 | `scan_ready_relay` | 입 `/<ns>/scan`, `/<ns>/imu/data`, `/husky/pose`, `/<상대>/pose_shared` / 출 `/<ns>/scan_ready` | `lidar_height` 0.28 |

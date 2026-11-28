@@ -10,7 +10,7 @@ The limitations known today, written down plainly. Use this as a starting point 
 
 ## Position
 
-- **SLAM drift within a set.** An A1 map can drift even within one set (DWB era `a1_1`: up to 0.97 m in set 1, 0.99 m in the common building; 4 MPPI full missions: max 0.23-0.72 m; 2 after S3: 0.28-0.50 m; 2 with W1: 0.25-0.96 m, the 0.96 m in the common building, a1_2).
+- **SLAM drift within a set.** An A1 map can drift even within one set (DWB era `a1_1`: up to 0.97 m in set 1, 0.99 m in the common building; 4 MPPI full missions: max 0.23-0.72 m; 2 after S3: 0.28-0.50 m; 2 with W1: 0.25-0.96 m, the 0.96 m in the common building, a1_2; 2 after R1: 0.16-0.26 m in the common building). R1 only aligns the heading to odom at set start, so drift within a set remains (heading error |median| while not turning 0.56-0.82°).
 - **SLAM offline replay is not reproducible.** Replaying the same bag with the same settings 8 times through `slam_replay.py` gave max errors of 0.97-4.03 m, so it could not be used to compare SLAM parameters. The cause was not found. It is re-aligned to the Husky on every set arrival, but drift that builds up inside a set stays, so zone rectangles and reported person positions can be off by that much.
 - **HOLD position offset.** The spot where a robot stops after a comm loss is odom based and can be away from the explore start (latest run 0.85 m).
 - **Slip when turning in place on a slope.** One turn in place on the slope slides the body about 0.5 m (0.1 m on the flat). Leg odom does not see it; SLAM corrects it with a scan every 0.5 s (S3). The slip itself was not reduced.

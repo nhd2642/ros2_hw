@@ -20,6 +20,7 @@
       /husky/goal, /husky/go -> husky_driver      /<ns>/comm_status 하트비트 (통신 1 일 때만) -> return_relay, survivor_detector
       /<ns>/home_shared (탐색 시작 위치, EXPLORE 2 s 뒤 A1 위치) -> nav_goal_bridge -> nav_executor      /husky/survivors (SurvivorList, latched) 사람 목록(월드)
 입력: /husky/survivor_report (SurvivorReport, 각 A1 의 survivor_detector)
+      /<ns>/map_anchor (Pose2D, latched, nav_goal_bridge): 그 로봇 map -> 월드 기준 (사람 보고 좌표 변환)
 """
 import math
 import os
@@ -29,7 +30,7 @@ import threading
 import rclpy
 import yaml
 from ament_index_python.packages import get_package_share_directory
-from geometry_msgs.msg import Point, PointStamped, PoseStamped
+from geometry_msgs.msg import Point, Pose2D, PoseStamped
 from mission_interfaces.action import RunMission
 from mission_interfaces.msg import MissionState, SurvivorList, SurvivorReport, Zone
 from mission_interfaces.srv import GetSurvivors, SetComm
@@ -58,6 +59,7 @@ class HuskyMission(Node):
             cfg = yaml.safe_load(f)
         self.k = int(self.declare_parameter('start_set', 0).value)
         self.sets, self.slots, self.spawn = cfg['sets'], cfg['slots'], start_poses(cfg, self.k)
+        self.anchor = {}            # 로봇 -> (x, y, theta) /<ns>/map_anchor. 받기 전에는 스폰 평행 이동만
         self.robots = list(self.slots)
         self.p = {k: float(self.declare_parameter(k, v).value) for k, v in dict(
             explore_timeout=1500.0, regroup_timeout=300.0, arrive_tol=0.6, arrive_wait=60.0, lag_stop=2.5, lag_go=1.5).items()}
@@ -80,8 +82,8 @@ class HuskyMission(Node):
         for ns in self.robots:
             self.create_subscription(PoseStamped, f'/{ns}/pose_shared', lambda m, n=ns: self.pose.__setitem__(n, xy(m)), 10)
             self.create_subscription(Int32, f'/{ns}/set_done', lambda m, n=ns: self.done.__setitem__(n, m.data), LATCHED)
-            self.create_subscription(PointStamped, f'/{ns}/pose_fix', lambda m, n=ns: self.spawn.__setitem__(
-                n, [self.spawn[n][0] + m.point.x, self.spawn[n][1] + m.point.y, 0.0]), 10)    # 지도 정렬이 옮겨진 만큼 (사람 좌표 변환용)
+            # 사람 좌표 변환용 기준 (nav_goal_bridge 가 내보냄: 월드 = R(theta)·map + (x, y), 평행 이동·방향 보정 포함, R1 2026-11-28)
+            self.create_subscription(Pose2D, f'/{ns}/map_anchor', lambda m, n=ns: self.anchor.__setitem__(n, (m.x, m.y, m.theta)), LATCHED)
             self.create_subscription(Float32, f'/{ns}/slot_error', lambda m, n=ns: self.seen_err.__setitem__(n, (m.data, self.now())), 10)
         ActionServer(self, RunMission, '/husky/run_mission', self.execute, goal_callback=self.on_goal,
                      cancel_callback=lambda _: CancelResponse.ACCEPT)
@@ -264,8 +266,9 @@ class HuskyMission(Node):
         if msg.robot not in self.spawn:
             self.get_logger().warn(f'사람 보고 무시 (모르는 로봇 {msg.robot!r})')
             return
-        ox, oy, _ = self.spawn[msg.robot]        # 보고 좌표 = 그 로봇 map (원점 = 스폰, 방향 = 월드)
-        x, y = msg.position.x + ox, msg.position.y + oy
+        ox, oy, th = self.anchor.get(msg.robot, (self.spawn[msg.robot][0], self.spawn[msg.robot][1], 0.0))   # 보고 좌표 = 그 로봇 map
+        c, si = math.cos(th), math.sin(th)
+        x, y = c * msg.position.x - si * msg.position.y + ox, si * msg.position.x + c * msg.position.y + oy
         if self.tally.add(x, y):
             self.get_logger().warn(f"[HUSKY] 사람 발견 보고: {msg.robot} 월드 ({x:.1f}, {y:.1f}), 지금까지 {len(self.tally.people)} 명")
         self.pub_people.publish(self.survivor_list())

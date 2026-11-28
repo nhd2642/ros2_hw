@@ -57,6 +57,7 @@ Complex obstacles are what shows robustness, so the layout was kept (a rule-brea
 | **S3** (11-27) | **slam_toolbox `minimum_travel_distance` 0.2 → 0** (scans processed while turning in place on a slope) | **ramp bench ×3: scans processed during the turn 0-1 → 30-33, max error 1.12-1.26 → 0.07-0.16 m. Full missions 2/2 PASS** (below) | **adopted** |
 | S4 (11-27) | gate which scans go to SLAM (`scan_ready_relay`: first by odom motion, then by walk/turn command) | bench passed but full missions 0/2 PASS (people 10/11, 8/11). "no reachable goal for 90 s" 0 → 4-6, closed paths 0 → 39-58 lines | rejected (keep S3) |
 | **W1** (11-27) | **end-of-set wait `done_after` 30 → 10 s** ("walking looks slow" check: both robots stood 30 s at every set end) | **full missions 2/2 PASS (11/11), idle wait while exploring −99 / −105 s per robot, total 996 s (S3 1012 s, −1.6 %), sets ended early 0** (below) | **adopted** |
+| **R1** (11-28) | **align the SLAM shared-pose heading to the odom (IMU) heading at every set** (`/<ns>/map_anchor`) | **full missions 2/2 PASS (11/11), heading corrections 10/10, common-building SLAM max mean 0.22 m (baseline 0.34 m), distance-proportional error 0 cases (baseline 3 of 10)** (below; only 2 runs, weak evidence) | **adopted** |
 
 - **Why G2 was reverted**: while following, the body heading differed from the direction of travel by more than 20° in 45-50 % of samples (N1: 1-2 %). Walking at a slant half the time, the camera did not look where the robot was going, and in a full mission a person was missed at 0.63 m because they were outside the field of view. The stall reduction was also 0 s under N3 (DiffDrive), so it was taken as run-to-run noise.
 - **Cost of MPPI**: thousands of "control loop missed its desired rate" warnings per run (10 Hz wall clock; DWB 0). See {doc}`limitations`.
@@ -134,6 +135,31 @@ Complex obstacles are what shows robustness, so the layout was kept (a rule-brea
   `GetSurvivors` answered correctly for all (11 configured) and per set (`set1`, 2 configured), and an unknown set name gives `success: false`.
   Nothing was detected while disconnected, so "buffer and send on reconnect" was not exercised in sim this time (unit tests only). Record in `docs/experiments/C2_통신시험_기준.txt`.
 
+
+## G1 and R1 (11-28): SLAM shared-pose heading correction
+- Why: in the common building the SLAM shared-pose error grew in proportion to the distance from the exploration start (3 of 8 cases in the 4 S3/W1 runs had r > 0.9, slope 1.1-2.5°).
+  It was larger than the odom-only error (0.03-0.23 m). Shared pose = SLAM map pose + a translation-only anchor (rotation fixed at 0, `pose_fix` also only translates),
+  so if the SLAM map rotates relative to the world, the error grows with distance from the correction point.
+- G1 diagnosis (`20261127_234156_set0_g1diag_1`, no behavior change, shared-pose columns `sl_x/sl_y/sl_yaw` added to motion.csv): that run had small errors (max 0.28 / 0.31 m),
+  so rotation vs. scale could not be decided. But while not turning, the heading error |median| was 0.50 / 0.45° for SLAM and 0.11 / 0.00° for odom (IMU): odom heading is over 4× more accurate.
+  Record in `docs/experiments/G1_SLAM진단_기준.txt`.
+- Change R1: every time the mission enters exploration (each set), `nav_goal_bridge` sets the anchor rotation to minus the circular mean of the map→odom heading over the last 5 s
+  (samples where the body turns faster than 5°/s are dropped, no correction with fewer than 5 samples, a step over 10° is discarded). The rotation is about the robot's current position, so that point keeps its shared coordinates.
+  Result: shared-pose heading = odom heading. The anchor (x, y, θ) is published on `/<ns>/map_anchor` (`Pose2D`, latched) and `husky_mission` uses it to convert person reports
+  (before, it added spawn + `pose_fix` on its own). Criteria written before running: `docs/experiments/R1_방향보정_기준.txt`.
+
+| Run | Result | People | Home fail / falls | Heading corrections (count, step size) | Accumulated rotation after set 5 (a1_1, a1_2) | Common-building SLAM max (a1_1, a1_2) | Duplicate reports / A1-A1 min |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `20261128_005121_set0_r1full_1` | PASS | 11/11 | 0 / 0 | 10, −0.59 to +0.86° | −0.33, +2.35° | 0.23, 0.24 m | 0 / 0.61 m |
+| `20261128_013855_set0_r1full_2` | PASS | 11/11 | 0 / 0 | 10, −1.50 to +0.60° | −2.82, +0.48° | 0.26, 0.16 m | 1 / 0.32 m |
+| (baseline, 5 runs: S3 ×2, W1 ×2, G1 ×1) | PASS 5/5 | 11/11 | 0 / 0 | — | — | mean 0.34 m (0.12-0.95 m) | 0-2 / 0.27-0.54 m |
+
+- All 4 criteria passed → adopted. Common-building SLAM max mean 0.22 m (baseline 0.34 m), distance-proportional cases 0 (baseline 3 of 10; this time r −0.50 to 0.28).
+- The accumulated rotation reached 0.3-2.8° over a mission, consistent with the hypothesis that the SLAM map slowly rotates.
+- The evidence is weak: only 3 of 10 baseline cases were large, so all 4 coming out small has about a 0.24 chance (0.7⁴) by luck alone.
+- While not turning, the shared-pose heading error |median| was 0.56-0.82°, not smaller than G1 (0.45-0.50°). The correction runs only at set start, so the error grows again within a set.
+- Duplicate reports and A1s getting close to each other are the same as baseline; they do not look caused by SLAM heading (cause not checked).
+- Known approximation (not fixed): the `nav_executor` zone check converts with a translation (shared goal − map goal), so with 1-2° rotation a path point 5 m from the goal is off by 0.1-0.2 m.
 
 ## Full missions with the final setup (baseline + N1) — 5 sets, 11 people
 
