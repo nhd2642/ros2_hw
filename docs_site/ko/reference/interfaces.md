@@ -26,10 +26,14 @@ service `GetCostmap` 을 `nav_executor` 가 부릅니다 ({doc}`../concepts/expl
    └──GetSurvivors {set_name}──▶ husky_mission (지금까지 찾은 사람)
 ```
 
-1. 시뮬과 로봇 노드를 띄웁니다 ({doc}`../tutorials/first_mission`). `husky_mission` 은 `IDLE` 에서 기다립니다.
+1. 시뮬과 로봇 노드를 띄웁니다. 임무를 직접 요청하려면 `START=0 bash src/comm_relay/tools/run_mission.sh` ({doc}`../tutorials/gui_manual_start`; 터미널의 `ROS_DOMAIN_ID` 를 스크립트가 출력한 값과 같게). `husky_mission` 은 `IDLE` 에서 기다립니다.
 2. `RunMission` 목표를 보내면 세트마다 `TRANSIT`(Husky 이동, A1 추종) → `EXPLORE`(A1 두 대가 자기 구역 탐색) → 둘 다 탐색 시작 위치로 돌아오면 다음 세트.
 3. A1 이 사람을 찾으면 `SurvivorReport` 가 오고, `husky_mission` 이 1.5 m 안 보고를 한 명으로 합쳐 `SurvivorList` 로 냅니다.
 4. 요청한 세트를 다 마치면 `DONE` 이 되고 액션 결과로 생존자 목록이 돌아옵니다.
+
+## 결과를 읽을 때 주의
+
+`found` 와 생존자 목록은 **보고를 묶은 수**라 실제 사람 수보다 클 수 있습니다. 먼 거리에서 본 사람의 위치가 1.5 m 넘게 어긋나면 한 사람이 두 번 세어집니다 (지금 설정 전체 실행 7 회에서 0~2 건, {doc}`../results/limitations`). `found >= expected` 만으로 "모두 찾음"이라고 판단하지 말고 위치를 확인하세요.
 
 ## action: RunMission
 

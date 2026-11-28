@@ -5,7 +5,7 @@
 ## 기동
 
 Nav2 서버가 안 켜짐 (`실패: Nav2 서버 4 개 active`)
-: Nav2 가 TF 를 늦게 받아 생기는 기동 불량입니다(약 30 번 중 5 번). `run_mission.sh` 는 한 번 자동으로 다시 띄웁니다. 두 번 다 실패하면 `bash run_mission.sh clean` 뒤 다시 실행하세요.
+: 가끔 생기는 기동 불량입니다 (lifecycle 응답 시간 초과로 보임, 원인 확인 안 함). `run_mission.sh` 가 Nav2 만 2 번까지, 그래도 안 되면 전체를 한 번 자동으로 다시 띄웁니다. 그래도 실패하면 `bash run_mission.sh clean` 뒤 다시 실행하세요.
 
 A1 컨트롤러가 활성화되지 않음 (`실패: 두 A1 컨트롤러 활성`)
 : `sim.log` 를 보세요. 이전 실행의 Gazebo 가 남아 있으면 충돌합니다 → `bash run_mission.sh clean`. `ign_ros2_control` 이 없다는 오류면 {doc}`../getting_started/installation` 2 단계를 다시.

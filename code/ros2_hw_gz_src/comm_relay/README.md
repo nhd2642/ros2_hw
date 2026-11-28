@@ -4,7 +4,7 @@
 
 | 노드 | 하는 일 |
 |---|---|
-| `husky_mission` | 사용자 명령(start / 0 / 1), 단계(TRANSIT → EXPLORE → REGROUP), 구역·홈 지정, 통신 하트비트, 사람 집계 |
+| `husky_mission` | 사용자 요청(action `RunMission`, service `SetComm`·`GetSurvivors`; `mission_interfaces`), 단계(TRANSIT → EXPLORE → REGROUP), 구역·홈 지정, 통신 하트비트, 사람 집계 |
 | `husky_driver` | Husky 목표점 주행 + 2D 라이다 회피, 위치 추정 |
 | `a1_follower` | 이동 단계에 Husky 뒤 자기 자리 추종 + 라이다 회피 |
 | `nav_executor` | 탐색 단계에 Nav2 계획·추종·실패 처리, 완료 판정, 탐색 시작 위치 복귀 |
@@ -20,7 +20,7 @@ ROS 없는 로직(단위 시험 `test/`): `drive_logic`(조향), `mission_logic`
 ```
 python3 -m pytest -q test                      # 단위 시험
 bash tools/run_mission.sh                      # 임무 전체 (시뮬부터), 결과 <저장소>/results/
-SETS=1 bash tools/run_mission.sh 3             # 공동 건물만
+SETS=1 bash tools/run_mission.sh 4             # 공동 건물만
 bash tools/gait_sweep.sh                       # A1 보행 속도 응답
 bash tools/run_mission.sh clean                # 남은 프로세스 정리
 ```

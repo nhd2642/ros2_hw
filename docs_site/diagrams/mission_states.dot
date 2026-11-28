@@ -5,7 +5,7 @@ digraph mission_states {
   start [shape=circle, label="", width=0.22, fillcolor="#14171C"];
   done [label="DONE", fillcolor="#C8102E", color="#C8102E"];
   IDLE; TRANSIT [label="TRANSIT k\nHusky drives to park(k)\nA1s follow slots"]; EXPLORE [label="EXPLORE k\nHusky parked\nA1s explore own zone"]; REGROUP [label="REGROUP k\nA1s called home", fillcolor="#3A4250", color="#3A4250"];
-  start -> IDLE; IDLE -> TRANSIT [label=" 'start'", color="#C8102E", fontcolor="#C8102E", penwidth=2];
+  start -> IDLE; IDLE -> TRANSIT [label=" RunMission goal", color="#C8102E", fontcolor="#C8102E", penwidth=2];
   TRANSIT -> EXPLORE [label=" Husky arrived\n + both A1 at slot"];
   EXPLORE -> TRANSIT [label=" both /<ns>/set_done\n k := k+1"];
   EXPLORE -> REGROUP [label=" explore_timeout\n (1500 s)"];

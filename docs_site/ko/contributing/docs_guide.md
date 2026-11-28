@@ -41,7 +41,7 @@ make serve                                        # http://127.0.0.1:8000 (언�
    | --- | --- |
    | `results/test_results.md` | 요약 카드, 단계별 표, 재현성 표, 원인·조치 표 |
    | `results/limitations.md` | 해결된 한계 빼기, 새 한계 넣기 |
-   | `index.md` | 첫 화면의 "사람 9/9, 넘어짐 0" 문장 |
+   | `index.md` | 첫 화면의 전체 실행 결과 문장 (`getting_started/overview.md`, `quickstart.md` 의 시간·사람 수, `service/deployment.md` 의 수치도) |
    | `tutorials/reading_results.md`, `tutorials/comm_loss.md` | 예로 든 실행 이름과 출력 |
    | `how_to/measure_gait.md` | 보행을 다시 쟀다면 표와 `make_figures.py` 의 `gait()` 값 |
 3. **설정값이 바뀌었다면** — `reference/nodes.md`, `how_to/tune_parameters.md` 의 기본값 표.

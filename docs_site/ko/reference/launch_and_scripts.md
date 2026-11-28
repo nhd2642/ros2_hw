@@ -11,15 +11,16 @@ bash comm_relay/tools/run_mission.sh [start_set | clean]
 | 첫 인자 `start_set` | 0 | 0 = 처음부터, k = 세트 k 직전 위치에서 시작 |
 | 첫 인자 `clean` | | 남은 프로세스 정리만 하고 끝 |
 | `GUI` | 0 | 1 = Gazebo 화면 |
-| `START` | 1 | 0 = `start` 를 자동으로 보내지 않음 |
+| `START` | 1 | 0 = 임무 요청(`RunMission`)을 자동으로 보내지 않음 |
 | `SETS` | 99 (전부) | n 세트만 하고 끝 |
 | `DUR` | 6000 | 시뮬 초 한도 |
 | `COMM_OFF_AT` | 0 (안 함) | 탐색 시작 뒤 이 시뮬 초에 통신 0 |
 | `COMM_OFF_FOR` | 60 | 그 뒤 이 시뮬 초 뒤 통신 1 |
+| `BAG` | 0 | 1 = SLAM 오프라인 재생용 rosbag 을 `<OUT>/bag` 에 남김 |
 | `OUT` | `<저장소>/results/<시각>_set<k>` | 결과 폴더 |
 | `ROS_DOMAIN_ID` | 20~79 무작위 | 겹치지 않게 |
 
-하는 일: 정리 → 시뮬 → (컨트롤러 활성 + 8 s) → SLAM → Nav2 + 지형 → (서버 4 개 active, 실패하면 한 번 다시) → 임무 계층 → `start` 3 번 → `mission_watch.py` → `mission_events.txt` 뽑기 → 종료 시 정리.
+하는 일: 정리 → 시뮬 → (컨트롤러 활성 + 8 s) → SLAM → Nav2 + 지형 → (서버 4 개 active, 안 되면 Nav2 만 2 번까지, 그래도 안 되면 전체를 한 번 다시) → 임무 계층 → action `/husky/run_mission` 요청 → `mission_watch.py` → `mission_events.txt` 뽑기 → 종료 시 정리.
 
 ## launch 파일
 

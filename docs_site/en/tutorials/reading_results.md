@@ -3,6 +3,10 @@
 `run_mission.sh` creates a `results/<date_time>_set<k>/` folder for each run. This tutorial uses the committed passing run `results/20261114_062151_set0` to read the results and plot them.
 
 :::{note}
+The committed example run is from the **earlier setup (2026-11-14, 3 sets + common building, 9 people)**. Files are read the same way, but set count, people and timing differ from today (4 sets + common building, 11 people). Current runs also write `motion.csv`, `stuck.txt` and `action.log`.
+:::
+
+:::{note}
 The analysis tools print Korean. A few words you will see: `요약` summary, `세트` set, `사람` person/people, `건` reports, `명` persons, `넘어짐` falls, `없음` none, `최소 중심 거리` minimum center distance, `오차` error.
 :::
 

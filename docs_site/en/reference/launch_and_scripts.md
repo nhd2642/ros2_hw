@@ -11,15 +11,16 @@ bash comm_relay/tools/run_mission.sh [start_set | clean]
 | first argument `start_set` | 0 | 0 = from the beginning, k = start just before set k |
 | first argument `clean` | | only clean up leftover processes |
 | `GUI` | 0 | 1 = Gazebo window |
-| `START` | 1 | 0 = don't send `start` automatically |
+| `START` | 1 | 0 = don't request the mission (`RunMission`) automatically |
 | `SETS` | 99 (all) | stop after n sets |
 | `DUR` | 6000 | sim-second limit |
 | `COMM_OFF_AT` | 0 (off) | comm 0 at this many sim seconds after exploration starts |
 | `COMM_OFF_FOR` | 60 | comm 1 this many sim seconds later |
+| `BAG` | 0 | 1 = also record a rosbag for offline SLAM replay in `<OUT>/bag` |
 | `OUT` | `<repo>/results/<time>_set<k>` | result folder |
 | `ROS_DOMAIN_ID` | random 20-79 | avoids collisions |
 
-What it does: clean up → sim → (controllers active + 8 s) → SLAM → Nav2 + terrain → (4 servers active; retry once on failure) → mission layer → `start` ×3 → `mission_watch.py` → extract `mission_events.txt` → clean up on exit.
+What it does: clean up → sim → (controllers active + 8 s) → SLAM → Nav2 + terrain → (4 servers active; if not, restart only Nav2 up to twice, then the whole stack once) → mission layer → request on action `/husky/run_mission` → `mission_watch.py` → extract `mission_events.txt` → clean up on exit.
 
 ## Launch files
 

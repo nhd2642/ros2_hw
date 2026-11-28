@@ -20,7 +20,7 @@ Three robots work as **one team** in a disaster site built on [Gazebo Sim](https
 - **Two A1s (`a1_1`, `a1_2`)** are quadrupeds walking with the [CHAMP](https://github.com/chvmp/champ) gait controller. While moving they follow their own slot behind the Husky; on arrival they enter the south (`a1_1`) and north (`a1_2`) buildings and map them with frontier exploration.
 - When a camera spots a person (a mannequin), the A1 stops for 1 s and sends the position to the Husky. If the link to the Husky drops, it retraces the path it came along.
 
-A full mission (3 sets + a common building, 9 people) takes about 1,900 s of sim time, roughly 2 hours of real time. The latest full run **passed: 9/9 people found, 0 falls**.
+A full mission (4 sets + a common building, 11 people) takes about 900-1,050 s of sim time, roughly 50 minutes of real time. All 7 full runs of the current setup line (since 2026-11-27) **passed: 11/11 people found, 0 falls** ({doc}`results/test_results`).
 
 ## Find your way
 
@@ -32,6 +32,13 @@ A full mission (3 sets + a common building, 9 people) takes about 1,900 s of sim
 :link-type: doc
 
 Overview, install, build and your first mission in about 30 minutes.
+:::
+
+:::{grid-item-card} 🧭 Service design
+:link: service/deployment
+:link-type: doc
+
+The proposed survivor search service: users, operating procedure, and for each element what the simulation uses and what a real deployment needs.
 :::
 
 :::{grid-item-card} 📘 Tutorials
@@ -73,9 +80,18 @@ Numbers and plots from passing runs, causes found and fixed, known limits, the p
 ## New here? Read in this order
 
 1. {doc}`getting_started/overview` — a 5-minute picture of what moves and how
-2. {doc}`getting_started/installation` → {doc}`getting_started/quickstart` — install and run one mission
-3. {doc}`tutorials/reading_results` — how to read a result folder
-4. {doc}`concepts/architecture` — how the nodes and topics connect
+2. {doc}`service/deployment` → {doc}`reference/interfaces` — what the service is and how to request it
+3. {doc}`getting_started/installation` → {doc}`getting_started/quickstart` — install and run one mission
+4. {doc}`tutorials/reading_results` — how to read a result folder
+5. {doc}`concepts/architecture` — how the nodes and topics connect
+
+```{toctree}
+:hidden:
+:caption: Service
+:maxdepth: 2
+
+service/deployment
+```
 
 ```{toctree}
 :hidden:

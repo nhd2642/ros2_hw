@@ -10,7 +10,7 @@ Written by `mission_watch.py`, one row every 10 s of sim time. Positions are Gaz
 | --- | --- | --- |
 | `t` | s | sim time since mission start |
 | `phase` | `IDLE` `TRANSIT` `EXPLORE` `REGROUP` `DONE` | mission phase |
-| `set` | 0-4 | set number (4 = finished) |
+| `set` | 0-5 | set number (0-3 = sets 1-4, 4 = common building, 5 = finished) |
 | `comm` | 0 / 1 | comm |
 | `husky_x`, `husky_y` | m (world) | Husky true position |
 | `a1_1_x`, `a1_1_y`, `a1_2_x`, `a1_2_y` | m (world) | A1 true positions |
@@ -19,6 +19,10 @@ Written by `mission_watch.py`, one row every 10 s of sim time. Positions are Gaz
 | `a1_1_comm`, `a1_2_comm` | `WAIT` `NORMAL` `RETURNING` `HOLD` `STOPPING` | return_relay state |
 | `people` | count | person reports received by the Husky |
 | `a1_1_slam_err`, `a1_2_slam_err` | m | distance between `/<ns>/pose_shared` and truth |
+
+## motion.csv / stuck.txt
+
+`motion.csv` records, at 2 Hz and per robot, state, command (vx, wz, vy), command source, true pose, odom and SLAM shared pose. `stuck.txt` is the stall analysis `stuck_report.py` derives from it.
 
 ## action.log
 

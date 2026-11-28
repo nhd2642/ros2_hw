@@ -6,7 +6,7 @@ Gazebo Sim 재난 현장 A1 두 대 + Husky 탐색 프로젝트(gazebo_disaster_
 |---|---|
 | `CLAUDE.md` | Claude Code 가 먼저 읽는 규칙 + 프로젝트 요약·실행법 |
 | `HANDOFF.md` | 지금 상태(fix19), 결과 표, 문제 분석, 다음 후보 |
-| `docs/mission_design.md` | **지금 구조 (임무 v2, 2026-11-12~)**: 세트 3개 + 공동 건물, Husky 자율주행, A1 추종·탐색·복귀, 노드·토픽, 실행법, 시험 결과 |
+| `docs/mission_design.md` | **지금 구조 (임무 v2, 2026-11-12~)**: 세트 4개 + 공동 건물, Husky 자율주행, A1 추종·탐색·복귀, 노드·토픽, 실행법, 시험 결과 |
 | `ws/` | 빌드 작업 공간 (`ws/src` -> `code/ros2_hw_gz_src`). `colcon build --symlink-install` |
 | `results/` | `run_mission.sh` 실행 결과 (로그, timeline.csv, summary.txt) |
 | `docs/system_structure.md` | 전체 구조·순서도·rqt_graph 형식 노드 그래프·모듈별 원리·맨해튼 가정 (그림은 `docs/img/`) |
@@ -26,8 +26,10 @@ sudo apt update && sudo apt install -y ros-humble-desktop ros-humble-ros-gz ros-
   ros-humble-ros2-controllers ros-humble-xacro ros-humble-joint-state-publisher ros-humble-joint-state-broadcaster \
   python3-colcon-common-extensions python3-opencv python3-matplotlib python3-pytest
 cd ~/ros2_hw/ws && source /opt/ros/humble/setup.bash && colcon build --symlink-install   # 약 2 분
-source install/setup.bash && bash src/comm_relay/tools/run_mission.sh                    # 임무 전체 (실제 약 2 시간), 결과는 results/
+source install/setup.bash && bash src/comm_relay/tools/run_mission.sh                    # 임무 전체 (실제 약 50 분), 결과는 results/
 ```
+**서비스 문서(사용자용)** 는 `docs_site/` 입니다: 서비스 정의와 실제 구현 설계(`docs_site/ko/service/deployment.md`), 직접 정의한 action·service·msg(`docs_site/ko/reference/interfaces.md`). 사이트로 보려면 `pip install -r docs_site/requirements.txt && make -C docs_site html` 뒤 `docs_site/_build/html/index.html` 을 엽니다.
+
 설계·노드·실행 옵션·시험 결과는 `docs/mission_design.md`. 작업 공간은 `ws/` (`ws/src` 는 `code/ros2_hw_gz_src` 로 가는 링크), 사람 인식 모델은 `ws/person_ai_models/`.
 `history/bundles/`(옛 묶음 zip)와 `results/` 의 옛 실행 기록은 용량 때문에 저장소에 없고, `install_to_wsl.sh` 는 옛 방식(묶음 복사)이라 더 쓰지 않는다.
 

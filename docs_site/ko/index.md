@@ -20,7 +20,7 @@
 - **A1 두 대 (`a1_1`, `a1_2`)** 는 [CHAMP](https://github.com/chvmp/champ) 보행 제어기로 걷는 사족 로봇입니다. 이동할 때는 Husky 뒤 자기 자리를 따라가고, 도착하면 남쪽(`a1_1`)·북쪽(`a1_2`) 건물에 들어가 프런티어 탐색으로 지도를 만듭니다.
 - 사람(마네킹)을 카메라로 찾으면 1 초 멈추고 위치를 Husky 에 보냅니다. Husky 와 통신이 끊기면 지나온 길을 되짚어 돌아옵니다.
 
-전체 임무(세트 3개 + 공동 건물, 사람 9명)는 시뮬 시간 약 1,900 초, 실제로는 약 2 시간 걸리며, 최근 전체 실행에서 **사람 9/9 발견, 넘어짐 0** 으로 통과(PASS)했습니다.
+전체 임무(세트 4개 + 공동 건물, 사람 11명)는 시뮬 시간 약 900~1,050 초, 실제로는 약 50 분 걸립니다. 지금 설정 계열(2026-11-27 이후)의 전체 실행 7 회는 모두 **사람 11/11 발견, 넘어짐 0** 으로 통과(PASS)했습니다 ({doc}`results/test_results`).
 
 ## 문서 둘러보기
 
@@ -32,6 +32,13 @@
 :link-type: doc
 
 프로젝트 개요, 설치, 빌드, 첫 임무 실행까지 30 분 안에.
+:::
+
+:::{grid-item-card} 🧭 서비스 설계
+:link: service/deployment
+:link-type: doc
+
+제안하는 생존자 탐색 서비스: 사용자·운용 절차, 요소별로 시뮬레이션과 실제 구현.
 :::
 
 :::{grid-item-card} 📘 튜토리얼
@@ -73,9 +80,18 @@
 ## 처음이라면 이 순서로
 
 1. {doc}`getting_started/overview` — 무엇이 어떻게 움직이는지 5 분 개요
-2. {doc}`getting_started/installation` → {doc}`getting_started/quickstart` — 설치하고 임무 한 번 돌리기
-3. {doc}`tutorials/reading_results` — 결과 폴더 읽는 법
-4. {doc}`concepts/architecture` — 노드와 토픽이 어떻게 이어지는지
+2. {doc}`service/deployment` → {doc}`reference/interfaces` — 어떤 서비스이고 어떻게 요청하는지
+3. {doc}`getting_started/installation` → {doc}`getting_started/quickstart` — 설치하고 임무 한 번 돌리기
+4. {doc}`tutorials/reading_results` — 결과 폴더 읽는 법
+5. {doc}`concepts/architecture` — 노드와 토픽이 어떻게 이어지는지
+
+```{toctree}
+:hidden:
+:caption: 서비스
+:maxdepth: 2
+
+service/deployment
+```
 
 ```{toctree}
 :hidden:

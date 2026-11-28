@@ -10,7 +10,7 @@
 | --- | --- | --- |
 | `t` | s | 임무 시작 뒤 시뮬 시간 |
 | `phase` | `IDLE` `TRANSIT` `EXPLORE` `REGROUP` `DONE` | 임무 단계 |
-| `set` | 0~4 | 세트 번호 (4 = 끝) |
+| `set` | 0~5 | 세트 번호 (0~3 = 세트 1~4, 4 = 공동 건물, 5 = 끝) |
 | `comm` | 0 / 1 | 통신 |
 | `husky_x`, `husky_y` | m (world) | Husky 정답 위치 |
 | `a1_1_x`, `a1_1_y`, `a1_2_x`, `a1_2_y` | m (world) | A1 정답 위치 |
@@ -19,6 +19,10 @@
 | `a1_1_comm`, `a1_2_comm` | `WAIT` `NORMAL` `RETURNING` `HOLD` `STOPPING` | return_relay 상태 |
 | `people` | 건 | Husky 가 받은 사람 보고 수 |
 | `a1_1_slam_err`, `a1_2_slam_err` | m | `/<ns>/pose_shared` 와 정답의 거리 |
+
+## motion.csv / stuck.txt
+
+`motion.csv` 는 2 Hz 로 로봇마다 상태·명령(vx, wz, vy)·명령 출처·정답 자세·odom·SLAM 공유 자세를 적습니다. `stuck.txt` 는 `stuck_report.py` 가 거기서 뽑은 추종 중 멈춤 분석입니다.
 
 ## action.log
 

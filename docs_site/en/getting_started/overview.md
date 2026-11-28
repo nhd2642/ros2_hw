@@ -15,7 +15,7 @@ Top-down Gazebo view of the whole world: the road, the building pairs of sets 1-
 | Robots | 1 Husky A200 (wheeled, 2D lidar + IMU), 2 Unitree A1 (quadruped, CHAMP gait) |
 | A1 sensors | 360° planar lidar (10 Hz, 10 m), front RGB camera (2 Hz), terrain depth sensor (5 Hz), IMU (100 Hz) |
 | Main stack | slam_toolbox (per-robot SLAM), Nav2 (planner/controller servers), OpenCV DNN YOLOv4-tiny (person detection) |
-| Mission | 3 sets (a pair of buildings either side of the road) + 1 common building, 9 people (mannequins) |
+| Mission | 4 sets (a pair of buildings either side of the road) + 1 common building, 11 people (mannequins) |
 | Verdict | reached the end + 0 falls + 0 exploration timeouts + every person reported within 1 m of truth → PASS |
 
 ## How one mission flows
@@ -23,13 +23,13 @@ Top-down Gazebo view of the whole world: the road, the building pairs of sets 1-
 ```{graphviz} ../../diagrams/mission_states.dot
 ```
 
-1. **IDLE → TRANSIT**: when the user sends `start`, the Husky leaves for the set 1 parking spot. The two A1s walk in slots 1.6 m behind and 0.8 m to each side.
+1. **IDLE → TRANSIT**: when the user requests a mission with the action `/husky/run_mission`, the Husky leaves for the set 1 parking spot. The two A1s walk in slots 1.6 m behind and 0.8 m to each side.
 2. **TRANSIT → EXPLORE**: once the Husky has arrived and both A1s stand in their slots, those positions are recorded as the "explore start (home)" and each A1 receives its exploration zone (a rectangle).
 3. **EXPLORE**: inside its building each A1 picks frontiers (the edge between known and unknown space), drives there with Nav2 and fills in the map. When it sees a person it stops for 1 s and reports to the Husky.
 4. **Set done**: when there has been no reachable frontier for 10 s, the A1 returns home and publishes `/<ns>/set_done`. When both are back, the team moves to the next set.
-5. **DONE**: after the common building (both A1s share one zone) the mission ends.
+5. **DONE**: after the common building (both A1s share one zone) the mission ends and the action result returns the survivor list.
 
-If exploration takes too long (1,500 s), the Husky calls the A1s back with **REGROUP**. At any time the user can send `0` (comm off) / `1` (comm on) to simulate a link outage.
+If exploration takes too long (1,500 s), the Husky calls the A1s back with **REGROUP**. At any time the user can turn the link off and on with the service `/husky/set_comm` to simulate an outage, and ask who has been found with `/husky/get_survivors` ({doc}`../reference/interfaces`).
 
 ## Building blocks
 
@@ -56,6 +56,7 @@ Mission (`comm_relay`)
 disaster_develop/
 ├── code/ros2_hw_gz_src/      # ROS 2 package sources (ws/src links here)
 │   ├── comm_relay/           # mission layer (Husky mission/drive, A1 follow/executor/return/person detection)
+│   ├── mission_interfaces/   # our own action, service and msg definitions
 │   ├── a1_exploration/       # SLAM & Nav2 launch, frontier / goal assignment / map merge scripts
 │   ├── terrain_perception/   # depth sensor → costmap terrain layer
 │   ├── disaster_sim/         # world, Husky model, mission.yaml, make_world.py

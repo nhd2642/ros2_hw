@@ -1,42 +1,57 @@
 # Test Results
 
-Test setup: Gazebo Sim headless, WSL2, RTF about 0.3 (2026-11-12 to 20). Positions and person truth come from Gazebo ground truth and are used **for evaluation only**.
+Test setup: Gazebo Sim headless, WSL2, RTF about 0.3 (2026-11-12 to 28). Positions and person truth come from Gazebo ground truth and are used **for evaluation only**.
 
 Verdict (`mission_watch.py`): **PASS** = reached the end + 0 falls + 0 exploration timeouts (REGROUP) + every person of the assigned sets reported within 1.0 m of truth + 0 home failures (added 2026-11-19; before that an A1 that gave up after 8 return attempts and stopped where it was still counted as returned).
 
 ## Summary
+
+Based on the 7 full missions of the current setup line (after S3, 2026-11-27 to 28).
 
 ::::{grid} 2 2 4 4
 :gutter: 2
 
 :::{grid-item-card}
 :text-align: center
-**11 / 11**
+**7 / 7**
 ^^^
-people found (final setup, passing run)
+full missions passed (11/11 people)
 :::
 
 :::{grid-item-card}
 :text-align: center
 **0**
 ^^^
-falls and home failures (4 MPPI full missions)
+falls and return failures
 :::
 
 :::{grid-item-card}
 :text-align: center
-**1,910 s**
+**872-1,046 s**
 ^^^
-sim time (5 sets, about 1.6 h real)
+sim time (about 50 min real)
 :::
 
 :::{grid-item-card}
 :text-align: center
-**2 / 4**
+**11-13**
 ^^^
-MPPI full-mission PASS (final setup 1 / 2)
+person reports (11 people; extras are duplicates)
 :::
 ::::
+
+| Run | Changes by then | Sim time | Person reports | SLAM max (a1_1, a1_2) |
+| --- | --- | --- | --- | --- |
+| `20261127_085716_set0_s3full_2` | S3 | 979 s | 12 | 0.50, 0.44 m |
+| `20261127_095400_set0_s3full_1b` | S3 | 1046 s | 12 | 0.37, 0.28 m |
+| `20261127_212737_set0_w1full_1` | + W1 | 1006 s | 13 | 0.35, 0.68 m |
+| `20261127_223034_set0_w1full_2` | + W1 | 987 s | 11 | 0.25, 0.96 m |
+| `20261127_234156_set0_g1diag_1` | W1 (diagnostic columns only) | 904 s | 11 | 0.28, 0.31 m |
+| `20261128_005121_set0_r1full_1` | + R1 | 872 s | 11 | 0.23, 0.26 m |
+| `20261128_013855_set0_r1full_2` | + R1 | 1019 s | 12 | 0.45, 0.23 m |
+
+- Runs of S4 (rejected) in the same period, and `s3full_1`, which never started because Nav2 failed to come up, are left out.
+- A1-to-A1 contact and duplicate reports are not part of the PASS verdict ({doc}`limitations`).
 
 ## Robustness experiments (2026-11-19 to 20)
 
@@ -161,7 +176,7 @@ Complex obstacles are what shows robustness, so the layout was kept (a rule-brea
 - Duplicate reports and A1s getting close to each other are the same as baseline; they do not look caused by SLAM heading (cause not checked).
 - Known approximation (not fixed): the `nav_executor` zone check converts with a translation (shared goal − map goal), so with 1-2° rotation a path point 5 m from the goal is off by 0.1-0.2 m.
 
-## Full missions with the final setup (baseline + N1) — 5 sets, 11 people
+## Full missions with the N1 setup (11-20, baseline + MPPI) — 5 sets, 11 people
 
 | Run | Result | People | Home fail / falls | Sim time | Exploration (set 1 / 2 / 3 / 4 / common) | Stall | SLAM max (a1_1, a1_2) |
 | --- | --- | --- | --- | --- | --- | --- | --- |

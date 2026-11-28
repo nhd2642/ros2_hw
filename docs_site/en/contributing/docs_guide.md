@@ -41,7 +41,7 @@ When new results come in, update in this order.
    | --- | --- |
    | `results/test_results.md` | summary cards, per-phase table, reproducibility table, causes-and-fixes table |
    | `results/limitations.md` | remove solved limits, add new ones |
-   | `index.md` | the "9/9 people, 0 falls" sentence on the home page |
+   | `index.md` | the full-run result sentence on the home page (also times and counts in `getting_started/overview.md`, `quickstart.md` and numbers in `service/deployment.md`) |
    | `tutorials/reading_results.md`, `tutorials/comm_loss.md` | example run names and output |
    | `how_to/measure_gait.md` | if the gait was re-measured, the table and the `gait()` values in `make_figures.py` |
 3. **If settings changed** — the default tables in `reference/nodes.md` and `how_to/tune_parameters.md`.

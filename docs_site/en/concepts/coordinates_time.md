@@ -37,7 +37,7 @@ A1 SLAM drifts, but the Husky pose estimate (wheel speed × IMU yaw) stayed with
 
 ### Sim time is the reference
 
-Every node runs with `use_sim_time: true`. All mission limits (exploration 1,500 s, done detection 30 s, goal 90 s …) are in sim seconds. With an RTF of 0.2-0.4, a 1,900 s mission takes about 2 hours real time.
+Every node runs with `use_sim_time: true`. All mission limits (exploration 1,500 s, done detection 10 s, goal 90 s …) are in sim seconds. With an RTF of 0.2-0.4, a mission of about 1,000 s takes about 50 minutes of real time.
 
 There are two exceptions:
 

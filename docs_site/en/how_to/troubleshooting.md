@@ -5,7 +5,7 @@ Symptoms, where to look, and what to do.
 ## Startup
 
 Nav2 servers don't come up (`실패: Nav2 서버 4 개 active` — "failed: 4 Nav2 servers active")
-: A startup fault where Nav2 receives TF late (about 5 in 30 starts). `run_mission.sh` restarts once automatically. If both attempts fail, run `bash run_mission.sh clean` and try again.
+: An occasional startup fault (apparently a lifecycle response timeout; cause not checked). `run_mission.sh` automatically restarts only Nav2 up to twice, then the whole stack once. If it still fails, run `bash run_mission.sh clean` and try again.
 
 A1 controllers never activate (`실패: 두 A1 컨트롤러 활성`)
 : Check `sim.log`. A leftover Gazebo from a previous run conflicts → `bash run_mission.sh clean`. If the error says `ign_ros2_control` is missing, redo step 2 of {doc}`../getting_started/installation`.

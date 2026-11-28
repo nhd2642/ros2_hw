@@ -7,7 +7,7 @@ The mission is driven by a single node, `husky_mission`. This page explains the 
 
 ## Sets
 
-The set order is the order of `sets` in `mission.yaml`: `set1`, `set2`, `set3`, `common`. The set number `k` in code and logs counts from 0 (0 = set 1, 3 = common building).
+The set order is the order of `sets` in `mission.yaml`: `set1`, `set2`, `set3`, `set4`, `common`. The set number `k` in code and logs counts from 0 (0 = set 1, 4 = common building).
 
 Each set has a Husky parking spot (`park`), per-robot exploration zone rectangles (`zones`), and a person count (`people`).
 
@@ -15,7 +15,7 @@ Each set has a Husky parking spot (`park`), per-robot exploration zone rectangle
 
 | Phase | Husky | A1 | Ends when |
 | --- | --- | --- | --- |
-| **IDLE** | stopped | stopped | user `start` |
+| **IDLE** | stopped | stopped | user mission request (`RunMission`) |
 | **TRANSIT k** | drives to set k parking spot. Waits if an A1 lags more than 2.5 m behind its slot and goes again once it is within 1.5 m | follows its slot behind the Husky (1.6 m back, 0.8 m to the side) | Husky arrived + both A1s within 0.6 m of their slots (or 60 s after Husky arrival) |
 | **EXPLORE k** | parked; tallies person reports | explores frontiers in its zone. After 10 s with no reachable frontier returns to the explore start → `set_done` | both A1s report `set_done = k` |
 | **REGROUP k** | parked | abandons remaining exploration and returns to the explore start | both back, or 300 s |
@@ -35,7 +35,7 @@ If EXPLORE exceeds `explore_timeout` (1,500 s) it becomes REGROUP. A single REGR
 
 ## Common building
 
-In the common building (`common`) both A1s get **the same rectangle** (x 40-54, y −6-6).
+In the common building (`common`) both A1s get **the same rectangle** (x 52-66, y −6-6).
 
 - Frontiers come from the merged map, so anything one robot has seen drops out of the other's candidates too.
 - Goal assignment penalizes two goals closer than 3 m, so the robots pick frontiers far apart.

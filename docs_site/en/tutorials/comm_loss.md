@@ -64,7 +64,9 @@ RViz right after comm 0: the executor path disappears and the A1 retraces its pa
 
 ## A real example
 
-In the passing run `20261114_062151_set0` the link was cut from 144 to 194 s during set 1 exploration.
+The run with the current interface (`SetComm` service, `20261127_211326_set0_commcheck2`: set 1, link off 80 s into exploration, on again 60 s later) passed: both A1s went `RETURNING` after 1.1 s, then `STOPPING` → `NORMAL` and finished exploring. No new person was found while disconnected in that run. **Hold-and-send-later** was confirmed in a run on 2026-11-28 (`docs/experiments/C3_통신끊김_보관전달_확인.txt`): a person `a1_2` found while disconnected reached the Husky right after the link came back, with `delay` 10.0 s (one run, one report).
+
+Below is a more detailed record from the earlier setup (2026-11-14). In the passing run `20261114_062151_set0` the link was cut from 144 to 194 s during set 1 exploration.
 
 - Both A1s switched to `RETURNING` **1.1 s later** and the Husky stopped.
 - `a1_1` reached home 50 s later and went to `HOLD`. But it stopped in front of the door, **0.85 m** from the explore start — retracing uses odom, so it is off by however much odom drifted.

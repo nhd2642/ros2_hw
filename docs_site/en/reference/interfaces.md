@@ -26,10 +26,14 @@ user ──RunMission goal {num_sets}──▶ husky_mission ──/mission/stat
   └──GetSurvivors {set_name}──▶ husky_mission (people found so far)
 ```
 
-1. Start the simulation and robot nodes ({doc}`../tutorials/first_mission`). `husky_mission` waits in `IDLE`.
+1. Start the simulation and robot nodes. To request the mission yourself use `START=0 bash src/comm_relay/tools/run_mission.sh` ({doc}`../tutorials/gui_manual_start`; set your terminal's `ROS_DOMAIN_ID` to the value the script prints). `husky_mission` waits in `IDLE`.
 2. Sending a `RunMission` goal runs, per set, `TRANSIT` (Husky drives, A1s follow) → `EXPLORE` (both A1s explore their zones) → next set once both are back at their exploration start.
 3. When an A1 finds a person a `SurvivorReport` arrives; `husky_mission` merges reports within 1.5 m into one person and publishes a `SurvivorList`.
 4. After the requested sets the phase becomes `DONE` and the action result carries the survivor list.
+
+## Reading the result
+
+`found` and the survivor list count **merged reports**, so they can exceed the real number of people: when a person seen from far away is placed more than 1.5 m off, they are counted twice (0-2 extra in the 7 full runs of the current setup, {doc}`../results/limitations`). Do not conclude "everyone found" from `found >= expected` alone; check the positions.
 
 ## action: RunMission
 

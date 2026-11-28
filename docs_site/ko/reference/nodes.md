@@ -80,7 +80,7 @@ EXPLORE·REGROUP 때 Nav2 계획·추종, 실패 처리, 완료 판정, 홈 복�
 | `escape_radius` | 0.1 | `escape_speed` | 0.08 |
 | `escape_time` | 10.0 | `nudge_after` | 3 |
 | `nudge_dist` | 0.3 | `nudge_time` | 20.0 |
-| `zero_cmd_time` | 8.0 | `done_after` | 30.0 |
+| `zero_cmd_time` | 8.0 | `done_after` | 10.0 |
 | `home_timeout` | 300.0 | `home_retries` | 8 |
 | `path_zone_margin` | 0.15 | `fall_tilt` | 45.0 |
 | `tilt_guard` | 25.0 | `closed_radius` | 0.4 |

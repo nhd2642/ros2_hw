@@ -25,7 +25,7 @@ Link outages are simulated by **user control** (`0` / `1`), not computed from di
 
 - Breadcrumbs and retracing both use only the robot's own **odom frame**. The path doesn't jump with SLAM corrections, but home is off by however much odom drifted (latest run 0.85 m).
 - The return drives directly: if the next breadcrumb is more than 0.35 rad off, turn in place first (0.4 rad/s), otherwise move at 0.15 m/s while correcting heading.
-- **Obstacles on the path**: only while walking, if the strip along the path to retrace (±0.15 m wide, 0.5 m ahead) contains 3 or more lidar points in both of the last two scans, it stops, and goes again once clear. Breadcrumbs are where the body actually passed, so the strip was empty then; only new obstacles (another robot, etc.) trigger it.
+- **Obstacles on the path**: only while walking, if the strip along the path to retrace (±0.15 m wide, 0.5 m ahead) contains 3 or more lidar points in both of the last two scans, it stops, and goes again once clear. Breadcrumbs are where the body actually passed, so the strip was empty then; only new obstacles trigger it (the other A1 looks tiny to the lidar and may not, {doc}`../results/limitations`).
 - An odom jump over 0.5 m breaks the breadcrumb trail.
 - If the link drops during TRANSIT, it doesn't retrace; it just stops where it is.
 

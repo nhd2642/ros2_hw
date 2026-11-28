@@ -12,7 +12,7 @@ Before SLAM, scans get two fixes (`/<ns>/scan` → `/<ns>/scan_ready`).
 - **Beams that hit the floor while the body is tilted are removed.** On a ramp the tilted lidar (0.28 m high) hits the floor and creates false walls in the map. IMU roll/pitch decides per beam whether it reaches the floor.
 - **Beams that hit other robots are removed.** The moving Husky and the other A1 left trails of points in the map that blocked paths in the global costmap and pulled scan matching (in set 1 the `a1_2` map smeared and its position was off by 2.3 m). The bearing range each robot occupies is computed from the positions received over comm, and those beams are erased.
 
-The local costmap still uses the raw scan, so nearby robots are still avoided.
+The local costmap still uses the raw scan. However, **the other A1 is hardly visible to the lidar**: the lidar plane is above the body, so only the other robot's lidar puck (3 cm radius) is hit. The two A1s can therefore touch ({doc}`../results/limitations`).
 
 ## 2. Per-robot SLAM — slam_toolbox
 
@@ -21,7 +21,7 @@ The local costmap still uses the raw scan, so nearby robots are still avoided.
 | mode | asynchronous mapping, Ceres (Levenberg-Marquardt) pose graph | default |
 | resolution | 0.05 m | |
 | map update | 5 s | |
-| travel before adding a scan | 0.2 m or 0.5 rad | in Humble, turning in place alone does not grow the map (verified) |
+| scan processing interval | `minimum_travel_distance` 0 + `minimum_time_interval` 0.5 s | Humble gates scans by odom travel distance only, so at 0.2 m almost no scans arrived while turning in place on a ramp and slip went unseen (S3, 2026-11-27) |
 | loop closure | **off** | suspected cause of 2.3 m position jumps in tight rooms |
 | input | `/<ns>/scan_ready` | preprocessing above |
 
@@ -91,7 +91,7 @@ If the path ahead (0.5 m) differs from the body heading by more than 45°, it tu
 | fall | IMU tilt > 45° | FALLEN: cancel the goal, no blacklisting. Back after standing below 20° for 3 s |
 
 :::{note}
-Why nudging is needed: `a1_2`, standing 0.27 m from a wall, once failed 61 plans in 534 s, each within 0.01 s. In the SLAM map the robot was on the wall line, but slam_toolbox only adds scans after moving more than 0.2 m, so the misalignment could never fix itself while standing — a deadlock.
+Why nudging is needed: `a1_2`, standing 0.27 m from a wall, once failed 61 plans in 534 s, each within 0.01 s. In the SLAM map the robot was on the wall line, but with the settings of that time slam_toolbox only added scans after moving more than 0.2 m, so the misalignment could never fix itself while standing — a deadlock.
 :::
 
 ### Done and return home

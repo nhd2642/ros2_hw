@@ -1,11 +1,11 @@
 # 4. Run a Single Set
 
-A full mission takes 2 hours. When checking a node you changed, running **only the set you need** is much faster.
+A full mission takes about 50 minutes. When checking a node you changed, running **only the set you need** is much faster.
 
 ## Two knobs
 
 `start_set` (first argument of the script)
-: which set to start from. `0` = the beginning (start area), `1` = just before set 2, `2` = just before set 3, `3` = just before the common building. With 1 or more, it starts as if the earlier sets were done: **the Husky at the previous set's parking spot and the A1s in their slots behind it**.
+: which set to start from. `0` = the beginning (start area), `1` = just before set 2, `2` = just before set 3, `3` = just before set 4, `4` = just before the common building. With 1 or more, it starts as if the earlier sets were done: **the Husky at the previous set's parking spot and the A1s in their slots behind it**.
 
 `SETS` (environment variable)
 : how many sets to do before stopping. Default: all.
@@ -15,7 +15,8 @@ A full mission takes 2 hours. When checking a node you changed, running **only t
 | set 1 only | `SETS=1 bash run_mission.sh` |
 | set 2 only | `SETS=1 bash run_mission.sh 1` |
 | set 3 to the end | `bash run_mission.sh 2` |
-| common building only | `SETS=1 bash run_mission.sh 3` |
+| set 4 only (the hard scene) | `SETS=1 bash run_mission.sh 3` |
+| common building only | `SETS=1 bash run_mission.sh 4` |
 
 (Run from `~/ros2_hw/ws/src/comm_relay/tools/`, or add the path.)
 
@@ -23,10 +24,10 @@ A full mission takes 2 hours. When checking a node you changed, running **only t
 
 ```bash
 cd ~/ros2_hw/ws && source install/setup.bash
-SETS=1 bash src/comm_relay/tools/run_mission.sh 3
+SETS=1 bash src/comm_relay/tools/run_mission.sh 4
 ```
 
-The result folder name ends in `..._set3`. In the common building both A1s split **one shared zone** (14 × 12 m), which makes it a good place to see them cooperate.
+The result folder name ends in `..._set4`. In the common building both A1s split **one shared zone** (14 × 12 m), which makes it a good place to see them cooperate.
 
 ```{screenshot} common_building.png
 Exploring the common building: the two A1s split north and south and head for different frontiers.
@@ -46,7 +47,7 @@ DUR=900 SETS=1 bash src/comm_relay/tools/run_mission.sh 1
 # comm test in set 2
 COMM_OFF_AT=60 COMM_OFF_FOR=45 SETS=1 bash src/comm_relay/tools/run_mission.sh 1
 # common building with the GUI
-GUI=1 SETS=1 bash src/comm_relay/tools/run_mission.sh 3
+GUI=1 SETS=1 bash src/comm_relay/tools/run_mission.sh 4
 ```
 
 :::{note}

@@ -18,10 +18,10 @@ bash src/comm_relay/tools/run_mission.sh
 | --- | --- | --- |
 | 1 | World + Husky + two A1s (`sim.launch.py`) | both A1 joint controllers active (up to 180 s) |
 | 2 | Per-robot SLAM (`dual_slam.launch.py`) | 5 s |
-| 3 | Nav2 planning and following servers | 4 servers `active` (up to 120 s) |
+| 3 | Nav2 planning and following servers | 4 servers `active` (if not within 60 s, only Nav2 is restarted, up to twice) |
 | 4 | Terrain perception (`terrain.launch.py`) | together with step 3 |
 | 5 | Mission layer (`mission.launch.py`) | 10 s |
-| 6 | Sends `start` three times | — |
+| 6 | Requests the mission: action `/husky/run_mission` (`num_sets` = `SETS`, 0 = to the end) | — |
 
 Then `mission_watch.py` prints **one status line every 10 s of sim time**.
 
@@ -33,10 +33,10 @@ t,phase,set,comm,husky_x,husky_y,a1_1_x,a1_1_y,a1_2_x,a1_2_y,husky,a1_1,a1_2,...
 ```
 
 :::{important}
-A full mission takes **about 2 hours of real time** (about 1,900 s of sim time, real-time factor around 0.3). For a first try, run **just the common building** as in {doc}`../tutorials/partial_sets` — about 40 minutes including startup.
+A full mission takes **about 50 minutes of real time** (about 900-1,050 s of sim time, real-time factor around 0.3, on the development PC). For a first try, run **just the common building** as in {doc}`../tutorials/partial_sets`, which is much shorter.
 
 ```bash
-SETS=1 bash src/comm_relay/tools/run_mission.sh 3
+SETS=1 bash src/comm_relay/tools/run_mission.sh 4
 ```
 :::
 
@@ -72,21 +72,21 @@ export ROS_DOMAIN_ID=<printed value>
 
 ## Checking the result
 
-At the end you get a summary like this.
+At the end you get a summary like this (`20261128_005121_set0_r1full_1`).
 
 ```text
 === 요약
-  TRANSIT  세트 0:      0 ->     57 s (   57 s)
-  EXPLORE  세트 0:     57 ->    322 s (  265 s)
+  TRANSIT  세트 0:      0 ->     39 s (   39 s)
+  EXPLORE  세트 0:     39 ->    111 s (   72 s)
   ...
-  사람 보고 9 건, 정답 9 명 중 1.0 m 안 일치 9 명
+  사람 보고 11 건, 정답 11 명 중 1.0 m 안 일치 11 명
   넘어짐: 없음
-RESULT PASS (마지막 단계 DONE 세트 4, 한도 초과 세트 0, 사람 9/9)
+RESULT PASS (마지막 단계 DONE 세트 5, 한도 초과 세트 0, 사람 11/11, 홈 실패 0)
 ```
 
-(The tool prints Korean: `요약` = summary, `세트` = set, `사람 보고 9 건 … 일치 9 명` = 9 reports, 9 matched within 1 m, `넘어짐: 없음` = no falls.)
+(The tool prints Korean: `요약` = summary, `세트` = set, `사람 보고 11 건 … 일치 11 명` = 11 reports, 11 matched within 1 m, `넘어짐: 없음` = no falls, `홈 실패` = return failures.)
 
-Results go to `~/ros2_hw/results/<date_time>_set<k>/`. See {doc}`../tutorials/reading_results` for what is inside.
+Results go to `~/ros2_hw/results/<date_time>_set<k>/`. The action result (survivor positions) is in `action.log`. See {doc}`../tutorials/reading_results` for what is inside.
 
 ## Stopping early
 
@@ -98,6 +98,7 @@ bash src/comm_relay/tools/run_mission.sh clean
 
 ## Next steps
 
-- {doc}`../tutorials/gui_manual_start` — type `start`, `0`, `1` yourself while watching
+- {doc}`../reference/interfaces` — request a mission, cut the link and query survivors yourself
+- {doc}`../tutorials/gui_manual_start` — start it yourself while watching
 - {doc}`../tutorials/comm_loss` — test a comm loss and the return behavior
 - {doc}`../concepts/architecture` — how everything you just started connects

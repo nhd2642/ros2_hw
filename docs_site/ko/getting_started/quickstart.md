@@ -18,10 +18,10 @@ bash src/comm_relay/tools/run_mission.sh
 | --- | --- | --- |
 | 1 | 월드 + Husky + A1 두 대 (`sim.launch.py`) | 두 A1 의 관절 컨트롤러가 활성 (최대 180 s) |
 | 2 | 로봇별 SLAM (`dual_slam.launch.py`) | 5 s |
-| 3 | Nav2 계획·추종 서버 | 서버 4 개 `active` (최대 120 s) |
+| 3 | Nav2 계획·추종 서버 | 서버 4 개 `active` (60 s 안에 안 되면 Nav2 만 2 번까지 다시 띄움) |
 | 4 | 지형 인식 (`terrain.launch.py`) | 3 단계와 같이 |
 | 5 | 임무 계층 (`mission.launch.py`) | 10 s |
-| 6 | `start` 명령을 3 번 보냄 | — |
+| 6 | 임무 요청: action `/husky/run_mission` (`num_sets` = `SETS`, 0 = 끝까지) | — |
 
 그 뒤 `mission_watch.py` 가 **시뮬 10 초마다 한 줄**씩 상태를 출력합니다.
 
@@ -33,10 +33,10 @@ t,phase,set,comm,husky_x,husky_y,a1_1_x,a1_1_y,a1_2_x,a1_2_y,husky,a1_1,a1_2,...
 ```
 
 :::{important}
-전체 임무는 **실제 시간 약 2 시간** 걸립니다 (시뮬 약 1,900 초, 실시간 비율 0.3 안팎). 처음에는 {doc}`../tutorials/partial_sets` 처럼 **공동 건물만** 돌려 보면 기동 포함 약 40 분이면 됩니다.
+전체 임무는 **실제 시간 약 50 분** 걸립니다 (시뮬 약 900~1,050 초, 실시간 비율 0.3 안팎, 개발 PC 기준). 처음에는 {doc}`../tutorials/partial_sets` 처럼 **공동 건물만** 돌려 보면 훨씬 짧습니다.
 
 ```bash
-SETS=1 bash src/comm_relay/tools/run_mission.sh 3
+SETS=1 bash src/comm_relay/tools/run_mission.sh 4
 ```
 :::
 
@@ -71,19 +71,19 @@ export ROS_DOMAIN_ID=<출력된 값>
 
 ## 결과 확인
 
-끝나면 마지막에 이런 요약이 나옵니다.
+끝나면 마지막에 이런 요약이 나옵니다 (`20261128_005121_set0_r1full_1`).
 
 ```text
 === 요약
-  TRANSIT  세트 0:      0 ->     57 s (   57 s)
-  EXPLORE  세트 0:     57 ->    322 s (  265 s)
+  TRANSIT  세트 0:      0 ->     39 s (   39 s)
+  EXPLORE  세트 0:     39 ->    111 s (   72 s)
   ...
-  사람 보고 9 건, 정답 9 명 중 1.0 m 안 일치 9 명
+  사람 보고 11 건, 정답 11 명 중 1.0 m 안 일치 11 명
   넘어짐: 없음
-RESULT PASS (마지막 단계 DONE 세트 4, 한도 초과 세트 0, 사람 9/9)
+RESULT PASS (마지막 단계 DONE 세트 5, 한도 초과 세트 0, 사람 11/11, 홈 실패 0)
 ```
 
-결과 폴더는 `~/ros2_hw/results/<날짜_시각>_set<k>/` 입니다. 무엇이 들어 있는지는 {doc}`../tutorials/reading_results` 를 보세요.
+결과 폴더는 `~/ros2_hw/results/<날짜_시각>_set<k>/` 입니다. 액션 결과(생존자 위치 목록)는 그 안 `action.log` 에 남습니다. 무엇이 들어 있는지는 {doc}`../tutorials/reading_results` 를 보세요.
 
 ## 중간에 멈추기
 
@@ -95,6 +95,7 @@ bash src/comm_relay/tools/run_mission.sh clean
 
 ## 다음 단계
 
-- {doc}`../tutorials/gui_manual_start` — 화면을 보며 `start`·`0`·`1` 을 직접 입력하기
+- {doc}`../reference/interfaces` — 임무 요청·통신 끄기·생존자 조회를 직접 보내기
+- {doc}`../tutorials/gui_manual_start` — 화면을 보며 직접 시작하기
 - {doc}`../tutorials/comm_loss` — 통신 끊김과 복귀 시험
 - {doc}`../concepts/architecture` — 지금 띄운 것들이 어떻게 이어지는지

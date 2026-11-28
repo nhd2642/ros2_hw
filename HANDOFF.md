@@ -1,6 +1,19 @@
 # 인수인계
 
-## ★★★★ 2026-11-28 추가 (가장 최신 — 다음에 바로 아래 11-27 저녁 절, 11-27 절 순서)
+## ★★★★★ 2026-11-28 문서·분석 (가장 최신 — 다음에 바로 아래 11-28 절)
+- **A1 근접·중복 보고 분석 (동작 변경 없음)** `docs/experiments/A1_근접중복_분석.txt`.
+  근접: 접촉 확인. A1 라이다에는 상대의 라이다 원통(반경 3 cm)만 보임, 전역 지도에서는 상대를 지움. S3 뒤부터 자주 생김 (기전 확인 안 함).
+  중복: 거리 어림 1~3 m 오류가 주로 보임, 4.5 m 이상에서 많음. 원인 미확정.
+  방향 점검: 평가표 필수 항목(직접 설계 인터페이스, 문서) 우선, SLAM 다듬기는 멈추기를 권함. 사용자 선택: 문서·main 정리 먼저.
+- **통신 끊긴 동안 발견 보관 -> 복구 때 전달: 시뮬 1 건 확인** (지연 10.0 s, `C3_통신끊김_보관전달_확인.txt`, 결과 `results/20261128_set0_doccheck_commbuffer`, git 밖).
+- **문서 갱신**: docs_site ko·en 을 지금 설정(세트 4 + 공동, 11 명, 약 50 분)으로, 새 페이지 `docs_site/{ko,en}/service/deployment.md`
+  (평가표 '서비스 전체를 실제 구현한다고 가정'; '실제 구현' 칸은 설계 가정이라 팀 검토 필요). 두 언어 `-W` 빌드 통과, 배포 안 함. README 2 개, mission_design 한계 갱신.
+- **발표 자료 폴더** `/mnt/c/Users/fllno/ros2_hw_ppt_materials`: 인터페이스 README·목록 4 개·mission_design 갱신, 서비스 설계 추가. 11-21 원본은 `_구버전_2026-11-21/`.
+- **아직 옛 버전**: 발표 폴더 `1_rqt_graph/` (지금 없는 `/husky/cmd` 가 있음), `6_videos/`, 문서의 결과 그래프(`images/figures`, 3 세트 실행).
+- 이 갱신까지 커밋해 main 에 합치고 push 함 (사용자 승인, 2026-11-28).
+- 남은 후보: rqt_graph 다시 뽑기, A1 근접 P1 (상대를 국소 비용지도에), 중복 D-c (관측 전부 기록). 다음은 사용자와 상의.
+
+## ★★★★ 2026-11-28 추가 (다음에 바로 아래 11-27 저녁 절, 11-27 절 순서)
 - 같은 브랜치·워크트리. 사용자 요청: '개선할 동작을 분명히 하고 SLAM 오차가 왜 커졌는지 분석해 계획' -> 1 단계 진단 (G1), 2 단계 회전 보정 (R1).
 - **G1 진단 (동작 변경 없음)**: `mission_watch` motion.csv 에 공유 자세 열 `sl_x, sl_y, sl_yaw` 추가 (`stuck_report` MOTION_COLS·test_stuck 맞춤).
   `results/20261127_234156_set0_g1diag_1` PASS. 오차가 작아 (최대 0.28/0.31 m) 회전/눈금 판정은 못 함. 회전 안 할 때 방향 오차 |중앙|
@@ -35,9 +48,9 @@
 ## ★★ 2026-11-27 인계 (이 절부터 읽는다. 아래 11-21 절은 그 전 상태)
 
 ### 0. 먼저 알 것 (중요)
-- **main 은 11-21 발표 영상 버전 (`ccb992e`) 그대로.** 11-26 ~ 27 작업은 브랜치 `claude/project-code-review-structure-c9b240` 에 커밋·push 됨 (main 에 안 합침).
-  로컬 작업 폴더는 git 워크트리 `~/disaster_develop/.claude/worktrees/project-code-review-structure-c9b240`. `~/disaster_develop` (main 체크아웃) 을 열면 이 변경이 **안 보인다.**
-  다른 PC: `git clone -b claude/project-code-review-structure-c9b240 https://github.com/nhd2642/ros2_hw.git ~/ros2_hw` (WSL 홈에) 후 `cd ~/ros2_hw/ws && colcon build --symlink-install`.
+- **2026-11-28: 브랜치를 main 에 합치고 push 함** (fast-forward). main = 지금 코드. 발표 영상 버전은 커밋 `ccb992e`.
+  로컬 작업 폴더는 git 워크트리 `~/disaster_develop/.claude/worktrees/project-code-review-structure-c9b240`. `~/disaster_develop` (main 체크아웃) 도 같은 커밋이며, 거기서 실행하려면 `colcon build` 를 다시 해야 함 (새 패키지 `mission_interfaces`).
+  다른 PC: `git clone https://github.com/nhd2642/ros2_hw.git ~/ros2_hw` (WSL 홈에) 후 `cd ~/ros2_hw/ws && colcon build --symlink-install`.
 - 새 세션은 위 워크트리 폴더를 작업 폴더로 연다 (아래 '연결할 폴더'). 커밋은 사용자가 요청할 때만, 커밋 메시지에 Claude Co-Authored-By 줄 넣지 않음.
 - 빌드: `ws/src -> ../code/ros2_hw_gz_src` 심볼릭 링크. `cd ws && colcon build --symlink-install`. 파이썬 스크립트는 symlink 라 고치면 바로 반영
   (scan_ready_relay.py 는 dual_slam.launch.py 가 `ws/src/.../scripts` 에서 직접 실행).

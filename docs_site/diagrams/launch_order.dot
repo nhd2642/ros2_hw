@@ -7,6 +7,6 @@ digraph launch_order {
   s3 [label="3  nav2_planners / nav2_controllers\n(wait: 4 servers active)"];
   s4 [label="4  terrain.launch.py"];
   s5 [label="5  mission.launch.py\nmission layer nodes"];
-  s6 [label="6  'start'\n/husky/cmd", fillcolor="#C8102E", color="#C8102E"];
+  s6 [label="6  RunMission action\n/husky/run_mission", fillcolor="#C8102E", color="#C8102E"];
   s1 -> s2 -> s3 -> s4 -> s5 -> s6;
 }

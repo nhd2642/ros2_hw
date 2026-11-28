@@ -14,7 +14,7 @@ disaster_sim/scripts/make_world.py   ──►  disaster_sim/worlds/mission.worl
 ## Coordinate conventions
 
 - World coordinates (m), **road = x axis** (3 m wide). The Husky starts at (0, 0).
-- Set 1 = x 4-12, set 2 = x 16-24, set 3 = x 28-36, common building = x 40-54, y −6-6.
+- Set 1 = x 4-12, set 2 = x 16-24, set 3 = x 28-36, set 4 = x 40-48, common building = x 52-66, y −6-6.
 - Each set has an 8 × 5 m building pair either side of the road (south = `a1_1`, north = `a1_2`), with a 1.6 m door centered on the road side.
 - Interiors use **building coordinates (u, v)**: u = along the road (door center 0, −4-4), v = inward from the door (0-5). South buildings are mirrored in y.
 

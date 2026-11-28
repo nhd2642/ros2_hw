@@ -52,7 +52,7 @@ A camera alone gives no range. At first the position was "the nearest lidar poin
 
 ## Results
 
-Latest full run: **exactly 9 reports**, all 9 people within 1 m of truth (no duplicates or false positives). The two earlier passing runs each had 2 extra reports with off positions or low scores.
+All 7 full runs of the current setup line (2026-11-27 to 28) reported all 11 people within 1 m of truth, but with 11-13 reports. Most extra reports have a **range estimate off by 1-3 m**, mostly for people seen from 4.5 m or farther (full runs since 11-27: 1 of 50 below 4.5 m, 13 of 75 at 4.5 m or more). The cause is not confirmed (box-height range estimate, lidar missing the person, or image/scan time skew). Record: `docs/experiments/A1_근접중복_분석.txt` (Korean).
 
 :::{warning}
 Comparison with the configured person count is by **number of reports**, so extra reports can mark "all found" early. Set completion itself is decided only by both A1s returning, so exploration does not end early.

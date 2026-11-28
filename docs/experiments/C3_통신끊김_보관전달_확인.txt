@@ -1,0 +1,16 @@
+C3: 통신이 끊긴 동안 발견한 사람을 보관했다가 보내는지, 문서의 명령 확인 (2026-11-28, 동작 변경 없음)
+
+실행: results/20261128_set0_doccheck_commbuffer (SETS=1, START=0, 명령은 문서에 적힌 ros2 명령 그대로).
+판정 기준을 미리 적고 한 시험이 아니라, 문서 명령 확인 중에 나온 관찰이다. 1 회, 1 건.
+
+시간 (mission.log 벽시계 끝 세 자리 + 소수):
+  522.3  [COMM] 통신 끔
+  533.4  a1_2 발견 #1 (점수 0.72) — 끊긴 중, '전달' 줄 없음
+  571.1  [COMM] 통신 켬
+  571.6  Husky 사람 발견 보고 a1_2 월드 (10.5, 6.0) (정답 (10.6, 6.1))
+  571.6  survivor_detector 'Husky 에 전달 #1 ... 지연 10.0 s' (SurvivorReport.delay, 시뮬 초)
+-> 끊긴 동안의 발견이 보관됐다가 복구 직후 전달됨: 확인 (C2 에서 미확인이던 항목).
+
+그 밖에 확인한 명령: GetSurvivors (set1, 전체), RunMission 요청·피드백, SetComm 끔 -> a1_1 comm_mode RETURNING, 켬,
+진행 중 두 번째 요청 거절, 액션 취소 -> 'Goal finished with status: CANCELED' + '[MISSION] TRANSIT -> DONE' (cancel_action.txt).
+이 실행에서 확인하지 않은 것: 정상 완료 결과 (command 쪽 시간 제한으로 먼저 끊김; 20261128_005121_set0_r1full_1/action.log 에 SUCCEEDED 있음).

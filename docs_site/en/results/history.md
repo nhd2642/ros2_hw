@@ -1,6 +1,6 @@
 # History & Previous Architecture
 
-## Development history (2026-11-03 to 11-20)
+## Development history (2026-11-03 to 11-28)
 
 | Stage | Dates | Content |
 | --- | --- | --- |
@@ -13,6 +13,8 @@
 | 7. Experiment rules | 11-11 to 12 | one change, two runs, same-time comparison; fix16-19 |
 | 8. Mission v2 | 11-12 to 14 | 3 sets + common building, autonomous Husky, A1 following, Husky-referenced correction → full mission PASS |
 | **9. Robustness experiments** | 11-19 to 20 | rule-breaking set 4 added, stall diagnosis tools, local controller DWB → MPPI adopted (reverse, Smac, sideways steps and SLAM parameters rejected or stopped) |
+| 10. Interfaces, exploration, detection | 11-26 to 27 | our own action/service/msg, revisit prevention, exploration 0.35 m/s, YOLOv4-tiny person detection, SLAM on slopes (S3), end-of-set wait 10 s (W1) |
+| 11. SLAM heading, analysis | 11-28 | SLAM shared-pose heading correction (R1), A1 proximity and duplicate report analysis |
 
 Detailed records in the repository: `history/CHANGELOG.md`, `docs/project_docs/` (21 documents), cumulative run summary `history/results/runs.csv` (all in Korean).
 

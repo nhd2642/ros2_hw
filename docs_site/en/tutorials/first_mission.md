@@ -19,26 +19,28 @@ bash src/comm_relay/tools/run_mission.sh
 The first lines are the startup.
 
 ```text
-=== 임무 실행: start_set 0, ROS_DOMAIN_ID 47, 결과 /home/<you>/ros2_hw/results/20261114_062151_set0
-두 A1 컨트롤러 활성: 41 s
-Nav2 서버 4 개 active: 23 s
+=== 임무 실행: start_set 0, ROS_DOMAIN_ID 62, 결과 /home/<you>/ros2_hw/results/20261128_005121_set0
+두 A1 컨트롤러 활성: 24 s
+Nav2 서버 4 개 active: 5 s
 start 보냄
 ```
 
 (`임무 실행` = mission run, `결과` = result folder, `두 A1 컨트롤러 활성` = both A1 controllers active, `start 보냄` = start sent.)
 
+`start 보냄` means the script requested the mission with the action `/husky/run_mission`. To request it yourself, start with `START=0` ({doc}`gui_manual_start`).
+
 :::{note}
-Occasionally Nav2 gets its TF late and its servers don't come up (about 5 in 30 starts). The script then prints `-> 정리하고 기동 다시 (1 회)` ("clean up and start again, once") and tries one more time.
+Occasionally Nav2 fails to come up. The script then prints `-> Nav2 만 다시 띄움` ("restart only Nav2") up to twice, and after that restarts the whole stack once.
 :::
 
 ## Step 2: Read the status line
 
-After `start` you get one line every 10 s of sim time. The columns mean:
+After the mission request you get one line every 10 s of sim time. The columns mean:
 
 | Column | Example | Meaning |
 | --- | --- | --- |
 | `t` | `371` | sim time since mission start (s) |
-| `phase`, `set` | `EXPLORE 1` | mission phase and set number (0 = set 1, 3 = common building) |
+| `phase`, `set` | `EXPLORE 1` | mission phase and set number (0 = set 1, 3 = set 4, 4 = common building) |
 | `comm` | `1` | comm on (1) / off (0) |
 | `husky_x … a1_2_y` | | Gazebo ground-truth positions (for evaluation; the robots don't know these) |
 | `husky` | `ARRIVED` | Husky drive state: `GO` `AVOID` `BLOCKED` `HOLD` `ARRIVED` |
@@ -59,7 +61,7 @@ Normal looks like:
 - The A1s walk about 1.6-1.9 m behind the Husky, near ±0.8 m sideways (`a1_1_y` ≈ −0.8, `a1_2_y` ≈ +0.8).
 - If an A1 falls more than 2.5 m behind, the Husky waits in `HOLD`. Short appearances are normal.
 
-It takes about 57 s to reach set 1 and about 49 s between sets.
+It takes about 39 s to reach set 1 and about 49 s between sets (about 19 s before the common building).
 
 ## Step 4: EXPLORE — exploring the buildings
 
@@ -75,18 +77,18 @@ Normal looks like:
 - When a person is found, `people` goes up and a `[MISSION]` line with the report appears in the terminal (or `mission.log`).
 - When there are no frontiers left, the A1 goes home and becomes `DONE`. When both are `DONE`, the team moves to the next set.
 
-Exploring one set takes 180-800 s depending on the run. Blocked goals go through failure handling (blacklist, escape, nudge) and add time — see {doc}`../concepts/exploration`.
+Exploring one set takes about 70-330 s depending on the run (7 runs of the current setup). Blocked goals go through failure handling (blacklist, escape, nudge) and add time — see {doc}`../concepts/exploration`.
 
 ## Step 5: DONE — the summary
 
 After the common building, the summary and verdict are printed.
 
 ```text
-RESULT PASS (마지막 단계 DONE 세트 4, 한도 초과 세트 0, 사람 9/9)
-결과 폴더: /home/<you>/ros2_hw/results/20261114_062151_set0
+RESULT PASS (마지막 단계 DONE 세트 5, 한도 초과 세트 0, 사람 11/11, 홈 실패 0)
+결과 폴더: /home/<you>/ros2_hw/results/20261128_005121_set0
 ```
 
-PASS needs four things: **reached the end**, **0 falls**, **0 exploration timeouts (REGROUP)**, **every person reported within 1.0 m of truth**.
+PASS needs five things: **reached the end**, **0 falls**, **0 exploration timeouts (REGROUP)**, **every person reported within 1.0 m of truth**, **0 return failures**. Duplicate reports do not count against it, so a passing run can report more than 11.
 
 ## Recap
 
